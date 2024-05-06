@@ -18,42 +18,36 @@ theme: lumen
 editor: source
 ---
 
-
 ```{r, message=FALSE, echo=F}
 knitr::opts_chunk$set(comment=NA, dpi = 300)
 ```
 
-<center>
-
-![](dibujo3.png)
-
-</center>
+<center>![](dibujo3.png)</center>
 
 ```{r, echo=F, message=F, warning=F}
 library(dlookr)
 ```
 
-
 ## Introducción
 
-Tidyverse es el nombre que se ha dado al conjunto de paquetes desarrollados a partir de la inciativa de [Hadley Wickham](https://en.wikipedia.org/wiki/Hadley_Wickham) (jefe científico de Posit -antes RStudio-) y su equipo, para ciencia de datos con R. 
+Tidyverse es el nombre que se ha dado al conjunto de paquetes desarrollados a partir de la inciativa de [Hadley Wickham](https://en.wikipedia.org/wiki/Hadley_Wickham) (jefe científico de Posit -antes RStudio-) y su equipo, para ciencia de datos con R.
 
-Estos paquetes están diseñados para funcionar juntos y comparten una misma filosofía, que se puede consultar en [The tidy tools manifesto](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html). 
+Estos paquetes están diseñados para funcionar juntos y comparten una misma filosofía, que se puede consultar en [The tidy tools manifesto](https://cran.r-project.org/web/packages/tidyverse/vignettes/manifesto.html).
 
 Los cuatro principios básicos en los que se basa son:
 
-- Reutilizar las estructuras de datos
-- Resolver problemas complejos combinando varias piezas sencillas
-- Utilizar programación funcional
-- Diseñado para humanos
+-   Reutilizar las estructuras de datos
+-   Resolver problemas complejos combinando varias piezas sencillas
+-   Utilizar programación funcional
+-   Diseñado para humanos
 
-Los paquetes incluidos en el tidyverse tienen como objetivo cubrir todas las fases del análisis de datos dentro de R:  importar datos, ponerlos en formato ordenado (tidy data), buscar relaciones entre ellos (mediante su transformación, visualización y creación de modelos) y comunicar los resultados. 
+Los paquetes incluidos en el tidyverse tienen como objetivo cubrir todas las fases del análisis de datos dentro de R: importar datos, ponerlos en formato ordenado (tidy data), buscar relaciones entre ellos (mediante su transformación, visualización y creación de modelos) y comunicar los resultados.
 
 La palabra "tidy" se puede traducir como "ordenado" y refiere a que los datos deben cumplir con una estructura determinada donde:
 
-- Cada **_variable_** es una *columna* de la tabla de datos.
-- Cada **_observación_** es una *fila* de la tabla de datos.
-- Cada **_tabla_** responde a una *unidad de observación o análisis*.
+-   Cada ***variable*** es una *columna* de la tabla de datos.
+-   Cada ***observación*** es una *fila* de la tabla de datos.
+-   Cada ***tabla*** responde a una *unidad de observación o análisis*.
 
 ```{r,echo=F,  fig.align='center', out.width = "60%"}
 knitr::include_graphics("tidy.PNG")
@@ -63,7 +57,7 @@ Además de los paquetes principales que realizan estas funciones, al instalar el
 
 Una de las interesantes incorporaciones transversales en el ambiente tidyverse es el uso de tuberías (pipe en inglés).
 
-Una tubería conecta un trozo de código con otro mediante el conector `%>%` que surge del paquete __magrittr__ que permite transformar llamadas de funciones anidadas (con muchos paréntesis) en una simple serie de operaciones que son más fáciles de escribir y comprender. Este aporte fue tan importante que el equipo de desarrolladores que mantiene el lenguaje R incorporó la idea a partir de la versión 4.1.0 de 2021, agregando la funcionalidad nativa con el operador `|>`.
+Una tubería conecta un trozo de código con otro mediante el conector `%>%` que surge del paquete **magrittr** que permite transformar llamadas de funciones anidadas (con muchos paréntesis) en una simple serie de operaciones que son más fáciles de escribir y comprender. Este aporte fue tan importante que el equipo de desarrolladores que mantiene el lenguaje R incorporó la idea a partir de la versión 4.1.0 de 2021, agregando la funcionalidad nativa con el operador `|>`.
 
 **Nota:** *durante el curso pueden llegar a coexistir ambas tuberías, dado que funcionan igual. De todas maneras, al utilizar versiones actualizadas del lenguaje preferimos utilizar la tubería nativa que es más eficiente que la propia del tidyverse.*
 
@@ -73,12 +67,11 @@ La idea de tubería responde al principio donde cada función es un paso y la fo
 knitr::include_graphics("pipe.png")
 ```
 
-__Base gramatical__
+**Base gramatical**
 
 La intención de los desarrolladores para este conjunto de paquetes es lograr incorporar una gramática a la sintaxis de las funciones y sus argumentos buscando un entendimiento semántico más claro.
 
-Una prueba de ello, es que la mayoría de las funciones son verbos que se entrelazan con objetos y argumentos que permiten construir *"frases"*. 
-
+Una prueba de ello, es que la mayoría de las funciones son verbos que se entrelazan con objetos y argumentos que permiten construir *"frases"*.
 
 ## El paquete de paquetes
 
@@ -98,7 +91,7 @@ observamos que nos informa sobre la versión del paquete, el listado de paquetes
 
 Esto es muy habitual cuando activamos varios paquetes, dado que las funciones que se encuentran dentro de ellos pueden llamarse iguales.
 
-Por ejemplo, existe en el paquete base stats y en el paquete dplyr (que es parte de tidyverse) una función llamada `filter()`, por lo tanto al activar tidyverse nos informa de esta manera: **dplyr::filter()    masks stats::filter()**
+Por ejemplo, existe en el paquete base stats y en el paquete dplyr (que es parte de tidyverse) una función llamada `filter()`, por lo tanto al activar tidyverse nos informa de esta manera: **dplyr::filter() masks stats::filter()**
 
 En este caso, cuando necesitemos asegurarnos que la función que deseamos ejecutar pertenece a determinado paquete, es recomendable escribirla de la siguiente forma:
 
@@ -116,7 +109,7 @@ tidyverse_packages()
 
 Existen otros paquetes (la cantidad crece con el tiempo) que son creados bajo la misma filosofía pero no están incluidos. En esos casos hay que instalarlos y activarlos individualmente.
 
-Para profundizar sobre **tidyverse** se puede visitar el sitio  https://www.tidyverse.org/ y la primera versión del libro traducido al español [r4ds](https://es.r4ds.hadley.nz/index.html). La segunda versión está disponible en inglés en [r4ds(2e)](https://r4ds.hadley.nz/)
+Para profundizar sobre **tidyverse** se puede visitar el sitio https://www.tidyverse.org/ y la primera versión del libro traducido al español [r4ds](https://es.r4ds.hadley.nz/index.html). La segunda versión está disponible en inglés en [r4ds(2e)](https://r4ds.hadley.nz/)
 
 ## Lectura y escritura de datos
 
@@ -128,10 +121,10 @@ Los archivos de texto plano (**ASCII y otras codificaciones**) son universalment
 
 Estos datos planos tienen dos peculiaridades:
 
-- La cabecera (en inglés **header**) 
-- El caracter o símbolo **separador** que indica la separación de columnas: pueden estar separadas por comas, puntos y comas, por tabulación, etc…
+-   La cabecera (en inglés **header**)
+-   El caracter o símbolo **separador** que indica la separación de columnas: pueden estar separadas por comas, puntos y comas, por tabulación, etc…
 
-La cabecera puede existir o no, y de existir puede ser simple o compleja. La inclusión o no de la cabecera se maneja desde los argumentos `col_names` y `skip`. 
+La cabecera puede existir o no, y de existir puede ser simple o compleja. La inclusión o no de la cabecera se maneja desde los argumentos `col_names` y `skip`.
 
 Con `col_names = TRUE` incluimos la primer fila como cabecera (nombre de las columnas) y en FALSE la salteamos.
 
@@ -139,27 +132,25 @@ Con `skip = 0` la lectura de produce desde la primer fila (se puede omitir), per
 
 El otro elemento a tener en cuenta es el caracter separador que utiliza el archivo para indicar cuando comienza una nueva columna (variable).
 
-Generalmente los separadores más comunes son: la coma (,), el punto y coma (;), el tabulador (TAB), el espacio ( ), el caracter pipe (|), entre otros posibles.
+Generalmente los separadores más comunes son: la coma (,), el punto y coma (;), el tabulador (TAB), el espacio ( ), el caracter pipe (\|), entre otros posibles.
 
 Algunas de las funciones del paquete asumen un separador particular. Por caso `read_csv()` lee separados por coma y `read_tsv()` separado por tabulaciones, pero la función `read_delim()` permite que definamos el separador a través del argumento *delim*.
 
-En forma detallada el paquete __readr__ soporta siete formatos de archivo a partir de siete funciones:
+En forma detallada el paquete **readr** soporta siete formatos de archivo a partir de siete funciones:
 
-- **read_csv()**: archivos separados por comas (CSV) 
-- **read_tsv()**: archivos separados por tabulaciones 
-- **read_delim()**: archivos separados con delimitadores generales 
-- **read_fwf()**: archivos con columnas de ancho fijo
-- **read_table()**: archivos formato tabla con columnas separadas por espacios
-- **read_log()**: archivos log web
+-   **read_csv()**: archivos separados por comas (CSV)
+-   **read_tsv()**: archivos separados por tabulaciones
+-   **read_delim()**: archivos separados con delimitadores generales
+-   **read_fwf()**: archivos con columnas de ancho fijo
+-   **read_table()**: archivos formato tabla con columnas separadas por espacios
+-   **read_log()**: archivos log web
 
+En comparación con las funciones base de R, las funciones de **readr**:
 
-En comparación con las funciones base de R, las funciones de __readr__:
-
-- Usan un esquema de nombres consistente de parámetros 
-- Son más rápida. 
-- Analizan eficientemente los formatos de datos comunes, incluyendo fecha/hora. 
-- Muestran una barra de progreso si la carga va a llevar un tiempo. (para archivos grandes) 
-
+-   Usan un esquema de nombres consistente de parámetros
+-   Son más rápida.
+-   Analizan eficientemente los formatos de datos comunes, incluyendo fecha/hora.
+-   Muestran una barra de progreso si la carga va a llevar un tiempo. (para archivos grandes)
 
 Viene incluida dentro de la instalación de tidyverse y se activa con él, pero también permite activarse solo:
 
@@ -169,21 +160,19 @@ library(readr)
 
 Algunos ejemplos de sintaxis:
 
-- Leemos un archivo sin cabecera separado por comas
+-   Leemos un archivo sin cabecera separado por comas
 
 ```{r, message=F, warning=F}
 read_csv("ejemplo-datos.csv", col_names = F)
 ```
 
-
-- Leemos el mismo archivo con cabecera y separado por punto y comas
+-   Leemos el mismo archivo con cabecera y separado por punto y comas
 
 ```{r, message=F, warning=F}
 read_csv2("ejemplo-datos-header.csv", col_names = T)
 ```
 
-- Leemos el archivo con cabecera separado por tabulaciones 
-
+-   Leemos el archivo con cabecera separado por tabulaciones
 
 ```{r}
 read_tsv("ejemplo-datos-header2.csv", col_names = T)
@@ -193,7 +182,7 @@ Observemos que cada vez que hacemos una lectura la función se encarga de analiz
 
 Los posibles tipos de datos son los atómicos del lenguaje más algún agregado: character, integer, numeric, double, logical y date/time.
 
-Por ejemplo, en la tabla leída anteriormente las columnas donde hay números enteros fueron reconocidos como double (**\<dbl\>**), los que tienen algún caracter como character (**\<chr\>**) y las fechas como date (**\<date\>**). 
+Por ejemplo, en la tabla leída anteriormente las columnas donde hay números enteros fueron reconocidos como double (**\<dbl\>**), los que tienen algún caracter como character (**\<chr\>**) y las fechas como date (**\<date\>**).
 
 Ahora escribimos la sintaxis para leer un archivo con cabecera compleja (la tabla comienza en la fila 9) separado por pipes.
 
@@ -204,25 +193,22 @@ read_delim("ejemplo-datos-header-skip.txt",
            delim = "|")
 ```
 
-
 > En estos ejemplos visualizamos el contenido de los archivos leídos en consola con el propósito de mostrar como trabajan las funciones, pero en la práctica cada vez que importemos datos de un archivo debemos **asignar** su salida a un nombre, que será el nombre del dataframe que reciba los datos dentro de nuestra sesión de trabajo. (`<-`)
-
 
 #### Funciones de escritura
 
 Dentro del paquete coexisten funciones espejo de escritura para las posibilidades de lectura más relevantes. Así encontramos estos cuatro:
 
-- **write_csv()**: escribe archivos separados por comas (csv) 
-- **write_csv2()**: escribe archivos separados por punto y comas (csv) 
-- **write_tsv()**: escribe archivos separados por tabulaciones 
-- **write_delim()**: escribe archivos separados con delimitadores definidos por el usuario
+-   **write_csv()**: escribe archivos separados por comas (csv)
+-   **write_csv2()**: escribe archivos separados por punto y comas (csv)
+-   **write_tsv()**: escribe archivos separados por tabulaciones
+-   **write_delim()**: escribe archivos separados con delimitadores definidos por el usuario
 
 Los argumentos son generales y para el caso del último más extensos, dado que hay que definir cual es el separador que deseamos en el archivo.
 
 ```{r}
 args(write_delim)
 ```
-
 
 Por ejemplo para exportar un conjunto de datos en texto plano al que denominaremos **ejemplo.csv** con separador **punto y coma** y **cabecera incluida** podemos hacer:
 
@@ -236,18 +222,17 @@ o más sencillo:
 write_csv2(datos, "ejemplo.csv")
 ```
 
-
 ### Paquete **readxl**
 
 Uno de los formatos de documentos más comunes en los que se almacenan datos son las hojas de cálculo, en particular, las creadas con el programa **Excel** de Microsoft Office.
 
 El paquete `readxl` es parte del ecosistema tidyverse y permite leer este tipo de archivos.
 
-Posee compatibilidad con hojas de cálculo de Excel 97-03, de extensión __.xls__, y con hojas de cálculo de las versiones más recientes de Excel, de extensión, __.xlsx__
+Posee compatibilidad con hojas de cálculo de Excel 97-03, de extensión **.xls**, y con hojas de cálculo de las versiones más recientes de Excel, de extensión, **.xlsx**
 
 La primera función interesante es `excel_sheets()`, útil para conocer y listar los nombre de las hojas contenidas dentro de un archivo (libro) Excel.
 
-Por ejemplo, supongamos que tenemos un archivo denominado __datos.xlsx__ y queremos saber por cuantas hojas está compuesto y que nombre tienen.
+Por ejemplo, supongamos que tenemos un archivo denominado **datos.xlsx** y queremos saber por cuantas hojas está compuesto y que nombre tienen.
 
 ```{r}
 library(readxl) # hay que activarlo independientemente de tidyverse
@@ -265,19 +250,19 @@ args(read_excel)
 
 Donde los más relevantes son:
 
-__path__: nombre del archivo y la ubicación (si fuese necesaria) entre comillas
+**path**: nombre del archivo y la ubicación (si fuese necesaria) entre comillas
 
-__sheet__: nombre de la hoja o número de ubicación
+**sheet**: nombre de la hoja o número de ubicación
 
-__col_names__: si se activa toma la primer fila como nombres de columnas (variables)
+**col_names**: si se activa toma la primer fila como nombres de columnas (variables)
 
-__skip__: permite saltear una cantidad determinada de filas antes de comenzar la lectura
+**skip**: permite saltear una cantidad determinada de filas antes de comenzar la lectura
 
-En primer lugar, cuando ejecutamos esta función, llama a otra denominada `excel_format()` que determina frente a que formato de archivo estamos. Si es un Excel tipo .xsl o tipo .xlsx. En relación a esta respuesta, luego aplica la función específica para cada caso - `read_xls()` o `readxlsx()`. 
+En primer lugar, cuando ejecutamos esta función, llama a otra denominada `excel_format()` que determina frente a que formato de archivo estamos. Si es un Excel tipo .xsl o tipo .xlsx. En relación a esta respuesta, luego aplica la función específica para cada caso - `read_xls()` o `readxlsx()`.
 
 Todas estas funciones mencionadas en el procedimiento que sigue `read_excel()` se pueden utilizar en forma específica.
 
-Continuemos con el archivo __datos.xlsx__ y procedamos a leer los datos de su primer hoja, llamada *diabetes*.
+Continuemos con el archivo **datos.xlsx** y procedamos a leer los datos de su primer hoja, llamada *diabetes*.
 
 ```{r}
 diabetes <- read_excel(path = "datos.xlsx", 
@@ -301,7 +286,7 @@ vigilancia <- read_excel(path = "datos.xlsx",
 head(vigilancia) # mostramos las 6 primeras observaciones
 ```
 
-Centremos nuestra mirada en los argumentos anteriores: en lugar del nombre de la hoja usamos un **2** que es su ubicación (la segunda hoja del archivo Excel) y configuramos a **col_names** con **F** (false) porque el conjunto de datos no tiene cabecera. 
+Centremos nuestra mirada en los argumentos anteriores: en lugar del nombre de la hoja usamos un **2** que es su ubicación (la segunda hoja del archivo Excel) y configuramos a **col_names** con **F** (false) porque el conjunto de datos no tiene cabecera.
 
 Cuando ocurre esta situación donde la tabla no tiene nombre de columnas readxl le asigna nombres del tipo `...1`, `...2`, `...x`
 
@@ -320,54 +305,48 @@ Lo novedoso de esta lectura es el argumento `skip = 1` que debimos incorporar da
 
 Retomando los argumentos generales de la función podemos mencionar estos otros:
 
-__n_max__: número máximo de filas leídas 
+**n_max**: número máximo de filas leídas
 
-__range__: rango de celdas a leer (definidas como se suele usar en Excel, por ej: B3:D87)
+**range**: rango de celdas a leer (definidas como se suele usar en Excel, por ej: B3:D87)
 
-__col_types__: especificación del tipo de dato para cada columna leída. Se pueden utilizar los tipos habituales "numeric", "logical", "text", "date", etc. Existen dos tipos específicos más: "skip" que saltea la lectura de la columna y "guess" que permite que la función decida cual es el formato adecuado de importación. Este último es el modo predeterminado cuando no especificamos el argumento.
+**col_types**: especificación del tipo de dato para cada columna leída. Se pueden utilizar los tipos habituales "numeric", "logical", "text", "date", etc. Existen dos tipos específicos más: "skip" que saltea la lectura de la columna y "guess" que permite que la función decida cual es el formato adecuado de importación. Este último es el modo predeterminado cuando no especificamos el argumento.
 
-__na__: caracter o vector que deseamos se interprete como valor perdido (missing). Por defecto las celdas vacías se interpretan de esta forma y se le asigna `NA`
-
+**na**: caracter o vector que deseamos se interprete como valor perdido (missing). Por defecto las celdas vacías se interpretan de esta forma y se le asigna `NA`
 
 ## Gestión de datos con el Paquete **dplyr**
 
-El paquete __dplyr__ es parte del universo tidyverse que fue desarrollado por *Hadley Wickham* a partir de optimizar una versión del paquete plyr. 
+El paquete **dplyr** es parte del universo tidyverse que fue desarrollado por *Hadley Wickham* a partir de optimizar una versión del paquete plyr.
 
 La contribución significativa del paquete es proporcionar una "gramática" (funciones-verbos) para la manipulación y operaciones de datos que lo hace más fácil de entender.
 
 Las funciones clave del paquete, responden a las siguientes acciones (verbos):
 
-- `select()`: devuelve un conjunto de columnas (variables)
-- `rename()`: renombra variables en una conjunto de datos
-- `filter()`: devuelve un conjunto de filas (observaciones) según una o varias condiciones lógicas
-- `arrange()`: reordena filas de un conjunto de datos
-- `mutate()`: añade nuevas variables/columnas o transforma variables existentes
-- `summarise()`/`summarize()`: genera resúmenes estadísticos de diferentes variables en el conjunto de datos.
--  `group_by()`:  agrupa un conjunto de filas seleccionado, en un conjunto de filas de resumen de acuerdo con los valores de una o más columnas o expresiones.
-- `count()`: contabiliza valores que se repiten, es decir genera tabla de frecuencias.
+-   `select()`: devuelve un conjunto de columnas (variables)
+-   `rename()`: renombra variables en una conjunto de datos
+-   `filter()`: devuelve un conjunto de filas (observaciones) según una o varias condiciones lógicas
+-   `arrange()`: reordena filas de un conjunto de datos
+-   `mutate()`: añade nuevas variables/columnas o transforma variables existentes
+-   `summarise()`/`summarize()`: genera resúmenes estadísticos de diferentes variables en el conjunto de datos.
+-   `group_by()`: agrupa un conjunto de filas seleccionado, en un conjunto de filas de resumen de acuerdo con los valores de una o más columnas o expresiones.
+-   `count()`: contabiliza valores que se repiten, es decir genera tabla de frecuencias.
 
-Además como todos los paquetes del tidyverse integra al operador %>% (pipe) logrando una única tubería ("pipeline").
+Además como todos los paquetes del tidyverse integra al operador %\>% (pipe) logrando una única tubería ("pipeline").
 
 ### Argumentos comúnes en las funciones dplyr
 
-Todas las funciones, básicamente, tienen en común una serie de argumentos. 
+Todas las funciones, básicamente, tienen en común una serie de argumentos.
 
-1- El primer argumento es el nombre del conjunto de datos (objeto donde esta nuestra tabla de datos)
-2- Los otros argumentos describen que hacer con el conjunto de datos especificado en el primer argumento, podemos referirnos a las columnas en el objeto directamente sin utilizar el operador $, es decir sólo con el nombre de la columna/variable.
-3- El valor de retorno es un nuevo conjunto de datos.
-4- Los conjunto de datos deben estar bien organizados/estructurados, es decir debe existir una observación por columna y, cada columna representar una variable, medida o característica de esa observación. Es decir, debe cumplir con *tidy data*.
-
+1- El primer argumento es el nombre del conjunto de datos (objeto donde esta nuestra tabla de datos) 2- Los otros argumentos describen que hacer con el conjunto de datos especificado en el primer argumento, podemos referirnos a las columnas en el objeto directamente sin utilizar el operador \$, es decir sólo con el nombre de la columna/variable. 3- El valor de retorno es un nuevo conjunto de datos. 4- Los conjunto de datos deben estar bien organizados/estructurados, es decir debe existir una observación por columna y, cada columna representar una variable, medida o característica de esa observación. Es decir, debe cumplir con *tidy data*.
 
 ### Activación del paquete
 
-__dplyr__ está incluído en el paquete __tidyverse__, por lo que se encuentra disponible si tenemos activado a este último.
+**dplyr** está incluído en el paquete **tidyverse**, por lo que se encuentra disponible si tenemos activado a este último.
 
 También se puede activar en forma independiente, aunque no es necesario si ya activamos tidyverse:
 
 ```{r, message=F, warning=F}
 library(dplyr)
 ```
-
 
 ### Conjunto de datos para ejemplo
 
@@ -381,10 +360,9 @@ head(datos) # mostramos las 6 primeras observaciones
 
 La tabla de datos "noti-vih.csv" contiene datos de notificación de vih por jurisdicción de Argentina para los años 2015 y 2016.
 
-
 ### Función **select()**
 
-Esta función selecciona las variables que especificamos devolviendo un conjunto de datos "recortado por columna". 
+Esta función selecciona las variables que especificamos devolviendo un conjunto de datos "recortado por columna".
 
 Veamos algunas variaciones de ayuda para hacer estas selecciones.
 
@@ -402,7 +380,6 @@ datos %>%
   select(jurisdiccion:casos)
 ```
 
-
 Las variables *jurisdiccion* y *casos*
 
 ```{r}
@@ -417,7 +394,6 @@ datos %>%
   select(1, 3)
 ```
 
-
 Todas las variables pasando *año* a la primera columna
 
 ```{r}
@@ -427,22 +403,21 @@ datos %>%
 
 Otros posibles argumentos son:
 
-- __starts_with()__: selecciona todas las columnas que comiencen con el patrón indicado.
+-   **starts_with()**: selecciona todas las columnas que comiencen con el patrón indicado.
 
-- __ends_with()__: selecciona todas las columnas que terminen con el patrón indicado.
+-   **ends_with()**: selecciona todas las columnas que terminen con el patrón indicado.
 
-- __contains()__: selecciona las columnas que posean el patrón indicado.
+-   **contains()**: selecciona las columnas que posean el patrón indicado.
 
-- __matches()__: similar a `contains()`, pero permite poner una expresión regular.
+-   **matches()**: similar a `contains()`, pero permite poner una expresión regular.
 
-- __all_of()__: selecciona las variables pasadas en un vector (todos los nombres deben estar presentes o devuelve un error)
+-   **all_of()**: selecciona las variables pasadas en un vector (todos los nombres deben estar presentes o devuelve un error)
 
-- __any_of()__: idem anterior excepto que no se genera ningún error para los nombres que no existen.
+-   **any_of()**: idem anterior excepto que no se genera ningún error para los nombres que no existen.
 
-- __num_range()__: selecciona variables con nombre combinados con caracteres y números (ejemplo: num_range("x", 1:3) selecciona las variables x1, x2 y x3.
+-   **num_range()**: selecciona variables con nombre combinados con caracteres y números (ejemplo: num_range("x", 1:3) selecciona las variables x1, x2 y x3.
 
-- __where()__: aplica una función a todas las variables y selecciona aquellas para las cuales la función regresa TRUE (por ejemplo: `is.numeric()` para seleccionar todas las variables numéricas)
-
+-   **where()**: aplica una función a todas las variables y selecciona aquellas para las cuales la función regresa TRUE (por ejemplo: `is.numeric()` para seleccionar todas las variables numéricas)
 
 ### Función **rename()**
 
@@ -457,7 +432,7 @@ datos %>%
 
 ### Función **filter()**
 
-Así como la función `select()` es utilizada para seleccionar columnas, la función `filter()` hace lo propio con las filas del conjunto de datos, produciendo un subconjunto de observaciones. 
+Así como la función `select()` es utilizada para seleccionar columnas, la función `filter()` hace lo propio con las filas del conjunto de datos, produciendo un subconjunto de observaciones.
 
 Veamos un ejemplo sencillo sobre nuestros datos:
 
@@ -470,22 +445,22 @@ Utiliza los mismos operadores de comparación propios del lenguaje R
 
 | Comparación |                 |
 |:-----------:|-----------------|
-| <           | menor a         |
-| >           | mayor a         |
-| ==          | igual a         |
-| <=          | menor o igual a |
-| >=          | mayor o igual a |
-| !=          | no igual a      |
-| %in%        | es parte de     |
-| is.na       | es NA           |
-| !is.na      | no es NA        |
+|     \<      | menor a         |
+|     \>      | mayor a         |
+|     ==      | igual a         |
+|     \<=     | menor o igual a |
+|     \>=     | mayor o igual a |
+|     !=      | no igual a      |
+|    %in%     | es parte de     |
+|    is.na    | es NA           |
+|   !is.na    | no es NA        |
 
 Lo mismo con los operadores lógicos que se utilizan como conectores entre las expresiones.
 
 | Lógicos |                |
 |:-------:|----------------|
 |    &    | AND booleano   |
-|    \|    | OR booleano    |
+|   \|    | OR booleano    |
 |   xor   | OR exclusivo   |
 |    !    | NOT            |
 |   any   | cualquier TRUE |
@@ -496,7 +471,6 @@ Cuando usamos múltiples argumentos separados por coma dentro de `filter()` se c
 Por ejemplo:
 
 Filtramos a las observaciones que cumplan con la condición que casos sea mayor a 100 y población sea menor a 1000000
-
 
 ```{r}
 datos %>% 
@@ -517,7 +491,7 @@ datos %>%
   filter(jurisdiccion %in% c("Buenos Aires", "La Pampa"))
 ```
 
-Filtramos las observaciones de 2016 con casos mayores a 200 utilizando el conector AND (`&`). Es el mismo resultado que si utilizamos una coma. 
+Filtramos las observaciones de 2016 con casos mayores a 200 utilizando el conector AND (`&`). Es el mismo resultado que si utilizamos una coma.
 
 ```{r}
 datos %>% 
@@ -535,7 +509,7 @@ datos %>%
 
 La función `arrange()` se utiliza para ordenar las filas de un conjunto de datos de acuerdo a una o varias columnas/variables. Por defecto, el ordenamiento es ascendente alfanumérico.
 
-Ordenamos la tabla __datos__ por la variable *pob* (forma ascendente predeterminada):
+Ordenamos la tabla **datos** por la variable *pob* (forma ascendente predeterminada):
 
 ```{r}
 datos %>% 
@@ -555,7 +529,6 @@ Podemos combinar ordenamientos. Por ejemplo, en forma alfabética ascendente par
 datos %>% 
   arrange(jurisdiccion, desc(casos))
 ```
-
 
 ### Función **mutate()**
 
@@ -586,25 +559,25 @@ datos <- datos %>%
          tasaxdiez_mil = casos/pob*10000)
 ```
 
-La propiedad imprescindible es que la función debe poder vectorizar: debe tomar un vector de valores como entrada, y devolver un vector con el mismo número de valores que la salida. 
+La propiedad imprescindible es que la función debe poder vectorizar: debe tomar un vector de valores como entrada, y devolver un vector con el mismo número de valores que la salida.
 
 No hay forma de enumerar todas las funciones posibles que se podría usar, pero mencionaremos algunas que pueden ser útiles:
 
-- Operadores aritméticos: +, -, \*, \/, \^.  
+-   Operadores aritméticos: +, -, \*, /, \^.
 
-- Aritmética modular: \%\/\% (división entera) y \%\% (resto), donde $x == y * (x \ \%/\% \ y) + (x\ \%\% \ y)$. La aritmética modular es una herramienta útil porque te permite dividir números enteros en porciones.
+-   Aritmética modular: %/% (división entera) y %% (resto), donde $x == y * (x \ \%/\% \ y) + (x\ \%\% \ y)$. La aritmética modular es una herramienta útil porque te permite dividir números enteros en porciones.
 
-- Funciones matemáticas: `log()`, `log2()`, `log10()`, `exp()`, `sqrt()`, `abs()`, etc   
+-   Funciones matemáticas: `log()`, `log2()`, `log10()`, `exp()`, `sqrt()`, `abs()`, etc
 
-- Valores acumulados: R proporciona funciones para ejecutar sumas, productos, mínimos y máximos acumulados: `cumsum()`, `cumprod()`, `cummin()`, `cummax()`; y __dplyr__ proporciona `cummean()` para promedios acumulados.
+-   Valores acumulados: R proporciona funciones para ejecutar sumas, productos, mínimos y máximos acumulados: `cumsum()`, `cumprod()`, `cummin()`, `cummax()`; y **dplyr** proporciona `cummean()` para promedios acumulados.
 
-- Clasificaciones (ranking): hay una serie de funciones de clasificación, por ejemplo `min_rank()`. Genera el tipo de clasificación habitual (1º, 2º, etc). El valor predeterminado relaciona los valores más pequeños a rangos pequeños; podemos usar `desc(x)` para invertir la relación (valores más grandes a rangos más pequeños)
+-   Clasificaciones (ranking): hay una serie de funciones de clasificación, por ejemplo `min_rank()`. Genera el tipo de clasificación habitual (1º, 2º, etc). El valor predeterminado relaciona los valores más pequeños a rangos pequeños; podemos usar `desc(x)` para invertir la relación (valores más grandes a rangos más pequeños)
 
 Si utilizamos el mismo nombre de una variable incluída dentro de la tabla de datos, estaremos sobrescribiendola (se usa cuando transformamos una variable, por ejemplo: le cambiamos su tipo de `character` a `factor`). Para que la variable sea nueva debe nombrarse con un nombre que no exista previamente dentro de la tabla de datos.
 
-### Función **summarise()** 
+### Función **summarise()**
 
-La función `summarise()` (se puede escribir también `summarize()`) resume variables de un conjunto de datos. 
+La función `summarise()` (se puede escribir también `summarize()`) resume variables de un conjunto de datos.
 
 ```{r}
 datos %>% 
@@ -612,7 +585,7 @@ datos %>%
             casos_totales = sum(casos))
 ```
 
-Su uso es muy interesante cuando la combinamos con `group_by()` (función que detallaremos luego). Esta situación permite estratificar los resultados por grupos específicos. 
+Su uso es muy interesante cuando la combinamos con `group_by()` (función que detallaremos luego). Esta situación permite estratificar los resultados por grupos específicos.
 
 Por ejemplo, podemos agrupar el por año y simultáneamente aplicar el mismo `summarise()` anterior.
 
@@ -627,27 +600,49 @@ El resultado es una tabla con dos filas, una para cada grupo (año 2015 y año 2
 
 Algunas de las funciones del R base que se pueden utilizar dentro de los argumentos de esta función son:
 
-- `min()`  mínimo 
-- `max()`  máximo 
-- `mean()` media 
-- `median()` mediana 
-- `var()` varianza 
-- `sd()` desvío 
-- `sum()` sumatoria 
+-   `min()` mínimo
+-   `max()` máximo
+-   `mean()` media
+-   `median()` mediana
+-   `var()` varianza
+-   `sd()` desvío
+-   `sum()` sumatoria
 
-Otras funciones que se pueden incorporar las provee el mismo paquete __dplyr__, por ejemplo:
+Otras funciones que se pueden incorporar las provee el mismo paquete **dplyr**, por ejemplo:
 
-- `first()`  primer valor en el vector
-- `last()`  último valor en el vector
-- `n()` número de valores en el vector
-- `n_distinct()` números de valores distintos en el vector
+-   `first()` primer valor en el vector
+-   `last()` último valor en el vector
+-   `n()` número de valores en el vector
+-   `n_distinct()` números de valores distintos en el vector
 
+Desde la versión 1.4.0 de **dplyr** la función `summarise()` incorpora un nuevo argumento para agrupamientos temporales. El argumento `.by =` trabaja igual que un `group_by()` previo pero lo hace solo para realizar el calculo definido dentro del resumen evitando que el dataframe de salida mantenga el agrupamiento.
+
+La estructura básica de la función actualizada es:
+
+```{r}
+#| eval: false
+
+datos |> 
+  summarise(
+    var_resumen = funcion(var),
+    .by = var_grupo
+  )
+```
+
+Aplicada en el ejemplo previo:
+
+```{r}
+datos %>%  
+  summarise(promedio_casos = mean(casos), 
+            casos_totales = sum(casos),
+            .by = año)
+```
 
 ### Función **group_by()**
 
 Decíamos recién que la función `group_by()` es útil cuando trabaja conjuntamente con `summarise()` dado que agrupa un conjunto de filas seleccionado en un conjunto de filas de resumen de acuerdo con los valores de una o más columnas o expresiones.
 
-Para ejemplificar su trabajo asociado obtendremos una nueva tabla con el cálculo de las tasas crudas para cada jurisdicción por año (similar al ejemplo de la aplicación de `mutate()`: 
+Para ejemplificar su trabajo asociado obtendremos una nueva tabla con el cálculo de las tasas crudas para cada jurisdicción por año (similar al ejemplo de la aplicación de `mutate()`:
 
 ```{r, message=F}
 datos %>% 
@@ -655,11 +650,11 @@ datos %>%
   summarise(tasa = casos/pob*100000)
 ```
 
-En la mayoría de estos ejemplos la salida es directa, es decir no construimos nuevos objetos contenedores de los datos producidos. Pero en muchas situaciones vamos a necesitar generar nuevos conjunto de datos con las transformaciones realizadas. Si en alguna de estas ocasiones llegamos a agrupar datos mediante `group_by()` y posteriormente necesitamos volver a tener la información desagrupada existe una función vinculada denominada `ungroup()`
+En la mayoría de estos ejemplos la salida es directa, es decir no construimos nuevos objetos contenedores de los datos producidos y vemos los resultados en consola o en el visualizador de RStudio. Pero en muchas situaciones vamos a necesitar generar nuevos conjunto de datos con las transformaciones realizadas. Si en alguna de estas ocasiones llegamos a agrupar datos mediante `group_by()` y posteriormente necesitamos volver a tener la información desagrupada existe una función vinculada denominada `ungroup()` que vamos a necesitar aplicar o bien si no se desea tener el agrupamiento de forma fija se puede usar el argumento `.by =` del `summarise()` como mostramos anteriormente.
 
 ### Combinaciones
 
-En los ejemplos anteriores vimos como se van integrando alguna de las funciones mediante el uso de la tubería **%>%** o **|>**. La idea detrás de la búsqueda gramatical del paquete es poder enlazar las acciones para construir oraciones más complejas.
+En los ejemplos anteriores vimos como se van integrando alguna de las funciones mediante el uso de la tubería **%\>%** o **\|\>**. La idea detrás de la búsqueda gramatical del paquete es poder enlazar las acciones para construir oraciones más complejas.
 
 Un ejemplo que podría integrar gran parte de los visto sería:
 
@@ -675,10 +670,9 @@ datos %>%                                   # siempre partimos de los datos
 
 Observemos que una buena manera de construir el código es respetar un salto de línea para cada término de la oración para una lectura más clara.
 
-Demostramos así la potencialidad que tienen estas funciones combinadas donde en esta situación integramos las funciones `group_by()`, `summarise()` , `filter()` y `arrange()` en una misma operación. 
+Demostramos así la potencialidad que tienen estas funciones combinadas donde en esta situación integramos las funciones `group_by()`, `summarise()` , `filter()` y `arrange()` en una misma operación.
 
-
-### Función **count()** 
+### Función **count()**
 
 Esta última función que presentamos permite contar rápidamente los valores únicos de una o más variables.
 
@@ -690,28 +684,28 @@ La aplicamos sobre la variable **jurisdiccion** de *datos*
 datos %>% 
   count(jurisdiccion)
 ```
+
 Tiene un par de argumentos opcionales:
 
-- **name**: es el nombre de la columna con el conteo. Por defecto se llama **n**
-- **sort**: ordena la tabla de frecuencia de mayor a menor
-- **wt**: se puede opcionalmente incorporar una variable con la ponderación (factor de expansión) para el calculo de la frecuencia.
+-   **name**: es el nombre de la columna con el conteo. Por defecto se llama **n**
+-   **sort**: ordena la tabla de frecuencia de mayor a menor
+-   **wt**: se puede opcionalmente incorporar una variable con la ponderación (factor de expansión) para el calculo de la frecuencia.
 
 ## Gráficos estadísticos con **ggplot2**
 
-__ggplot2__ es un paquete que se autodefine como librería para *“crear elegantes visualizaciones de datos usando una gramática de gráficos”*
+**ggplot2** es un paquete que se autodefine como librería para *“crear elegantes visualizaciones de datos usando una gramática de gráficos”*
 
 Propone una forma intuitiva de construir gráficos basada en [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), a partir de utilizar capas y un sistema apoyado en tres componentes básicos:
 
-- datos 
-- coordenadas 
-- objetos geométricos
+-   datos
+-   coordenadas
+-   objetos geométricos
 
 La estructura para construir un gráfico es la siguiente:
 
 ```{r,echo=F,  fig.align='center', out.width = "40%"}
 knitr::include_graphics("estructura_ggplot.jpg")
 ```
-
 
 ### Anatomía de gráficos con ggplot2
 
@@ -721,18 +715,16 @@ El paquete se basa en una gramática de gráficos que puede ser entendida a part
 knitr::include_graphics("ggplot1.jpg")
 ```
 
-
-- __Data__ es aquél conjunto de datos que vamos a graficar, con toda la información pertinente para realizar el gráfico.
-- __aes__ reducción de aesthetic mapping o mapeo estético en el que se puede declarar todo lo que puede ser visible de un gráfico.
-- __geoms__ son representaciones para dibujar gráficos (puntos, líneas, cajas, entre otros).
-- __Stats__ son aquellas transformaciones estadísticas que le hacemos a los datos. Nos ayudan a hacer un resumen del conjunto de datos para visualizar mejor (por ejemplo, la media o la mediana como estadísticas de tendencia central).
-- __Scales__ facilitan colorear (o escalar) los datos según distintas variables. Dibujan los ejes y las leyendas.
-- __Coordinate Systems__ es el sistema de coordenadas para el mapeo del gráfico en un plano bidimensional.
-- __Facets__ nos permiten partir el conjunto de datos según factores para graficar en viñetas separadas creando matrices gráficas.
-- __Themes__ son conjuntos de características gráficas que permiten controlar la apariencia general de todos los elementos que no son datos (por ejemplo, el color del fondo o el tipo de fuente).
+-   **Data** es aquél conjunto de datos que vamos a graficar, con toda la información pertinente para realizar el gráfico.
+-   **aes** reducción de aesthetic mapping o mapeo estético en el que se puede declarar todo lo que puede ser visible de un gráfico.
+-   **geoms** son representaciones para dibujar gráficos (puntos, líneas, cajas, entre otros).
+-   **Stats** son aquellas transformaciones estadísticas que le hacemos a los datos. Nos ayudan a hacer un resumen del conjunto de datos para visualizar mejor (por ejemplo, la media o la mediana como estadísticas de tendencia central).
+-   **Scales** facilitan colorear (o escalar) los datos según distintas variables. Dibujan los ejes y las leyendas.
+-   **Coordinate Systems** es el sistema de coordenadas para el mapeo del gráfico en un plano bidimensional.
+-   **Facets** nos permiten partir el conjunto de datos según factores para graficar en viñetas separadas creando matrices gráficas.
+-   **Themes** son conjuntos de características gráficas que permiten controlar la apariencia general de todos los elementos que no son datos (por ejemplo, el color del fondo o el tipo de fuente).
 
 Antes de comenzar a explicar cada componente vamos a leer un conjunto de datos que nos permita mostrar los ejemplos gráficos.
-
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -746,9 +738,9 @@ El archivo leído se llama *facultad.csv* y contiene información de salud sobre
 
 ### Mapeo estético (**aesthetic mapping**) y objetos geométricos (**geom**)
 
-Decíamos que `aes()` hace referencia al contenido estético del gráfico. Es decir, la función le brinda indicios a __ggplot2__ sobre cómo dibujar los distintas líneas, formas, colores y tamaños.
+Decíamos que `aes()` hace referencia al contenido estético del gráfico. Es decir, la función le brinda indicios a **ggplot2** sobre cómo dibujar los distintas líneas, formas, colores y tamaños.
 
-Es importante notar que `aes()` crea una nueva capa en relación a las variables y agrega leyendas a los gráficos. Al incorporar `aes()` al llamado de `ggplot()` estamos compartiendo la información estética en todas las capas. Si deseamos que esa información sólo esté en una de las capas, debemos usar `aes()` en la capa correspondiente. 
+Es importante notar que `aes()` crea una nueva capa en relación a las variables y agrega leyendas a los gráficos. Al incorporar `aes()` al llamado de `ggplot()` estamos compartiendo la información estética en todas las capas. Si deseamos que esa información sólo esté en una de las capas, debemos usar `aes()` en la capa correspondiente.
 
 Veamos como funciona y sus diferencias.
 
@@ -778,7 +770,7 @@ facultad %>%
   theme(text = element_text(size = 100))
 ```
 
-Podemos diferenciar los puntos según se traten de ingresantes mujeres y hombres, asociando el argumento __color__ dentro de `aes()` con la variable SEXO.
+Podemos diferenciar los puntos según se traten de ingresantes mujeres y hombres, asociando el argumento **color** dentro de `aes()` con la variable SEXO.
 
 ```{r,eval=FALSE}
 facultad %>% 
@@ -834,13 +826,13 @@ facultad %>%
   theme(text = element_text(size = 100))
 ```
 
-En este ejemplo, `aes()` para el color solo se ubica dentro de `geom_point()` y por lo tanto dibuja los puntos con sus respectivos colores, pero no afecta a la capa de `geom_smooth()` produciendo solo una línea de regresión para el conjunto de puntos. 
+En este ejemplo, `aes()` para el color solo se ubica dentro de `geom_point()` y por lo tanto dibuja los puntos con sus respectivos colores, pero no afecta a la capa de `geom_smooth()` produciendo solo una línea de regresión para el conjunto de puntos.
 
 Es decir que `geom_smooth()` no recibe la orden de agrupar según SEXO, a raíz de no haber definido color dentro del `aes()` general.
 
 Este comportamiento nos permite gran versatilidad en los gráficos que realicemos.
 
-Algunas otras funciones de **geom_** son:
+Algunas otras funciones de **geom\_** son:
 
 `geom_line()`, para líneas
 
@@ -852,10 +844,9 @@ Algunas otras funciones de **geom_** son:
 
 `geom_bar()` para barras
 
-Estas funciones geométricas aplicadas sobre los mismos datos definen el tipo de gráfico. 
+Estas funciones geométricas aplicadas sobre los mismos datos definen el tipo de gráfico.
 
 Para ejemplificar, podemos gráficar dos variables como SEXO y TALLA generando una base a la que sumaremos capas diferentes de `geom()`:
-
 
 ```{r, eval=FALSE}
 facultad %>% 
@@ -909,13 +900,13 @@ facultad %>%
   theme(text = element_text(size = 100))
 ```
 
-Observemos que en este último gráfico cambiamos, dentro de `aes()`, color por fill. Mientras que __color__ define el color del contorno del polígono, la línea de una recta o curva y los puntos, __fill__ define el relleno de los objetos como es el caso de los violines construidos o cualquier elemento geométrico de polígono.
+Observemos que en este último gráfico cambiamos, dentro de `aes()`, color por fill. Mientras que **color** define el color del contorno del polígono, la línea de una recta o curva y los puntos, **fill** define el relleno de los objetos como es el caso de los violines construidos o cualquier elemento geométrico de polígono.
 
 ### Escalas (**scale**)
 
-Las configuraciones que se pueden realizar con __scale__ son numerosas. Entre ellas encontramos cambios de color de contorno y relleno, cambios de posición, de tamaño y tipo de línea.
+Las configuraciones que se pueden realizar con **scale** son numerosas. Entre ellas encontramos cambios de color de contorno y relleno, cambios de posición, de tamaño y tipo de línea.
 
-El argumento para modificar valores de escala comienzan siempre con con `scale_` (por ejemplo scale_fill_ )
+El argumento para modificar valores de escala comienzan siempre con con `scale_` (por ejemplo scale_fill\_ )
 
 Sigamos trabajando con el conjunto de datos leído para mostrar ejemplos de gráficos donde agregamos capas de escala para color de relleno. ( `scale_fill_brewer()` )
 
@@ -993,14 +984,13 @@ facultad %>%
   theme(text = element_text(size = 100))
 ```
 
-En este caso particular definimos un eje y con etiquetas de 2 en 2, mediante la línea ` scale_y_continuous(breaks = seq(130,200,2))`
-
+En este caso particular definimos un eje y con etiquetas de 2 en 2, mediante la línea `scale_y_continuous(breaks = seq(130,200,2))`
 
 ### Transformaciones estadísticas (**stat**)
 
-Algunos gráficos no requieren de transformaciones estadísticas, en cambio, otros como boxplot, histogramas, etc poseen valores predeterminados de __stat__ que pueden ser modificados.
+Algunos gráficos no requieren de transformaciones estadísticas, en cambio, otros como boxplot, histogramas, etc poseen valores predeterminados de **stat** que pueden ser modificados.
 
-Estos valores se encuentra en forma de argumentos dentro de la función geométrica, por ejemplo para los histograma el argumento __bins__ define la cantidad de intervalos de clase.  
+Estos valores se encuentra en forma de argumentos dentro de la función geométrica, por ejemplo para los histograma el argumento **bins** define la cantidad de intervalos de clase.
 
 ```{r,eval=FALSE}
 facultad %>% 
@@ -1048,9 +1038,9 @@ Este comportamiento es sumamente útil cuando tenemos más de una variable categ
 
 ggplot ofrece dos posibilidades de hacer el facetado:
 
-- `facet_wrap()` – define subgrupos a partir de los niveles de una sola variable categórica
+-   `facet_wrap()` – define subgrupos a partir de los niveles de una sola variable categórica
 
-- `facet_grid()` – define subgrupos a partir del cruce de dos variables de categóricas.
+-   `facet_grid()` – define subgrupos a partir del cruce de dos variables de categóricas.
 
 Una aplicación de `facet_wrap()` podría ser que el primer gráfico que hicimos de dispersión de puntos con las variables TALLA y PESO se visualice en dos gráficos distintos según cada categoría de SEXO.
 
@@ -1088,14 +1078,13 @@ facultad %>%
   theme(text = element_text(size = 80))
 ```
 
-Si observamos las 4 líneas que integran todas las capas del código de ggplot notaremos que estamos integrando varias de las funciones que fuimos mostrando. 
+Si observamos las 4 líneas que integran todas las capas del código de ggplot notaremos que estamos integrando varias de las funciones que fuimos mostrando.
 
 Se hace imposible generar todas combinaciones posibles dada la variedad y extensión de argumentos que posee el paquete. De todas formas, el objetivo de este material es entender la base de funcionamiento, es decir la estructura "gramatical" que proponen sus autores.
 
-
 ### Sistema de coordenadas (**Coordinate Systems**)
 
-En algunas ocasiones puede que necesitemos introducir modificaciones en el sistema de coordinadas predeterminado. 
+En algunas ocasiones puede que necesitemos introducir modificaciones en el sistema de coordinadas predeterminado.
 
 Sobre las coordenadas cartesianas iniciales se puede invertir la orientación para que, por ejemplo, las barras se dibujen horizontales.
 
@@ -1168,10 +1157,9 @@ El siguiente cuadro muestra el nombre y presentación de los temas que contiene 
 knitr::include_graphics("temas_ggplot.jpg")
 ```
 
-
 Continuando con cuestiones estéticas en otra capa se pueden definir etiquetas, como título, subtítulo y nombres de ejes.
 
-La forma de la función con argumentos básicos es `labs( x = “Etiqueta X", y = “Etiqueta Y", title =“Título del gráfico", subtitle = "Subtítulo del gráfico")` 
+La forma de la función con argumentos básicos es `labs( x = “Etiqueta X", y = “Etiqueta Y", title =“Título del gráfico", subtitle = "Subtítulo del gráfico")`
 
 Además se utiliza la función `theme()` para configurar el tipo de fuente y tamaño, entre otras opciones posibles.
 
@@ -1198,7 +1186,7 @@ facultad %>%
 
 ### Paquete **esquisse**
 
-**Esquisse** es un paquete que contiene una aplicación asistente para crear gráficos **ggplot2** de forma interactiva. Basta con arrastrar y soltar las variables para asignarlas a diferentes estéticas. 
+**Esquisse** es un paquete que contiene una aplicación asistente para crear gráficos **ggplot2** de forma interactiva. Basta con arrastrar y soltar las variables para asignarlas a diferentes estéticas.
 
 Podemos visualizar rápidamente los datos de acuerdo con su tipo, exportarlos en varios formatos y recuperar el código para reproducir el gráfico.
 
@@ -1224,5 +1212,180 @@ esquisser(datos)
 
 Para más información consultar en la [viñeta](https://cran.r-project.org/web/packages/esquisse/vignettes/get-started.html) del paquete en CRAN.
 
-<br> 
-<br> 
+## Uniones en datos relacionales
+
+Existen situaciones donde debemos analizar datos que se encuentran en diferentes tablas.
+
+Con el fin de responder a nuestras preguntas de interés en ocasiones deberemos unirlas previamente.
+
+De manera general, se le llama ***datos relacionales*** a esas múltiples tablas de datos que provienen muchas veces de sistemas de bases de datos construidas bajo el modelo relacional o bien cuando las tablas de datos tienen fuentes distintas pero comparten alguna variable común que permita "conectarlas".
+
+Un ejemplo recurrente sucede cuando necesitamos calcular la tasa de algún evento de salud y tenemos en una tabla el conteo (dato agregado) del evento (numerador) y en otra el conteo de la población en riesgo (denominador). 
+
+### Tipos de operaciones
+
+Para trabajar con datos relacionales necesitamos de *funciones-verbos* que vinculen pares de tablas.
+
+Las tres familias de funciones del paquete **dplyr** diseñadas para trabajar con datos relacionales son:
+
+-   **Uniones de transformación** (del inglés *mutating joins*), agregan nuevas variables a una tabla a partir de observaciones coincidentes de otra tabla.
+
+-   **Uniones de filtro** (del inglés *filtering joins*), filtran observaciones de una tabla en función de la coincidencia o no coincidencia de otra tabla.
+
+-   **Operaciones en filas y columnas**, sirven para unir tablas por columnas o por filas.
+
+### Claves
+
+-   Las variables usadas para conectar cada par de variables se llaman **claves** (del inglés *key*)
+
+-   Una clave es una variable (o un conjunto de variables) que identifican de manera *única* una observación.
+
+Existen dos tipos de claves:
+
+-   Una **clave primaria** identifica únicamente una observación en su propia tabla.
+
+-   Una **clave foránea** únicamente identifica una observación en otra tabla.
+
+Una vez que identificadas las claves primarias en las tablas, es una buena práctica verificar que identifican de forma **única cada observación**. Una forma de hacerlo es usar `count()` con las claves primarias y buscar las entradas con n mayor a uno:
+
+```{r}
+#| eval: false
+
+datos |> 
+  count(clave_primaria) |> 
+  filter(n > 1)
+```
+
+La salida debería mostrar que no hay ninguna observación que cumpla la condición de n > 1, es decir todas las observaciones tienen una sola clave primaria unívoca.
+
+En ocasiones podemos tener claves primarias compuestas por más de una variable. Tendremos que utilizar entonces esta combinación de variables a la vez en las uniones que realicemos.
+
+Otra situación inversa es no tener ninguna variable como clave primaria, aunque sepamos que cada observación pertenece a una misma unidad de análisis pero de elementos (sujetos, etc) diferentes. Aquí se puede usar la función `row_number()` que numera en orden ascendente las observaciones de la tabla y almacena esta numeración en una variable, creando una **clave subrogada**.
+
+```{r}
+#| eval: false
+
+datos <- datos |> 
+  mutate(clave = row_number()) 
+```
+
+
+### Uniones de transformación
+
+La forma más simple de unión es la unión interior (del inglés inner join). Una unión interior une pares de observaciones siempre que sus claves sean iguales.
+
+**Unión interior**
+
+Una unión interior mantiene las observaciones que aparecen en ambas tablas. La estructura del código sirve de base para las demás uniones:
+
+
+```{r}
+#| eval: false
+
+datos_x |> 
+  inner_join(datos_y, by = "variable_clave") 
+```
+
+
+![](inner-join.PNG){fig-align="center" width=50%}
+
+La propiedad más importante de una unión interior es que las filas no coincidentes no se incluyen en el resultado
+
+**Uniones exteriores**
+
+Una unión exterior mantiene las observaciones que aparecen en al menos una de las tablas.
+
+-   Una unión izquierda (left join) mantiene todas las observaciones en x.
+
+![](left.png){fig-align="center" width=50%}
+
+-   Una unión derecha (right join) mantiene todas las observaciones en y.
+
+![](right.png){fig-align="center" width=50%}
+
+-   Una unión completa (full join) mantiene todas las observaciones en x e y.
+
+![](full.png){fig-align="center" width=50%}
+
+Estas uniones funcionan agregando una observación “virtual” adicional a cada tabla. Esta observación tiene una clave que siempre coincide (de no haber otras claves coincidentes) y un valor que se llena con **NA**.
+
+Otra forma de ilustrar diferentes tipos de uniones es mediante un diagrama de Venn.
+
+
+![](venn.PNG){fig-align="center" width=50%}
+
+Sin embargo, tiene una limitante importante: un diagrama de Venn no puede mostrar qué ocurre con las claves que no identifican de manera única una observación.
+
+### Claves duplicadas
+
+Hasta ahora todas las situaciones han asumido que las claves son únicas. Pero esto no siempre es así.  
+
+Existen dos posibilidades habituales:
+
+- Una tabla tiene claves duplicadas producto de una relación uno a varios.
+
+![](dupli-key.PNG){fig-align="center" width=50%}
+
+- Ambas tablas tienen claves duplicadas (producto de una relación real varios a varios o por algún "error")
+
+![](dupli-key2.PNG){fig-align="center" width=50%}
+
+Siempre que unimos claves duplicadas, obtenemos todas las posibles combinaciones, es decir, el producto cartesiano
+
+### Variables claves
+
+La forma común del argumento `by =` donde se define/n la/s variable/s clave/s es igualarlo al nombre la variable o variables concatenadas con `c()` que deberán tener el mismo nombre en las dos tablas a unir.
+
+Otra maneras de conectar las tablas sería:
+
+- Sin definir `by =` o bien `by = NULL`, que de forma predeterminada utiliza todas las variables que se llamen de la misma forma (respetando mayúsculas y minúsculas). Esta se denomina **unión natural**.
+
+- Utilizar la función `join_by()` en el argumento `by =` que nos da la posibilidad de declarar cuales son las variables de unión cuando estas tengan nombres distintos en cada tabla.
+
+```{r}
+#| eval: false
+
+datos_x |> 
+  inner_join(datos_y, 
+             by = join_by(var_clave_x == var_clave_y)) 
+```
+
+Observen que la igualdad de las variables claves de **x** e **y** es un operador de comaparación `==`
+
+En caso que hubiese más de una variable clave de unión se puede hacer:
+
+```{r}
+#| eval: false
+
+datos_x |> 
+  inner_join(datos_y, 
+             by = join_by(var1_clave_x == var1_clave_y,
+                          var2_clave_x == var2_clave_y,)) 
+```
+
+### Uniones de filtro
+
+La función `semi_join()` mantiene todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+
+![](semi.png){fig-align="center" width=50%}
+
+Para hacer lo inverso, `anti_join()` descarta todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+
+![](anti.png){fig-align="center" width=50%}
+
+
+### Unión por filas y por columnas
+
+En algunas ocasiones necesitamos unir tablas que tienen formatos particulares por medio de filas o por medio de columnas.
+
+Las funciones de **dplyr** para esta tarea son:
+
+- **bind_rows()** Une una tabla debajo de otra. Aplica cuando tenemos la misma estructura en tabla de datos divida en varios archivos (por ejemplo, producto de carga simultánea de datos en diferentes computadoras con diferentes data-entry)
+
+- **bind_cols()** Une una tabla al lado de la otra. Es peligroso su uso si la confundimos con las uniones de transformación porque perdemos integridad de datos en las observaciones. Sirve sólo si el "orden" de las observaciones pueden garantizar la misma identidad de las partes a unir.
+
+
+
+
+
+
