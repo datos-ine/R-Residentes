@@ -1,0 +1,83 @@
+---
+title: "**Datos perdidos (missing)**"
+author: ""
+date: ""
+format:
+  html:
+    page-layout: full
+    css: style.css
+    toc: true
+    toc-title: Contenidos
+    toc-location: left
+    toc_float: true
+    toc_collapsed: false
+    toc_depth: 4
+number_sections: true
+anchor_sections: true
+theme: lumen
+editor: source
+---
+
+## Detectar observaciones incompletas (valores missing)
+
+Sabemos que los valores perdidos o faltantes (conocidos en inglés como *missing*) constituyen un serio problema en nuestras variables de análisis.
+
+Existen numerosos libros sobre como tratarlos con diversos algoritmos de imputación que no vamos a incluir en este curso.
+
+El lenguaje R gestiona a estos datos perdidos mediante el valor especial reservado `NA` de Not Available (No disponible),
+
+En principio, sólo vamos a enfocarnos en como podemos utilizar algunas funciones del lenguaje para detectarlos y contabilizarlos. A partir de su identificación decidiremos que hacer con ellos, dependiendo de su cantidad y extensión, es decir, si los valores faltantes son la mayoría de una variable o la mayoría de una observación.
+
+Una manera de abordar esta tarea con R base para una variables es hacer la sumatoria de valores `NA`, usando la función de identificación `is.na()`.
+
+```{r}
+#| eval: false
+datos |> 
+  summarise(Cantidad_NA = sum(is.na(variable)))
+```
+
+Estos *valores especiales* tienen un efecto "contagioso" y cualquier cálculo o resumen que contengan al menos uno de ellos será igual a `NA`. Existen argumentos en algunas funciones resumen que deberemos utilizar para no tenerlos en cuenta (`na.rm =`)
+
+
+## Tratamiento de los NA's
+
+
+Las tareas habituales respecto a estos valores consisten en:
+
+- Evaluar la existencia de valores perdidos (exploración y conteo).
+- Excluir los valores ausentes (si es posible y conveniente).
+- Recodificar los valores ausentes (imputación de datos).
+
+
+
+
+## Manejo de NA's con naniar
+
+El paquete **naniar** es un paquete que reúne funciones diseñadas para el manejo de valores faltantes.
+
+Sus caracteristicas generales son:
+
+- Proporciona funciones analíticas y visuales de detección y gestión
+
+- Es compatible con el mundo "tidy" de tidyverse
+
+- Posibilita el trabajo de imputación (no tratado en este curso)
+
+De las muchas funciones que tiene el paquete seleccionamos algunas para mostrar que son muy útiles para nuestra tarea habitual.
+
+`miss_var_summary()`: proporciona un resumen sobre los valores NA en cada variable del dataframe
+
+`gg_miss_upset()`: genera un gráfico Upset sobre los valores NA de dataframe
+
+`replace_with_na()`: reemplaza valores específicos con valores NA
+
+`replace_na_with()`: reemplaza valores NA con valores específicos
+
+
+
+```{r, echo=F, message=F, warning=F, fig.align="center", fig.width=8}
+rita <- read_csv2("assets/rita_prueba.csv", locale = locale(encoding = "UTF-8"))
+library(naniar)
+
+gg_miss_upset(rita)
+```
