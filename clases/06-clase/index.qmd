@@ -30,7 +30,7 @@ Resumiendo, las tareas habituales respecto a estos valores consisten en:
 -   Excluir los valores ausentes (si es posible y conveniente).
 -   Etiquetar o recodificar los valores ausentes (imputación de datos).
 
-Respecto a la imputación existen numerosa bibliografía sobre diversos algoritmos para realizarlo que no vamos a incluir en este curso.
+Respecto a la imputación existen numerosa bibliografía sobre diversos algoritmos que no vamos a incluir en este curso.
 
 ## Detectar observaciones incompletas (valores missing)
 
@@ -40,17 +40,7 @@ En principio, sólo vamos a enfocarnos en como podemos utilizar algunas funcione
 
 Una manera de abordar esta tarea con R base para una variables es hacer la sumatoria de valores `NA`, usando la función de identificación `is.na()`.
 
-```{r}
-#| eval: false
-datos |> 
-  summarise(Cantidad_NA = sum(is.na(variable)))
-```
-
-Pero debemos hacer esta tarea variable por variables, lo que resulta muy trabajoso.
-
-También la función `summary()` aplicada sobre el dataframe completo informa sobre la cantidad de `NA` de variables cuantitativas y lógicas. No lo hace con las de tipo caracter.
-
-Más completo y en una sola línea la función `find_na()` del paquete **dlookr** muestra el porcentaje de valores perdidos en todas las variables de una tabla de datos y se complementa con el gráfico de barras de pareto `plot_na_pareto()`.
+Para ejemplificar, tomamos una tabla de datos de vigilancia con 200 observaciones y 56 variables.
 
 ```{r}
 #| echo: false
@@ -62,6 +52,20 @@ library(readxl)
 
 datos <- read_excel("base2023r.xlsx")
 ```
+
+```{r}
+datos |> 
+  summarise(Cantidad_NA = sum(is.na(FECHA_FIN_TRAT)))
+```
+La consulta dice que hay 142 observaciones vacías en la variable FECHA_FIN_TRAT. Lo malo es que debemos hacer esta tarea variable por variable, lo que resulta muy trabajoso.
+
+También la función `summary()` aplicada sobre el dataframe completo informa la cantidad de `NA` de variables cuantitativas, lógicas y fecha, pero no lo hace con las de tipo caracter.
+
+```{r}
+summary(datos)
+```
+
+Más completo y en una sola línea la función `find_na()` del paquete **dlookr** muestra el porcentaje de valores perdidos en todas las variables de una tabla de datos y se complementa con el gráfico de barras de pareto `plot_na_pareto()`.
 
 ```{r}
 #| message: false
@@ -80,6 +84,8 @@ plot_na_pareto(datos,
 ```
 
 ## Gestión de NA's con naniar
+
+![](naniar.PNG){fig-align="center" width=10%}
 
 El paquete **naniar** es un paquete que reúne funciones diseñadas para el manejo de valores faltantes pensado para una gestión completa.
 
@@ -105,7 +111,15 @@ La función `miss_var_summary()` proporciona un resumen sobre los valores NA en 
 miss_var_summary(datos)
 ```
 
-Por el lado gráfico, tiene uno muy interesante porque visualiza las relaciones de los valores ausentes de las variables. Se llama `gg_miss_upset()` y genera un gráfico **Upset** en función de la existencia de valores NA.
+Por el lado gráfico, ofrece la función `gg_miss_var()` que representa la información de la tabla anterior pero a través de un gráfico *lollipop* horizontal de tipo **ggplot2**.
+
+```{r}
+#| out-width: 120%
+gg_miss_var(datos, 
+            show_pct = T) # muestra valores en porcentajes
+```
+
+Hay otra viaulización muy interesante porque muestra las relaciones de los valores ausentes de las variables cuya función se llama `gg_miss_upset()` y genera un gráfico **Upset** en función de la existencia de valores NA.
 
 ```{r}
 #| eval: false
