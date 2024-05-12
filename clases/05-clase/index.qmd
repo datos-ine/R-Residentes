@@ -18,6 +18,8 @@ theme: lumen
 editor: source
 ---
 
+![](types.png){fig-align="left" width=30%}
+
 ## Exploración de datos
 
 El primer paso en la exploración de un conjunto de datos es conocer su estructura y tamaño.
