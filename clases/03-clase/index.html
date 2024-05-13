@@ -602,7 +602,14 @@ dbl (3): año, casos, pob
 <section id="función-select" class="level3">
 <h3 class="anchored" data-anchor-id="función-select">Función <strong>select()</strong></h3>
 <p>Esta función selecciona las variables que especificamos devolviendo un conjunto de datos “recortado por columna”.</p>
-<p>Veamos algunas variaciones de ayuda para hacer estas selecciones.</p>
+<p><code>select()</code> utiliza un minilenguaje conciso que facilita hacer referencia a las variables según su nombre, ubicación, condición o tipo.</p>
+<p>Alguno de sus operadores son:</p>
+<ul>
+<li><p><code>:</code> para seleccionar un rango de variables consecutivas.</p></li>
+<li><p><code>-</code> para evitar seleccionar la variable que sigue al signo</p></li>
+<li><p><code>!</code> para tomar el complemento de un conjunto de variables.</p></li>
+</ul>
+<p>Veamos algunas aplicaciones de estas “ayudas” para hacer selecciones.</p>
 <p>Todas las variables menos <em>pob</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span>  </span>

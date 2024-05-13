@@ -368,7 +368,17 @@ La tabla de datos "noti-vih.csv" contiene datos de notificación de vih por juri
 
 Esta función selecciona las variables que especificamos devolviendo un conjunto de datos "recortado por columna".
 
-Veamos algunas variaciones de ayuda para hacer estas selecciones.
+`select()` utiliza un minilenguaje conciso que facilita hacer referencia a las variables según su nombre, ubicación, condición o tipo.
+
+Alguno de sus operadores son:
+
+- `:` para seleccionar un rango de variables consecutivas.
+
+- `-` para evitar seleccionar la variable que sigue al signo
+
+- `!` para tomar el complemento de un conjunto de variables.
+
+Veamos algunas aplicaciones de estas "ayudas" para hacer selecciones.
 
 Todas las variables menos *pob*
 
