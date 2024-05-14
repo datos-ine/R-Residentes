@@ -64,6 +64,9 @@ library(tidyverse)
 library(readxl)
 
 datos <- read_excel("base2023r.xlsx")
+
+datos <- datos |> 
+  mutate(across(.cols = c(starts_with("FECHA"), FIS), .fns = as_date))
 ```
 
 ```{r}
@@ -218,13 +221,13 @@ También hay algunas que tienen como objetivo la conversión de datos y/o la imp
 
 ## Depuración de datos
 
-![](datacleaning.jpg){fig-align="center" width=50%}
+![](datacleaning.jpg){fig-align="center" width=40%}
 
 Una vez finalizado el diagnóstico de datos, se procede a la etapa de depuración, donde se corrigen los errores identificados y se prepara el conjunto de datos para su análisis. La depuración involucra técnicas como la eliminación de valores faltantes, la corrección de errores de entrada, la transformación de variables y el manejo de valores atípicos.
 
 Un flujo de trabajo modelo partiendo de datos crudos y terminando en datos limpios es el siguiente:
 
-![](flujo.png){fig-align="center" width=80%}
+![](flujo.png){fig-align="center" width=60%}
 
 Durante este proceso puede haber múltiples situaciones dependiendo de la calidad original de los datos crudos, desde carecer de encabezados o contener tipos de datos incorrectos, pasando por tener que corregir etiquetas de categorías incorrectas, etc.
 
@@ -382,7 +385,9 @@ knitr::kable(tabla_ancho, format = "html")
 
 Cumple con las reglas de "datos ordenados"?
 
-No. No lo hace porque lo que vemos como cabecera de columnas en 2010, 2011, etc. son categorías de la variable año (**year**) y no nombres de variables.
+No. 
+
+No lo hace porque lo que vemos como cabecera de columnas en 2010, 2011, etc. son categorías de la variable año (**year**) y no nombres de variables.
 
 En cambio esta tabla, aunque tenga la misma información, si cumple con el formato ordenado.
 
@@ -395,45 +400,42 @@ tabla_largo <- tidyr::population |>
 knitr::kable(tabla_largo, format = "html")
 ```
 
-Los problemas comunes en tabla "desordenadas" de datos son:
+Generalmente los problemas comunes en tabla "desordenadas" de datos son:
 
 - Una variable se extiende por varias columnas.
 
 - Una observación está dispersa entre múltiples filas
 
-El paquete **tidyr** de tidyverse resuelve estos problemas y mediante sus funciones **pivot_** podemos pivotear las tablas a lo "ancho" o "largo".
+El paquete **tidyr** de tidyverse resuelve estos problemas y mediante sus funciones **pivot_** nos permite pivotear las tablas a lo "ancho" o "largo".
 
-- Función **pivot_longer()** - Convierte nombres de variables en valores de una nueva variable.
+- Función **pivot_longer()** - Convierte nombres de columnas en valores de una nueva variable.
 
-- Función **pivot_wider()** - Convierte valores de una variable en variables nuevas.
+- Función **pivot_wider()** - Convierte valores de una variable en columnas nuevas.
 
-El paquete **datos** tiene una serie de datasets para ejemplificar. La tabla1
+Para pasar de formato ancho a largo, es decir cuando los valores de una variable se extiende por varias columnas, se utilizan como mínimo estos argumentos:
 
 ```{r}
-library(datos)
-
-
+#| eval: false
+tabla_ancho |> 
+  pivot_longer(cols = -paises,        # todas las columnas -paises
+               names_to = "anio",     # nombre de la columna de los nombres
+               values_to = "casos")   # nombre la columna de los valores
 ```
 
 
-![](tabla_longer.png){fig-align="center" width=60%}
+![](tabla_longer.png){fig-align="center" width=50%}
 
+El formato inverso, cuando una observación está dispersa entre múltiples filas, sería:
 
-
-
-```{r, eval=FALSE}
+```{r}
 #| eval: false
-tabla_casos |> 
-  pivot_longer(cols = 2:3, names_to = "anio", values_to = "casos")
+
+tabla_largo |> 
+  pivot_wider(names_from = tipo,    # nombres de los valores de tipo
+              values_from = casos)  # valores de los valores de casos
 ```
 
 
 ![](tabla_wider.png){fig-align="center" width=60%}
 
-## pivot_longer()
 
-```{r, eval=FALSE}
-#| eval: false
-tabla_ejemplo2 |> 
-  pivot_wider(names_from = tipo, values_from = casos)
-```
