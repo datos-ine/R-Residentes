@@ -16,9 +16,9 @@ anchor_sections: true
 theme: 
   light: [united, custom.scss]
   dark: darkly
-include-in-header:
+include-in-header: 
   - text: |
-      <link rel = "INE" href = "favicon.ico" />
+      <link rel="shortcut icon" href="/favicon.ico" />
 editor: source
 ---
 
