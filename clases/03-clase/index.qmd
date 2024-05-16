@@ -23,7 +23,7 @@ editor: source
 knitr::opts_chunk$set(comment=NA, dpi = 300)
 ```
 
-<center>![](dibujo3.png)</center>
+![](tidyverse.gif){width=10% fig-align="center"}
 
 ```{r, echo=F, message=F, warning=F}
 library(dlookr)
