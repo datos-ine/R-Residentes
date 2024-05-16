@@ -18,7 +18,7 @@ theme:
   dark: darkly
 include-in-header:
   - text: |
-      <link rel = "INE" href = "logo_INE.PNG" />
+      <link rel = "INE" href = "favicon.ico" />
 editor: source
 ---
 
