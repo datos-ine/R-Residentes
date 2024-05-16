@@ -440,6 +440,6 @@ tabla_largo |>
 ```
 
 
-![](tabla_wider.png){fig-align="center" width=60%}
+![](tabla_wider.PNG){fig-align="center" width=60%}
 
 
