@@ -5,15 +5,15 @@ date: ""
 format:
   html:
     page-layout: full
+    include-in-header: 
+      - text: |
+          <link rel="icon" type="image/x-icon" href="favicon.ico">
     toc: true
     toc-title: Contenidos
     toc-location: left
     toc_float: true
     toc_collapsed: false
     toc_depth: 4
-    include-in-header: 
-      - text: |
-          <link rel="icon" type="image/x-icon" href="favicon.ico">
 number_sections: true
 anchor_sections: true
 theme: 
