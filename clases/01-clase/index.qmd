@@ -127,7 +127,7 @@ Siempre una función devuelve un resultado, un valor o realiza una
 acción.
 
 ```{r,echo=F,  fig.align='center', out.width = "50%"}
-knitr::include_graphics("funciones.jpg")
+knitr::include_graphics("funciones.JPG")
 ```
 
 Como el interprete de R no permite errores en la sintaxis de las expresiones, debemos atender a los siguientes puntos a la hora de escribirlas:
@@ -308,7 +308,7 @@ datos:
 -   logical (lógicos o booleanos -- toman valores por si o no)
 
 ```{r,echo=F,  fig.align='center', out.width = "80%"}
-knitr::include_graphics("tipo_datos.jpg")
+knitr::include_graphics("tipo_datos.JPG")
 ```
 
 
@@ -454,7 +454,7 @@ El lenguaje R cuenta con operadores aritméticos de uso relativamente intuitivo,
 
 
 ```{r,echo=F,  fig.align='center', out.width = "45%"}
-knitr::include_graphics("op_aritmeticos.jpg")
+knitr::include_graphics("op_aritmeticos.JPG")
 ```
 
 ```{r}
@@ -615,7 +615,7 @@ Existen algunos valores especiales para datos con expresiones reservadas
 en R, entre ellos encontramos los valores NA, NaN, Inf y NULL.
 
 ```{r,echo=F,  fig.align='center', out.width = "60%"}
-knitr::include_graphics("valores_esp.jpg")
+knitr::include_graphics("valores_esp.JPG")
 ```
 
 
