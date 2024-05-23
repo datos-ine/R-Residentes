@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Gestión de tablas de datos</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Instituto Nacional de Epidemiología" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="animate.min.css" type="text/css" />
+    <link rel="stylesheet" href="fonts_mtheme.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Gestión de tablas de datos
+]
+.author[
+### Instituto Nacional de Epidemiología
+]
+.date[
+### 06-11-2023
+]
+
+---
+
+
+layout: true
+class: animated, fadeIn
+
+
+
+
+
+
+---
+background-image: url(assets/tidy.PNG)
+background-size: 650px
+background-position: 50% 80%
+
+## Datos ordenados
+
+.font140[ 
+Llamamos **tidy data** o "datos ordenados" cuando:
+
+- Cada variable está en una columna
+- Cada observación está en una fila
+- Cada celda del cruce entre una columna y una fila es un valor
+- Cada tabla pertenece a una unidad de observación
+]
+---
+class: left, top
+
+
+## Ejemplo de tabla de datos
+&lt;br&gt; 
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; country &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2010 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2011 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2012 &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; 2013 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Argentina &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40374224 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40728738 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41086927 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41446246 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brazil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 195210154 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 196935134 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 198656019 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 200361925 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Uruguay &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3371982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3383486 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3395253 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3407062 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br&gt; 
+&lt;br&gt; 
+&lt;br&gt;
+.center[.font160[La tabla cumple con las reglas de "datos ordenados"?]]
+
+---
+## La misma tabla "ordenada"
+
+.font150[]
+&lt;br&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; pais &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; anio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; casos &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; poblacion &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afganistán &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 745 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 19987071 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Afganistán &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2666 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 20595360 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brasil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37737 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172006362 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Brasil &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80488 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 174504898 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 212258 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1272915272 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; China &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 213766 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1280428583 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+## Problemas comunes en tabla "desordenadas" de datos
+
+.font150[
+- Una variable se extiende por varias columnas.
+
+- Una observación está dispersa entre múltiples filas
+] 
+
+### Solución:
+
+.font150[
+Usamos funciones pivot del paquete **tidyr** de tidyverse
+
+- Función **pivot_longer()** - Convierte nombres de variables en valores de una nueva variable.
+
+- Función **pivot_wider()** - Convierte valores de una variable en variables nuevas.
+]
+
+---
+background-image: url(assets/tabla_longer.png)
+background-size: 700px
+background-position: 50% 75%
+
+## pivot_longer()
+.font140[
+
+```r
+tabla_casos |&gt; 
+  pivot_longer(cols = 2:3, names_to = "anio", values_to = "casos")
+```
+]
+---
+background-image: url(assets/tabla_wider.PNG)
+background-size: 700px
+background-position: 50% 70%
+
+## pivot_longer()
+.font140[
+
+```r
+tabla_ejemplo2 |&gt; 
+  pivot_wider(names_from = tipo, values_from = casos)
+```
+]
+---
+## Uniones en datos relacionales
+
+.font150[
+Existen situaciones donde debemos analizar datos que se encuentran en diferentes tablas.
+
+Con el fin de responder a nuestras preguntas de interés en ocasiones deberemos unirlas previamente.
+
+De manera general, se le llama **_datos relacionales_** a esas múltiples tablas de datos que provienen muchas veces de sistemas de bases de datos construidas bajo el modelo relacional o bien cuando las tablas de datos tienen fuentes distintas pero comparten alguna variable común que permita "conectarlas".
+
+]
+
+---
+## Tipos de operaciones
+
+.font140[ 
+Para trabajar con datos relacionales necesitamos de *funciones-verbos* que vinculen pares de tablas. 
+
+Las tres familias de funciones del paquete **dplyr** diseñadas para trabajar con datos relacionales son:
+
+- **Uniones de transformación** (del inglés *mutating joins*), agregan nuevas variables a una tabla a partir de observaciones coincidentes de otra tabla.
+
+- **Uniones de filtro** (del inglés *filtering joins*), filtran observaciones de una tabla en función de la coincidencia o no coincidencia de otra tabla.
+
+- **Operaciones en filas y columnas**,  sirven para unir tablas por columnas o por filas.
+]
+
+---
+## Claves
+
+.font150[
+
+- Las variables usadas para conectar cada par de variables se llaman **claves** (del inglés *key*)
+
+- Una clave es una variable (o un conjunto de variables) que identifican de manera *única* una observación.
+
+Existen dos tipos de claves:
+
+- Una **clave primaria** identifica únicamente una observación en su propia tabla. 
+
+- Una **clave foránea** únicamente identifica una observación en otra tabla. 
+]
+---
+background-image: url(assets/inner-join.PNG)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones de transformación
+
+
+.font150[.bold[Unión interior]
+
+La forma más simple de unión es la unión interior (del inglés inner join). Una unión interior une pares de observaciones siempre que sus claves sean iguales
+]
+
+---
+background-image: url(assets/inner-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Unión interior
+
+
+.font150[Función .bold[inner_join()]]
+
+---
+background-image: url(assets/uniones_exteriores.PNG)
+background-size: 400px
+background-position: 80% 70%
+
+## Uniones de transformación
+
+
+.pull-left[.font150[.bold[Uniones exteriores]]
+
+Una unión interior mantiene las observaciones que aparecen en ambas tablas. 
+
+Una unión exterior mantiene las observaciones que aparecen en al menos una de las tablas.
+
+- Una unión izquierda (left join) mantiene todas las observaciones en x.
+
+- Una unión derecha (right join) mantiene todas las observaciones en y.
+
+- Una unión completa (full join) mantiene todas las observaciones en x e y.
+]
+
+---
+background-image: url(assets/full-join.gif)
+background-size: 500px
+background-position: 50% 75%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[full_join()]]
+
+---
+background-image: url(assets/left-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[left_join()]]
+
+---
+background-image: url(assets/right-join.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Uniones exteriores
+
+
+.font150[Función .bold[right_join()]]
+
+---
+background-image: url(assets/venn.PNG)
+background-size: 900px
+background-position: 50% 75%
+
+## Uniones de transformación
+
+.font140[Otra forma de ilustrar diferentes tipos de uniones es mediante un diagrama de Venn.
+
+Sin embargo, tiene una limitante importante: un diagrama de Venn no puede mostrar qué ocurre con las claves que no identifican de manera única una observación
+]
+
+---
+## Claves duplicadas
+
+&lt;br&gt;
+
+.font140[
+Hasta ahora todas las situaciones han asumido que las claves son únicas. Pero esto no siempre es así.  
+
+Existen dos posibilidades habituales:
+
+- Una tabla tiene claves duplicadas producto de una relación uno a varios.
+
+- Ambas tablas tienen claves duplicadas 
+
+Siempre que unimos claves duplicadas, obtenemos todas las posibles combinaciones, es decir, el producto cartesiano
+
+]
+---
+background-image: url(assets/left-join-extra.gif)
+background-size: 500px
+background-position: 50% 70%
+
+## Claves duplicadas
+.font140[
+Ejemplo con **left_join()**
+]
+---
+background-image: url(assets/semi-join.gif)
+background-size: 500px
+background-position: 50% 95%
+
+## Uniones de filtro
+
+.font150[.bold[semi_join()]
+
+**Mantiene** todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+]
+
+---
+background-image: url(assets/anti-join.gif)
+background-size: 500px
+background-position: 50% 95%
+
+## Uniones de filtro
+
+.font150[.bold[anti_join()]
+
+**Descarta** todas las observaciones de la tabla **x** donde la **_clave coincide_** con la clave de la tabla **y**
+]
+
+---
+## Consejos útiles para evitar errores
+
+&lt;br&gt;
+
+.font140[
+- Identificar bien la variables que forman las claves de cada tabla.
+
+- Verificar la completitud de las claves. Si existe algún valor faltante no se podrá identificar la observación.
+
+- Verificar que las claves foráneas coinciden con las claves primarias de la otra tabla. Esto incluye comprobar coincidencia en el tipo de dato (numérico, caracter, etc)
+
+- Verificar claves duplicadas (se puede hacer aplicando **count()**)
+]
+
+---
+## Unión por filas y por columnas
+
+.font140[
+En algunas ocasiones necesitamos unir tablas que tienen formatos particulares por medio de filas o por medio de columnas.
+
+Las funciones de **dplyr** para esta tarea son:
+
+- **bind_rows()** Une una tabla debajo de otra. Aplica cuando tenemos la misma estructura en tabla de datos divida en varios archivos (por ejemplo, producto de carga simultánea de datos en diferentes computadoras con diferentes data entry)
+
+- **bind_cols()** Une una tabla al lado de la otra. Es peligroso su uso si la confundimos con las uniones de transformación porque perdemos integridad de datos en las observaciones. Sirve sólo si el "orden" de las observaciones pueden garantizar la misma identidad de las partes a unir.
+
+]
+
+---
+## Gestión de duplicados
+
+&lt;br&gt;
+.font150[
+Hay diferentes tareas que se pueden realizar para gestionar datos duplicados.
+
+- Detección de observaciones y/o partes de observaciones (variables clave) duplicadas
+
+- Eliminación de duplicados a partir de observaciones únicas.
+
+- Recortar tabla de datos para eliminar duplicados
+
+- Marcar duplicados (conservando duplicados en la tabla)
+
+]
+---
+## Detección de duplicados
+
+&lt;br&gt;
+.font140[
+Las observaciones duplicadas pueden ser completas, generalmente a raíz de algún problema informático o bien parcial.
+
+Habitualmente nuestras tablas tienen identificadores únicos de las unidades de análisis o una serie de identificadores que resultan en una clave combinada.
+
+Por ejemplo, las tablas provenientes del **sistema RITA** tienen un **ID** para *pacientes*, otro para *tumores* y otro para *tratamientos* y su relación en 1 a varios en cada caso.
+
+La función `get_dupes()` del paquete **janitor** es una herramienta útil para identificar estas repeticiones. 
+]
+---
+## Eliminación de duplicados por observaciones únicas
+
+&lt;br&gt;
+.font150[
+Para eliminar filas duplicadas en una tabla de datos podemos utilizar la función `distinct()` de **dplyr**.
+
+La función tiene un argumento denominado `.keep_all` que permite valores *TRUE* o *FALSE*. Si se iguala a *TRUE* se mantienen en el resultado todas las variables que son parte de la tabla, aunque estas no estén declaradas dentro del `distinct()`.
+
+Por defecto, este argumento se encuentra igualado a *FALSE*.
+]
+
+---
+## Eliminación de duplicados por recorte de observaciones
+
+&lt;br&gt;
+.font140[
+Recortar es similar a filtrar, la diferencia está en que se filtra por condiciones y recortamos por posiciones.
+
+La familia de funciones que se puede utilizar para recortar es `slice_*()`.
+
+Estas funciones pueden ser muy útiles si se aplican a un dataframe agrupado porque la operación de recorte se realiza en cada grupo por separado.
+
+Si hay varias filas por persona con fechas distintas de un seguimiento y queremos quedarnos con la última visita, podemos utilizar combinado `group_by()` y `slice_max()` para quedarnos sólo con esa observación del último encuentro para cada uno.
+]
+---
+## Marcar duplicados
+
+&lt;br&gt;
+.font150[
+Si lo que buscamos es mantener a todas las observaciones de la tabla pero marcar aquellos que consideramos duplicados podemos hacer:
+
+1. Recortar el dataframe original a sólo las filas para el análisis. Guardar los ID de   este dataframe reducido en un vector.
+
+2. En el dataframe original, creamos una variable de marca usando `case_when()`, basándonos si el ID está presente en el dataframe reducido (vector de ID anterior).
+]
+
+
+---
+## Escritura de datos (exportación)
+
+.font140[
+El mismo paquete **readr** que utilizamos para hacer lectura de datos nos permite exportarlos.
+
+Las funciones en este caso comienzan con el prefijo **write_** y entre sus argumentos obligatorios se encuentra el nombre del objeto dataframe que contiene los datos a exportar y el nombre del archivo de salida. 
+
+Las funciones comunes son `write_delim()`, `write_csv()`, `write_csv2()`, `write_excel_csv()` entre otras. 
+
+Para exportar archivos con formato Excel vamos a utilizar la función `write.xslx()` del paquete **openxlsx**.  
+]
+
+---
+## Ejemplos
+
+&lt;br&gt;
+.font150[
+
+`write_csv2(x = tabla1, file = "tabla1.csv")` guarda la tabla1 en un archivo csv separado por punta y comas llamado "tabla1.csv"
+
+`write_csv(x = tabla1, file = "tabla1.csv")` guarda la tabla1 en un archivo csv separado por comas llamado "tabla1.csv"
+
+`write_delim(x = tabla1, file = "tabla1.csv", delim = "|)` guarda la tabla1 en un archivo csv separado por el caracter "|" llamado "tabla1.csv"
+
+`write.xlsx(x = tabla1, file = "tabla1.xlsx")` guarda la tabla1 en un archivo Excel llamado "tabla1.xlsx"
+
+]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url(logo_INE.PNG);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

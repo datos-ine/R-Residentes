@@ -1,0 +1,448 @@
+---
+title: "Procesamiento de datos - Parte 2"
+subtitle: ""  
+author: 
+  - "Instituto Nacional de Epidemiología"
+date: "23-10-2023"
+output:
+  xaringan::moon_reader:
+    includes:
+      after_body: insert-logo.html
+    transition: slide
+    lib_dir: libs
+    css: 
+     - "xaringan-themer.css"
+     - "animate.min.css"
+     - "fonts_mtheme.css"
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+layout: true
+class: animated, fadeIn
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+library(xaringan)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+style_mono_accent(base_color = "#00746B", 
+                  colors = c(red = "#f34213",
+                             blue = '#0000ff',
+                             purple = "#3e2f5b",
+                             orange = "#ff8811",
+                             green = "#1d771d",
+                             white = "#FFFFFF"))
+```
+
+---
+class: left, middle
+
+background-image: url(assets/dplyr.PNG)
+background-size: 160px
+background-position: 50% 10%
+
+
+
+.font140[ 
+<br> 
+<br> 
+<br> 
+- Retomamos el paquete de tidyverse visto la semana pasada que nos posibilita  **transformar datos**.
+
+- Hoy continuaremos con las funciones principales `arrange()`, `mutate()` y `summarise()` 
+
+- Y también con otras funciones importantes como `group_by()`, `count()`, `if_else()`, `case_when()`, `between()`, entre otras.
+]
+
+
+---
+## arrange()
+
+.font140[ 
+La función **arrange()** del inglés .bold[ordenar], sirve para ordenar observaciones de una tabla de datos a partir de una o más variables (columnas).
+]
+
+<br>
+
+.font160[.center[  
+**arrange**(datos, var1, var2, ...)  
+
+ó  
+
+datos |> **arrange**(var1, var2, ...)
+]]
+
+---
+## arrange()
+
+.font140[ 
+El ordenamiento _predeterminado_ es **_ascendente_**. 
+
+Si la variable contiene números, las filas se van a ordenar ubicando esos números de menor a mayor (1,2,3...). 
+
+Si la variable contiene texto, las filas se van a ordenar ubicando las palabras alfabéticamente en forma ascendente (a,b,c...).
+
+Si deseamos invertir el orden debemos incorporar la función **desc()** dentro de **arrange()**.
+]
+
+
+.font160[.center[  
+datos |> **arrange**(var1)  *# ascendente*
+
+datos |> **arrange**(**desc**(var1)) *# descendente*
+]]
+
+---
+## Ejemplo de arrange()
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+library(tidyverse)
+
+rita <- read_csv2("assets/rita_prueba.csv", locale = locale(encoding = "UTF-8"))
+
+```
+
+```{r, eval=F}
+# Mostramos la tabla de ID de pacientes ordenada en forma alfabetica ascente por la variable IDESTN
+
+rita |> 
+  select(IDPTE, IDESTN) |> 
+  arrange(IDESTN) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  select(IDPTE, IDESTN) |>
+  arrange(IDESTN) |>  
+DT::datatable(
+  fillContainer = F, options = list(pageLength = 6))
+
+```
+
+
+---
+background-image: url(assets/mutate.PNG)
+background-size: 450px
+background-position: 50% 90%
+
+## mutate()
+
+.font130[ 
+La función **mutate()** del inglés .bold[mutar o transformar], sirve para crear nuevas variables, a partir de los valores de otras variables, dentro de la tabla de datos.
+
+La o las nuevas variables creadas se incorporan al final de las columnas del conjunto de datos.
+
+Dentro de los argumentos de **mutate()** se aplican funciones vectorizadas, lo que significa que la función toma un vector de valores como entrada y devuelve el mismo número de valores como salida.
+]
+
+
+.font150[.center[  
+datos |> **mutate**(nueva_var = operación/función)
+]]
+
+---
+class: left, top
+
+## mutate()
+
+.font140[ 
+Algunas de las operaciones y funciones vectorizadas provistas por el lenguaje R son:
+
+
+- .bold[Operadores aritméticos] - **+**, **-**, __\*__, **/**, **^**   
+
+- .bold[Aritmética modular] - **%/%** - **%%** 
+
+- .bold[Transformación - escala] - **log()** - **log2()** - **log10()** - **exp()** - **sqrt()**
+
+- .bold[Comparaciones] - **>**, **>=**, **<**, **<=**, **==**, **!=**
+
+- .bold[Atrasos/adelantos] - **lag()** - **lead()**
+
+- .bold[Ordenamiento] - **min_rank()** - **percent_rank()**, etc...
+
+- .bold[Acumulativos] - **cumsum()** - **cummean()** - etc...
+
+- .bold[Condicional] - **if_else()** - **case_when()**.
+
+]
+
+---
+## Ejemplo de mutate()
+.font160[
+```{r, eval=F}
+# Coercionamos la variable FENAC aplicando la 
+# función dmy() de lubridate
+
+rita |> 
+  mutate(FENAC = dmy(FENAC)) |> 
+  skim(FENAC) |> 
+  select(skim_type, Date.min, Date.max)
+```
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+library(skimr)
+
+rita |> 
+  mutate(FENAC = dmy(FENAC)) |> 
+  skim(FENAC) |> 
+  select(skim_type, Date.min, Date.max) 
+```
+]
+---
+background-image: url(assets/summarise.PNG)
+background-size: 500px
+background-position: 50% 90%
+
+## summarise()
+
+.font130[ 
+La función **summarise()** del inglés .bold[resumir], se utiliza justamente para resumir las observaciones de una tabla de datos mediante alguna .bold[medida resumen].
+
+Otra forma de escribir la función es **summarize()**. Ambas realizan la misma operación.
+]
+
+
+.font150[.center[  
+datos |> **summarise**(var_resumen = función_resumen)
+
+datos |> **summarize**(var_resumen = función_resumen)
+]]
+
+---
+class: left, top
+
+
+## summarise()
+
+.font140[ 
+Algunas de las funciones resumen provistas por el lenguaje R son:
+
+
+- .bold[tendencia central] - **mean()** - **median()**
+
+- .bold[posición] - **min()** - **max()** - **quantile()**
+
+- .bold[dispersión] - **var()** - **sd()** - **IQR()** 
+
+- .bold[conteo] - **n()** - **n_distinct()**
+
+- .bold[orden] - **first()** - **last()**
+
+La mayoría de estas funciones aplican en tipos de datos int (enteros), dbl (reales), date (fecha) y ddtm (fecha - hora).
+]
+
+---
+## Ejemplo de summarise()
+.font160[
+```{r, eval=F}
+# Resumimos la variable DGED calculando media, 
+# desvío estandar, mínimo y máximo
+
+rita |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED)) 
+```
+
+
+```{r, echo=FALSE, message=F, warning=FALSE}
+rita |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED))
+```
+]
+
+---
+## group_by()
+
+.font140[ 
+La función **group_by()** del inglés .bold[agrupar por], sirve para agrupar a partir de valores o categorías distintas.
+
+Aplicado sólo no produce ningún resultado interesante, por eso está pensando para usarlo principalmente asociado a **summarise()**.
+]
+
+.font180[.center[datos |> **group_by**(variable)]]
+
+<br>
+
+.font140[ 
+Junto a esta función aparece **ungroup()** que .bold[deshace] el agrupamiento.]
+
+.font180[.center[datos |> **ungroup**()]]
+
+
+---
+## Ejemplo de group_by()
+.font160[
+```{r, eval=F}
+# Resumimos la variable DGED según PTESEXN 
+# calculando media, desvío estandar, mínimo y máximo
+
+rita |> 
+  group_by(PTESXN) |> 
+  summarise(Media = mean(DGED),
+            Desvio = sd(DGED),
+            Min = min(DGED),
+            Max = max(DGED)) 
+```
+
+
+```{r, echo=F, message=F, warning=FALSE}
+rita |> 
+    group_by(PTESXN) |> 
+    summarise(Media = mean(DGED),
+              Desvio = sd(DGED),
+              Min = min(DGED),
+              Max = max(DGED))
+```
+]
+
+---
+## count()
+
+.font140[ 
+La función **count()** del inglés .bold[contar], sirve para contabilizar categorías o valores diferentes de variables resumiendo los datos en una **_tabla de frecuencia_**. 
+
+Reconoce y también contabiliza los valores .bold[NA] de las variables.
+]
+
+.font180[.center[datos |> **count**(variable)]]
+
+.font140[ 
+Tiene algunos argumentos opcionales como:
+
+- **name** (nombre de la variable que contabiliza - por defecto se llama n)
+- **sort** (si es TRUE se ordena de mayor a menor)
+- **wt** (variable peso / ponderación / expansión opcional)
+
+También se pueden agregar más variables separadas por una coma.
+]
+
+---
+## Ejemplo de count()
+.font130[
+```{r, echo=T, message=F, warning=FALSE}
+# Contamos las frecuencias de la variable IDESTN 
+# ordenadas de mayor a menor
+
+rita |> 
+  count(IDESTN, sort = T)
+```
+]
+---
+## if_else()
+
+.font140[ 
+La función **if_else()** devuelve valores dependiendo del resultado de una condición lógica (TRUE/FALSE).
+
+Los valores devueltos para cada observación se almacenan dentro de una variable definida en **mutate()**.
+]
+
+<br>
+
+.font180[
+```{r, eval=F}
+datos |> 
+  mutate(x = if_else(condicion, valor_T, valor_F)
+```
+]
+
+---
+## Ejemplo de if_else()
+```{r, echo=F, message=F, warning=FALSE}
+unique(rita$CATPO) 
+```
+
+```{r,  message=F, warning=FALSE}
+# fusionamos los valores N/D e Ignorado en la variable CATPO (tipo de caso)
+
+rita |> 
+  mutate(CATPO = if_else(CATPO %in% c("N/D", "Ignorado"), "S/D", CATPO)) |>
+  count(CATPO) 
+```
+
+---
+## case_when()
+
+.font140[ 
+La función **case_when()** ejecuta una vectorización múltiple de funciones if_else().
+
+Los valores devueltos para cada observación se almacenan dentro de una variable definida en **mutate()**.
+
+]
+
+.font180[
+
+```{r, eval=F}
+datos |> 
+  mutate(x = case_when(
+    condicion ~ valor_T, 
+    ...,
+    .default = valor)
+```
+]
+  
+  
+
+---
+## Ejemplo de case_when()
+.font130[
+```{r,  message=F, warning=FALSE}
+# creamos la variable MORFO conteniendo grupos de neoplasias según rango 
+# de valores de MFG (reducimos la asignación para el ejemplo)
+
+rita |> 
+  mutate(MORFO = case_when(
+    MFG >= 8010 & MFG < 8050 ~ "Neoplasias epiteliales, SAI",
+    MFG >= 8050 & MFG < 8090 ~ "Neoplasias epidermoides",
+    MFG >= 8090 & MFG < 8120 ~ "Neoplasias basocelulares",
+    .default = "Otros" 
+  )) |> 
+  count(MORFO)
+
+```
+]
+
+---
+## between()
+
+.font140[ 
+La función **between()** es una función atajo para operaciones de condición  _>=_ x _<=_ , implementado para vectores numéricos o de fecha/hora.
+
+Se utiliza dentro de estructuras donde se escriben condiciones (`filter()`, `mutate()`, etc).
+]
+
+.font160[.center[  
+datos |> filter(**between**(x, izquierda, derecha)) 
+]]
+
+.font140[ 
+Los dos extremos (izquierda y derecha) se incluyen en el intervalo
+]
+
+---
+## Ejemplo de between()
+
+.font140[
+```{r,  message=F, warning=FALSE}
+# filtramos observaciones donde la variable DGED sea mayor 
+# o igual a 95 y menor o igual a 115 años
+
+rita |> 
+ filter(between(DGED, 95, 115)) |> 
+  select(DGED)
+
+```
+]

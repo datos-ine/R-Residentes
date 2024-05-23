@@ -1,0 +1,313 @@
+---
+title: "Introducción al curso y repaso"
+subtitle: "Encuentro 1"
+format: 
+  revealjs:
+    self-contained: true
+    width: 1920
+    height: 1080
+    slide-number: true
+    transition: fade
+    theme: [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+## Análisis y visualización de datos con R + RStudio {.title-top}
+
+![](images/tablas.jpg){.absolute top="600" left="850" width="850"}
+
+<br>
+
+> Nivelación R + tidyverse
+
+. . .
+
+> Tratamiento de tipos de datos específicos
+
+. . .
+
+> Exploración, depuración y gestión de tablas de datos
+
+. . .
+
+> Operaciones múltiples e iteración
+
+. . .
+
+> Indicadores estadísticos
+
+. . .
+
+> Visualización de datos
+
+. . .
+
+> Documentos Quarto (2 semanas)
+
+. . .
+
+> Tableros Quarto (2 semanas)
+
+## Esquema de trabajo {.title-top}
+
+<br>
+
+. . .
+
+-   Los lunes comenzamos un nuevo tema en el aula virtual con material teórico-práctico, recursos extras, enlaces y bibliografía complementaria.
+
+. . .
+
+-   También habrá un trabajo práctico para desarrollar. Solo en dos momentos de la cursada estos trabajos prácticos servirán de evaluación.
+
+. . .
+
+-   Los viernes se realizará el encuentro sincrónico en la plataforma Webex (de 9 a 11 hs), donde se integrará el tema del bloque, veremos el trabajo práctico correspondiente a esa semana y responderemos consultas y dudas que hayan quedado.
+
+. . .
+
+<br>
+
+::: callout-warning
+## Importante
+
+El bloque 4 (**Operaciones múltiples e iteración**) tendrá dos semanas porque el viernes 21/6 es feriado puente.
+:::
+
+## Trabajos prácticos {.title-top}
+
+<br>
+
+-   Cada bloque tiene su trabajo práctico.
+
+-   Es importante que lo intenten hacer antes del encuentro sincrónico para poder consultar las dudas y problemas.
+
+-   Al finalizar la semana se subirá una resolución al aula virtual.
+
+-   Sólo dos de estos TP serán evaluativos (al finalizar la 5 y 6 semana). Tendrán tiempo hasta la siguiente semana luego del sincrónico correspondiente.
+
+-   El trabajo practico integrador se inicia luego del bloque 6 y se entrega el 23/8.
+
+<br>
+
+::: callout-note
+## Nota
+
+Estas fechas pueden sufrir cambios como resultado del desarrollo de la cursada.
+:::
+
+## Nivelación R {.title-top}
+
+![](images/R.png){.absolute top="250" left="1000" width="500"}
+
+<br>
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Instalación del software R + Rtools
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Sintaxis básica
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Asignación y creación de objetos
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Funciones
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Operadores y conectores
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Paquetes
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Estructura de datos (vectores y dataframes)
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Secuencias
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Valores especiales (NA)
+
+:::
+
+## Nivelación RStudio {.title-top}
+
+![](images/RStudio.png){.absolute top="300" left="950" width="850"}
+
+<br>
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Instalación del software
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Paneles
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Proyectos
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Scripts
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Herramientas de edición
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Gestión de paquetes
+
+:::
+
+## Nivelación tidyverse {.title-top}
+
+![](images/hex-tidyverse.png){.absolute top="80" left="1250" width="250"}
+
+<br>
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Filosofía de lo ordenado (tidydata)
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Uso de tuberías %>% o |>
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Lectura de datos (texto plano y Excel)
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Manipulación de datos con dplyr - funciones-verbos principales (select, filter, rename, arrange, mutate, summrise, group_by, count, join\_\*)
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+-   Estilo de sintaxis
+
+:::
+
+## Funciones condicionales {.title-top}
+
+<br>
+
+Las llamamos funciones condicionales porque utilizan condiciones para decidir que valor tomar.
+
+-   Las hay dicotomicas (toman solo dos valores posibles) o múltiples.
+
+-   Sirven principalmente para discretizar o agrupar valores de variables existentes en nuevas variables, pero también se utilizan para modificar etiquetas de categorías y otras tareas.
+
+-   Se aplican dentro de una función `mutate()` y el resultado se suele asignar a la misma tabla de datos para almacenar esos cambios.
+
+-   Para construir las condiciones se utilizan los operadores de comparación y los conectores lógicos (cuando existe más de una condición)
+
+## if_else() {.title-top}
+
+<br>
+
+```{r}
+#| eval: false
+#| echo: true
+
+datos <- datos |> 
+  mutate(variable_nueva = if_else(condition = condicion, 
+                                  true = "valor si se cumple la condición", 
+                                  false = "valor si no se cumple"))
+```
+
+## cut_interval() {.title-top}
+
+<br>
+
+```{r}
+#| eval: false
+#| echo: true
+
+datos <- datos |> 
+  mutate(variable_nueva = if_else(condition = condicion, 
+                                  true = "valor si se cumple la condición", 
+                                  false = "valor si no se cumple"))
+```
+
+## case_when() {.title-top}
+
+<br>
+
+```{r}
+#| eval: false
+#| echo: true
+
+datos <- datos |> 
+  mutate(variable_nueva = if_else(condition = condicion, 
+                                  true = "valor si se cumple la condición", 
+                                  false = "valor si no se cumple"))
+```
+
+## between() {.title-top}
+
+<br>
+
+```{r}
+#| eval: false
+#| echo: true
+
+datos <- datos |> 
+  mutate(variable_nueva = if_else(condition = condicion, 
+                                  true = "valor si se cumple la condición", 
+                                  false = "valor si no se cumple"))
+```
