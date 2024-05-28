@@ -1,5 +1,5 @@
 ---
-title: "Introducción al curso y repaso"
+pagetitle: "Introducción al curso y repaso"
 subtitle: "Encuentro 1"
 format: 
   revealjs:
@@ -19,6 +19,14 @@ library(quarto)
 library(fontawesome)
 library(tidyverse)
 ```
+
+##  {#intro-curso data-menu-title="Introducción al curso y repaso" .invert}
+
+
+[**Introducción al curso y repaso**]{.custom-title} 
+
+[***Encuentro 1***]{.custom-subtitle}
+
 
 ## Análisis y visualización de datos con R + RStudio {.title-top}
 
@@ -211,6 +219,7 @@ Estas fechas pueden sufrir cambios como resultado del desarrollo de la cursada.
 ![](images/hex-tidyverse.png){.absolute top="80" left="1250" width="250"}
 
 <br>
+<br>
 
 ::: {.fragment .fade-in-then-semi-out}
 
@@ -232,7 +241,7 @@ Estas fechas pueden sufrir cambios como resultado del desarrollo de la cursada.
 
 ::: {.fragment .fade-in-then-semi-out}
 
--   Manipulación de datos con dplyr - funciones-verbos principales (select, filter, rename, arrange, mutate, summrise, group_by, count, join\_\*)
+-   Manipulación de datos con dplyr - funciones-verbos principales (select, filter, rename, arrange, mutate, summarise, group_by, count, join\_\*)
 
 :::
 
@@ -245,6 +254,7 @@ Estas fechas pueden sufrir cambios como resultado del desarrollo de la cursada.
 ## Funciones condicionales {.title-top}
 
 <br>
+<br>
 
 Las llamamos funciones condicionales porque utilizan condiciones para decidir que valor tomar.
 
@@ -252,14 +262,20 @@ Las llamamos funciones condicionales porque utilizan condiciones para decidir qu
 
 -   Sirven principalmente para discretizar o agrupar valores de variables existentes en nuevas variables, pero también se utilizan para modificar etiquetas de categorías y otras tareas.
 
--   Se aplican dentro de una función `mutate()` y el resultado se suele asignar a la misma tabla de datos para almacenar esos cambios.
+-   Se aplican dentro de una función `mutate()` y el resultado se suele asignar a la misma tabla de datos para almacenar esos cambios. 
 
--   Para construir las condiciones se utilizan los operadores de comparación y los conectores lógicos (cuando existe más de una condición)
+-   Para construir las condiciones se utilizan los operadores de comparación y los conectores lógicos (cuando existe más de una condición). También sirven funciones específicas como `between()`.
 
 ## if_else() {.title-top}
 
 <br>
 
+Función de **dplyr** basado en el ifelse() del R base. 
+
+Maneja condiciones dicotómicas y situaciones especiales con valores faltantes (missing).
+
+<br>
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -267,38 +283,56 @@ Las llamamos funciones condicionales porque utilizan condiciones para decidir qu
 datos <- datos |> 
   mutate(variable_nueva = if_else(condition = condicion, 
                                   true = "valor si se cumple la condición", 
-                                  false = "valor si no se cumple"))
+                                  false = "valor si no se cumple",
+                                  missing = "valor para el NA"))
 ```
+
+<br>
+
+El argumento ***missing*** es opcional. 
+
+Por defecto, esta igualado a `NULL` y devuelve `NA`.
 
 ## cut_interval() {.title-top}
 
 <br>
 
+Función de **ggplot2** que discretiza datos numéricos a categóricos. Similar a la función `cut()` de R base.
+
+Forma `n` grupos o intervalos de clase ordenados y de igual rango (regulares).
+
+<br>
+
 ```{r}
 #| eval: false
 #| echo: true
 
 datos <- datos |> 
-  mutate(variable_nueva = if_else(condition = condicion, 
-                                  true = "valor si se cumple la condición", 
-                                  false = "valor si no se cumple"))
+  mutate(variable_nueva = cut_interval(x = variable_cuantitativa, 
+                                       n = NULL, 
+                                       length = NULL,
+                                       ...))
 ```
+
+<br>
+
+`n` número de intervalos a crear
+
+`length` tamaño de cada intervalo
+
+`...` recibe valores en los mismos argumentos que `cut()`. 
+
+<br>
+
+`labels` y `right` son dos de ellos, por ejemplo.
 
 ## case_when() {.title-top}
 
 <br>
 
-```{r}
-#| eval: false
-#| echo: true
+Función de **dplyr** que vectoriza múltiples `if_else()`. 
 
-datos <- datos |> 
-  mutate(variable_nueva = if_else(condition = condicion, 
-                                  true = "valor si se cumple la condición", 
-                                  false = "valor si no se cumple"))
-```
-
-## between() {.title-top}
+Cada condición se evalúa secuencialmente y la primera coincidencia determina el valor de salida. 
 
 <br>
 
@@ -307,7 +341,45 @@ datos <- datos |>
 #| echo: true
 
 datos <- datos |> 
-  mutate(variable_nueva = if_else(condition = condicion, 
-                                  true = "valor si se cumple la condición", 
-                                  false = "valor si no se cumple"))
+  mutate(variable_nueva = case_when(
+                            condicion1 ~ "valor1", 
+                            condicion2 ~ "valor2", 
+                            condicion3 ~ "valor3", 
+                            .default = "valor_default"))
 ```
+
+<br>
+
+`.default` cuando todas la condiciones declaradas devuelven `FALSE` o `NA`, la observación toma este valor por defecto.
+
+Si no se declara el valor predeterminado es `NULL`, por lo que se asigna un valor faltante (`NA`).
+
+## between() {.title-top}
+
+<br>
+
+Función de **dplyr** diseñada como un atajo para la situación de intervalos de variables cuantitativas `x >= left & x <= right`.
+
+Simplifica la construcción de intervalos de clase y se suele utilizar en argumentos condicionales.
+
+Suelen utilizarse dentro de `case_when()`, `if_else()` y `filter()`.
+
+<br>
+
+```{r}
+#| eval: false
+#| echo: true
+
+datos <- datos |> 
+  mutate(variable_nueva = case_when(
+                            between(-Inf, x1) ~ "valor1", 
+                            between(x2, x3) ~ "valor2", 
+                            between(x4, Inf) ~ "valor3", 
+                            .default = "valor_default"))
+```
+
+<br>
+
+Devuelve un vector lógico con el cumplimiento (`TRUE`) o no (`FALSE`).
+
+Los valores declarados a izquierda y derecha se incluyen siempre en el intervalo (intervalos cerrados).
