@@ -292,6 +292,37 @@ fecha
 
 Observemos que `hours()` (plural) no es la misma función que `hour()` (singular).
 
+Por último, algo muy útil para nuestro trabajo es poder extraer la semana epidemiologica, con la función `epiweek()`, en la que cae una fecha en particular o un conjunto de ellas dentro de una variable.
+
+```{r}
+epiweek(fecha)
+```
+
+Junto con la semana epidemiológica se puede obtener el año epidemiológico con la función `epiyear()`
+
+Por ejemplo, la fecha 01/01/2022 es el primer día de enero de 2022 pero pertenece a la semana epidemiológica 52 de año 2021. Veamos:
+
+```{r}
+fecha <- dmy("01-01-2022")
+
+fecha
+
+epiweek(fecha)
+```
+
+Si uno obtiene el año al que pertenece, nos dice que 2022 pero si lo queremos asociar con su semana epidemiológica, nos quedaría que estamos en la semana 52 del año 2022, cosa que no es cierta.
+
+```{r}
+year(fecha)
+```
+
+En estas situaciones que no coinciden el año de la fecha con el año epidemiológico de la semana es que se aplica `epiyear()`.
+
+```{r}
+epiyear(fecha)
+```
+
+
 ### Cálculos con fecha-horas
 
 Los cálculos con fechas y horas son más complicados que la aritmética con números, pero puede hacerse con precisión y facilidad mediante este paquete.
