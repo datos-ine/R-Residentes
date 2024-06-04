@@ -1,0 +1,311 @@
+---
+title: "**Operaciones múltiples e iteración**"
+author: ""
+date: ""
+format:
+  html:
+    page-layout: full
+    include-in-header: 
+      - text: |
+          <link rel="icon" type="image/x-icon" href="favicon.ico">    
+    toc: true
+    toc-title: Contenidos
+    toc-location: left
+    toc_float: true
+    toc_collapsed: false
+    toc_depth: 4
+number_sections: true
+anchor_sections: true
+theme: 
+  light: [united, custom.scss]
+  dark: darkly
+editor: source
+---
+
+temas a desarrollar
+
+operaciones multiples
+
+across()
+
+en mutate para conversion
+
+en summarise para resumenes
+
+filtros - if_any if_all
+
+operaciones por filas
+rowwise()   c_across()
+
+bucles tradicionales
+
+for - while - repeat
+
+map() de purrr
+
+ver ajuste de tasas - ver nest unnest
+
+## Operaciones múltiples
+
+Muchas de las tareas que hicimos hasta ahora, ya sea transformando u obteniendo resultados resumenes de variables, las aplicamos variable a variable, es decir repitiendo las operaciones para cada una de las columnas de una tabla.
+
+Una premisa del tidyverse, y también de la programación en general, es no copiar y pegar el código mas de dos veces. Si bien esta práctica ahorra tiempo y no esta mal en si mismo, hacerlo suele ser una fuente de errores y además incrementa las líneas de código del script.
+
+El paquete **dplyr** de *tidyverse* implementa desde hace poco tiempo un esquema de trabajo para operaciones múltiples o simultáneas a través de su función `across()`.
+
+Esta función se puede utilizar en estructuras de `mutate()` o `summarise()` dependiendo del resultado buscado y tiene dos partes fundamentales: la captura o selección de variables donde vamos a aplicar determinadas funciones y la declaración de las funciones a aplicar.
+
+## `across()`
+
+La función se incorporó a partir de la versión de dplyr 1.0.0 y su sintaxis general es:
+
+```{r}
+#| eval: false
+#| echo: true
+
+across(.cols,  
+       .fns,  
+       ...,  
+       .names)
+```
+
+donde los argumentos son:
+
+`.cols` = columnas a transformar
+
+`.fns` = función o funciones para aplicar a cada columna de .cols
+
+`...` = argumentos adicionales de las funciones especificadas anteriormente (ejemplo: na.rm = T)
+
+`.names` = nombres de las columnas de salida. Aquí, {.col} es un marcador especial al que se le puede agregar el sufijo deseado.
+
+Veamos un ejemplo de uso para situaciones donde queremos obtener resumenes simultáneos.
+
+Tomemos la siguiente tabla de datos ficticios:
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+
+datos <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+```
+
+```{r}
+#| echo: true
+
+datos
+```
+
+Supongamos que queremos calcular la media de cada variable numérica, con lo que sabemos hasta ahora podríamos hacerlo repitiendo para cada variable.
+
+```{r}
+#| echo: true
+
+datos |> summarise(
+  a = mean(a),
+  b = mean(b),
+  c = mean(c),
+  d = mean(d),
+)
+```
+
+Pero esto rompe la regla general que buscamos de nunca copiar y pegar más de dos veces, ocasionando que me pueda equivocar al editar el nombre de la variable que va en cada `mean()` y generando tantas líneas de código como cantidad de variables tengo.
+
+Para solucionarlo vamos a aplicar `across()` realizando el resumen simultáneo en una sola línea.
+
+```{r}
+#| echo: true
+
+datos |> summarise(
+  across(.cols = a:d, 
+         .fns = mean),
+)
+
+```
+
+Observemos que el primer argumento es el rango de nombres de variables que estamos seleccionando donde aplicar la función que aperece como segundo argumento.
+
+Es decir, que el primer argumento de la función responde de la misma forma que la función `select()` y por ende, aplican también las *funciones ayudantes de selección*.
+
+::: columns
+::: {.column width="50%"}
+-   `everything()`: coincide con todas las variables.
+
+-   `group_cols()`: seleccione todas las columnas de agrupación.
+
+-   `starts_with()`: comienza con un prefijo.
+
+-   `ends_with()`: termina con un sufijo.
+
+-   `contains()`: contiene una cadena literal.
+
+-   `matches()`: coincide con una expresión regular.
+:::
+
+::: {.column width="50%"}
+-   `num_range()`: coincide con un rango numérico como x01, x02, x03.
+
+-   `all_of()`: coincide con nombres de variables en un vector de caracteres. Todos los nombres deben estar presentes; de lo contrario, se generará un error de fuera de límites.
+
+-   `any_of()`: igual que `all_of()`, excepto que no se genera ningún error para los nombres que no existen.
+
+-   `where()`: aplica una función a todas las variables y selecciona aquellas para las cuales la función regresa TRUE.
+:::
+:::
+
+Mostremos otra tabla de ejemplo similar a la anterior:
+
+```{r}
+#| echo: false
+
+datos <- tibble(
+  grupo = sample(c("A", "B"), 10, replace = TRUE),
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+```
+
+```{r}
+#| echo: true
+
+datos
+```
+
+Aquí **datos** agrega una variable categórica llamada `grupo` con dos valores (A y B).
+
+Usando `group_by()` combinada con una selección completa (ayudante everything) del resto de las variables obtenemos las medias por cada uno de estos grupos.
+
+```{r}
+#| echo: true
+
+datos |> 
+  group_by(grupo) |> 
+  summarise(across(everything(), mean))
+```
+
+El argumento `.cols` también puede recibir construcciones *booleanas* utilizando los operadores conocidos como `!` (negación) y conectores lógicos como `&` (AND) y `|` (OR) entre las funciones ayudantes de selección.
+
+```{r}
+#| echo: true
+#| eval: false
+
+.cols = !where(is.numeric) & starts_with("a")
+```
+
+En este ejemplo, se seleccionan todas las columnas no numéricas, cuyo nombre comienza con "a".
+
+Hasta ahora vimos el ejemplo de aplicar una función simple como `mean()` a un grupo de variables.
+
+Que sucede si entre los datos de esas variables hay valores **NA**?
+
+```{r}
+#| echo: false
+
+rnorm_na <- function(n, n_na, mean = 0, sd = 1) {
+  sample(c(rnorm(n - n_na, mean = mean, sd = sd), rep(NA, n_na)))
+}
+
+datos_na <- tibble(
+  a = rnorm_na(5, 1),
+  b = rnorm_na(5, 1),
+  c = rnorm_na(5, 2),
+  d = rnorm(5)
+)
+```
+
+```{r}
+#| echo: true
+
+datos_na
+```
+
+Vamos a necesitar incorporar el argumento `na.rm = TRUE` a la función `mean()` porque si no el resultado será:
+
+```{r}
+#| echo: true
+
+datos_na |> summarise(
+  across(.cols = a:d, 
+         .fns = mean),
+)
+
+```
+
+Como lo hacemos dentro de un `across()`? 
+
+Existen dos formas sintácticas de realizarlo.
+
+-   Una función estilo-purrr (tidyverse) que tiene la forma `~ mean(.x, na.rm = TRUE)`
+
+-   Una función anónima de R base mediante `function(x) mean(x, na.rm = TRUE)` o más sencilla en su forma de atajo: `\(x) mean(x, na.rm = TRUE)`
+
+```{r}
+#| echo: true
+
+# forma tidyverse (purrr)
+
+datos_na |> 
+  summarise(
+    across(a:d, ~ mean(.x, na.rm = TRUE))
+  )
+```
+
+```{r}
+#| echo: true
+
+# forma R base (atajo función anómina)
+
+datos_na |> 
+  summarise(
+    across(a:d, \(x) mean(x, na.rm = TRUE))
+  )
+```
+
+Se le llama función anónima justamente porque no hace falta ponerle nombre. Acostumbrarse a esta notación es más útil que la forma del tidyverse porque aplica también para otras funciones. 
+
+Para incorporar más de una función dentro de `across()` debemos incluirlas dentro de una lista \[`list()`\]
+
+```{r}
+#| echo: true
+
+datos_na |> 
+  summarise(
+    across(a:d, list(
+      media = \(x) mean(x, na.rm = TRUE),
+      desvio = \(x) sd(x, na.rm = TRUE),
+      n_na = \(x) sum(is.na(x))))
+  )
+```
+
+La lista contiene cada función a aplicar, bajo nombres definidos a la izquierda del igual. El resultado muestra 12 variables producto de hacer tres operaciones en cada una de las 4 variables de la tabla.
+
+Observemos que los nombres de las variables resultado se componen del nombre de la columna, un guión bajo y el nombre definido de la función aplicada (`variable_funcion`)
+
+La estructura de estos nombres se pueden modificar con el argumento `.names`.
+
+El marcador especial para el nombre de columna es `{.col}` y para el nombre de la función definida es `{.fn}`.
+
+Por ejemplo, podríamos invertir el orden predeterminado de los nombres del resumen (`funcion_variable`)
+
+```{r}
+#| echo: true
+
+datos_na |> 
+  summarise(
+    across(a:d, list(
+      media = \(x) mean(x, na.rm = TRUE),
+      n_na = \(x) sum(is.na(x))),
+      .names = "{.fn}_{.col}")
+  )
+```
+
