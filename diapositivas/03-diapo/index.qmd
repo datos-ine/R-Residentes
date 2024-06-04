@@ -1,0 +1,266 @@
+---
+pagetitle: "Exploración, depuración y gestión de tablas de datos"
+format: 
+  revealjs:
+    self-contained: true
+    width: 1920
+    height: 1080
+    slide-number: true
+    transition: fade
+    theme: [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+##  {#intro-diapo .invert data-menu-title="Exploración, depuración y gestión de tablas de datos"}
+
+[**Gestión de tablas de datos**]{.custom-title}
+
+[***Encuentro 3***]{.custom-subtitle}
+
+## Etapas previas al análisis {.title-top}
+
+<br>
+
+La etapa de depuración o limpieza de datos comienza con la exploración inicial y el diagnóstico adecuado de cada variable de interés de la tabla de datos cruda. Interviene aquí también, el objetivo del análisis, el protocolo de análisis pensado y el diccionario de datos asociado a la tabla.
+
+![](images\flujo.png){.absolute top="480" left="250" width="1250"}
+
+<br> <br> <br> <br> <br> <br>
+
+Finalmente se hacen las transformaciones necesarias en los datos a partir del diagnóstico realizado.
+
+## Limpieza de datos {.title-top}
+
+![](images\Ordenar_datos.PNG){.absolute top="150" left="1250" width="800"}
+
+<br> <br>
+
+. . .
+
+-   Exploración de la estructura de la tabla de datos
+
+. . .
+
+-   Verificación del tipo de dato de cada variable de interés
+
+. . .
+
+-   Detección de valores faltantes
+
+. . .
+
+-   Detección de errores
+
+    -   Identificación de las categorías de las variables cualitativas
+
+    -   Análisis de los mínimos y máximos de valores de cada variable cuantitativa
+
+. . .
+
+## Exploración y diagnóstico de datos {.title-top}
+
+
+La exploración de datos se puede incluir dentro del **análisis exploratorio de datos** (EDA en inglés) y persigue un primer grupo de objetivos:
+
+. . .
+
+-   Conocer la estructura de la tabla de datos y sus tipos de variables
+
+. . .
+
+-   Detectar observaciones incompletas (valores faltantes)
+
+. . .
+
+-   Detectar datos con errores e inconsistencias
+
+. . .
+
+Habitualmente hablamos de ***calidad de los datos*** en relación a los items anteriores.
+
+Una segunda etapa nos va servir para conocer la distribución de las variables de interés a partir de:
+
+-   Resumir datos mediante estadísticos y gráficos
+-   Detectar valores atípicos (outlier)
+
+## Paquetes especificos {.title-top}
+
+<br>
+
+Vamos a trabajar con dos paquetes especiales que nos permiten hacer este trabajo, aunque dentro del universo de librerías de R vamos a encontrar muchos mas.
+
+::: {.callout-note icon=false}
+## skimr
+
+Está diseñado para obtener un resumen rápido de la estructura de tablas de datos y es compatible con el ecosistema tidyverse.
+:::
+
+<br>
+
+::: {.callout-note icon=false}
+## dlookr
+
+Se define como una colección de herramientas que permiten el diagnóstico, la exploración y la transformación de datos. El diagnóstico de datos proporciona información y visualización de valores faltantes, valores atípicos y valores únicos y negativos para ayudarle a comprender la distribución y la calidad de sus datos.
+:::
+
+## Duplicados {.title-top}
+
+<br>
+
+Otro de los problemas con los debemos lidiar muchas veces es tener observaciones duplicadas.
+
+<br>
+
+Las tareas habituales en estos casos son:
+
+::: {.fragment .fade-in-then-semi-out}
+-   Detección de observaciones y/o partes de observaciones (variables clave) duplicadas
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+-   Eliminación de duplicados a partir de observaciones únicas.
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+-   Recortar tabla de datos para eliminar duplicados
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+-   Marcar duplicados (conservando duplicados en la tabla)
+:::
+
+## Detección de duplicados {.title-top}
+
+<br>
+
+Las observaciones duplicadas pueden ser completas, generalmente a raíz de algún problema informático o bien parcial.
+
+Habitualmente nuestras tablas tienen identificadores únicos de las unidades de análisis o una serie de identificadores que resultan en una clave combinada.
+
+<br>
+
+La función `get_dupes()` del paquete **janitor** es una herramienta útil para identificar estas repeticiones.
+
+## Eliminación de duplicados por observaciones únicas {.title-top}
+
+<br>
+
+Para eliminar filas duplicadas en una tabla de datos podemos utilizar la función `distinct()` de **dplyr**.
+
+<br>
+
+`distinct()` muestra observaciones únicas a partir de la coincidencia total o parcial.
+
+<br>
+
+La función tiene un argumento denominado `.keep_all` que permite valores *TRUE* o *FALSE*. Si se iguala a *TRUE* se mantienen en el resultado todas las variables que son parte de la tabla, aunque estas no estén declaradas dentro del `distinct()`.
+
+Por defecto, este argumento se encuentra igualado a *FALSE*.
+
+## Eliminación de duplicados por recorte de observaciones {.title-top}
+
+<br>
+
+Recortar es similar a filtrar, la diferencia está en que se filtra por condiciones y recortamos por posiciones.
+
+La familia de funciones que se puede utilizar para recortar es `slice_*()`.
+
+Estas funciones pueden ser muy útiles si se aplican a un dataframe agrupado porque la operación de recorte se realiza en cada grupo por separado.
+
+<br>
+
+Por ejemplo, si en una tabla hay varias filas por persona con fechas distintas de un seguimiento y queremos quedarnos con la última visita, podemos utilizar combinado `group_by()` y `slice_max()` para quedarnos sólo con esa observación del último encuentro para cada uno.
+
+## Marcar duplicados {.title-top}
+
+<br>
+
+Si lo que buscamos es mantener a todas las observaciones de la tabla pero marcar aquellos que consideramos duplicados podemos hacer:
+
+1.  Recortar el dataframe original a sólo las filas para el análisis. Guardar los ID de este dataframe reducido en un vector.
+
+2.  En el dataframe original, creamos una variable de marca usando `case_when()`, basándonos si el ID está presente en el dataframe reducido (vector de ID anterior).
+
+## Datos ordenados (tidydata) {.title-top}
+
+<br>
+
+Llamamos **tidy data** o "datos ordenados" cuando:
+
+-   Cada variable está en una columna
+-   Cada observación está en una fila
+-   Cada celda del cruce entre una columna y una fila es un valor
+-   Cada tabla pertenece a una unidad de observación
+
+![](images\tidy_data.PNG){.absolute top="650" left="300" width="1200"}
+
+## Problemas comunes {.title-top}
+
+<br>
+
+-   Una variable se extiende por varias columnas.
+
+-   Una observación está dispersa entre múltiples filas
+
+**Solución:**
+
+![](images\Tidy.PNG){.absolute top="180" left="1220" width="600"}
+
+Usamos funciones pivot del paquete **tidyr** de tidyverse
+
+-   Función **pivot_longer()** - Convierte nombres de variables en valores de una nueva variable.
+
+-   Función **pivot_wider()** - Convierte valores de una variable en variables nuevas.
+
+## Pivoteos {.title-top}
+
+![](images\pivot.PNG){.absolute top="200" left="300" width="900"}
+
+## `pivot_longer()` {.title-top}
+
+<br>
+
+- Soluciona cuando una variable se extiende por varias columnas (las categorías estan en la cabecera).
+
+- Produce tablas "alargando" los datos, aumentando el número de filas y disminuyendo el número de columnas
+
+```{r}
+#| echo: true
+#| eval: false
+
+datos |> 
+  pivot_longer(
+    cols = <seleccion de columnas>,
+    names_to = "variable_categorías",
+    values_to = "variable_valores"
+  )
+```
+
+
+
+## `pivot_wider()` {.title-top}
+
+<br>
+
+- Soluciona cuando una observación está dispersa entre múltiples filas.
+
+- Produce tablas "estirando" los datos, aumentando el número de columnas y disminuyendo el número de filas.
+
+```{r}
+#| echo: true
+#| eval: false
+
+datos |> 
+  pivot_wider(
+    names_from = variable_nombres,
+    values_from = variable_valores
+  )
+```
