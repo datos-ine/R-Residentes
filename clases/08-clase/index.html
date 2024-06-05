@@ -90,6 +90,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#aplicación-en-conversión-o-creación-de-nuevas-variables" id="toc-aplicación-en-conversión-o-creación-de-nuevas-variables" class="nav-link" data-scroll-target="#aplicación-en-conversión-o-creación-de-nuevas-variables">Aplicación en conversión o creación de nuevas variables</a></li>
   </ul></li>
   <li><a href="#filtros-con-iteraciones" id="toc-filtros-con-iteraciones" class="nav-link" data-scroll-target="#filtros-con-iteraciones">Filtros con iteraciones</a></li>
+  <li><a href="#operaciones-por-fila" id="toc-operaciones-por-fila" class="nav-link" data-scroll-target="#operaciones-por-fila">Operaciones por fila</a>
+  <ul class="collapse">
+  <li><a href="#c_across" id="toc-c_across" class="nav-link" data-scroll-target="#c_across"><code>c_across()</code></a></li>
+  </ul></li>
+  <li><a href="#bucles-tradicionales" id="toc-bucles-tradicionales" class="nav-link" data-scroll-target="#bucles-tradicionales">Bucles tradicionales</a>
+  <ul class="collapse">
+  <li><a href="#bucle-for" id="toc-bucle-for" class="nav-link" data-scroll-target="#bucle-for">Bucle for</a></li>
+  <li><a href="#bucle-while" id="toc-bucle-while" class="nav-link" data-scroll-target="#bucle-while">Bucle while</a></li>
+  </ul></li>
+  <li><a href="#mapeos-con-purrr" id="toc-mapeos-con-purrr" class="nav-link" data-scroll-target="#mapeos-con-purrr">Mapeos con purrr</a></li>
   </ul>
 </nav>
 </div>
@@ -117,14 +127,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>temas a desarrollar</p>
-<p>operaciones multiples</p>
-<p>across()</p>
-<p>en mutate para conversion</p>
-<p>en summarise para resumenes</p>
-<p>filtros - if_any if_all</p>
-<p>operaciones por filas rowwise() c_across()</p>
-<p>bucles tradicionales</p>
-<p>for - while - repeat</p>
 <p>map() de purrr</p>
 <p>ver ajuste de tasas - ver nest unnest</p>
 <section id="operaciones-múltiples" class="level2">
@@ -445,7 +447,306 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2 B     0.253 0.380 -0.491 0.00576</code></pre>
 </div>
 </div>
-<p>Acá el valor de cada en todas las observaciones</p>
+<p>Acá el valor de cada en todas las observaciones filtradas debe estar en el rango -0,5 a 1. Hay una que cumple la condición en las 4 variables numéricas.</p>
+</section>
+<section id="operaciones-por-fila" class="level2">
+<h2 class="anchored" data-anchor-id="operaciones-por-fila">Operaciones por fila</h2>
+<p>La filosofía del tidy-data, es particularmente adecuada para realizar operaciones por columnas (variables). Todas las funciones de resúmenes toman los valores de forma vertical para realizar una operación, como si tuviesemos vectores “parados” dentro de un dataframe.</p>
+<p>Hay algunas circunstancias que nos lleva a necesitar realizar operaciones por filas y por supuesto esto es mucho más difícil.</p>
+<p>El paquete <strong>dplyr</strong> incorporó en sus últimas versiones la función <code>rowwise()</code> que implementa un agrupamiento por cada fila, haciendo que sea más sencillo hacer estas tareas.</p>
+<p>El uso más común es hacer calculos agregados por filas (por ejemplo, calcular la media de x, y, z).</p>
+<p>La apariencia de los resultados de la función son similares a <code>group_by()</code> donde solo vemos cambios en los metadatos del dataframe que luego van a ser aprovechados por las funciones siguientes.</p>
+<p>Tenemos un pequeño dataframe de prueba:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+      x     y     z
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     1     3     5
+2     2     4     6</code></pre>
+</div>
+</div>
+<p>Y aplicamos la función <code>rowwise()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+# Rowwise: 
+      x     y     z
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     1     3     5
+2     2     4     6</code></pre>
+</div>
+</div>
+<p>Lo único que vemos es la aparición de un metadatos que dice “rowwise”. Significa que las filas de la tabla está agrupadas a lo ancho y las funciones que vengan despues van a respetar este agrupamiento.</p>
+<p>Para ver los cambios que produce este agrupamiento veamos un ejemplo comparativo.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span>  </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">m =</span> <span class="fu">mean</span>(<span class="fu">c</span>(x, y, z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+      x     y     z     m
+  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+1     1     3     5   3.5
+2     2     4     6   3.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">m =</span> <span class="fu">mean</span>(<span class="fu">c</span>(x, y, z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+# Rowwise: 
+      x     y     z     m
+  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+1     1     3     5     3
+2     2     4     6     4</code></pre>
+</div>
+</div>
+<p>Si usamos <code>mutate()</code> con un dataframe normal, calcula la media de x, y, z tomando los valores de todas las filas. Si lo aplicamos a una tabla con <strong>rowwise</strong>, calcula la media de cada fila, tomando los valores de cada una de las tres variables.</p>
+<p>Opcionalmente, se puede indicar variables como “identificador”.</p>
+<p>Estas variables se conservan cuando se llama a un <code>summarise()</code> por ejemplo, por lo que se comportan de manera similar a las variables de agrupación pasadas a <code>group_by()</code>.</p>
+<p>Cambiamos el dataframe que ahora es:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  nombre       x     y     z
+  &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1 Mercurio     1     3     5
+2 Venus        2     4     6</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span>   </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">m =</span> <span class="fu">mean</span>(<span class="fu">c</span>(x, y, z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 1
+      m
+  &lt;dbl&gt;
+1     3
+2     4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>df  <span class="sc">|&gt;</span>  </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>(nombre) <span class="sc">|&gt;</span>  </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">m =</span> <span class="fu">mean</span>(<span class="fu">c</span>(x, y, z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'nombre'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+# Groups:   nombre [2]
+  nombre       m
+  &lt;chr&gt;    &lt;dbl&gt;
+1 Mercurio     3
+2 Venus        4</code></pre>
+</div>
+</div>
+<p><code>rowwise()</code> es solo una forma especial de agrupación por fila, por lo que si deseamos eliminarla de una tabla, simplemente llamamos a <code>ungroup()</code>.</p>
+<section id="c_across" class="level3">
+<h3 class="anchored" data-anchor-id="c_across"><code>c_across()</code></h3>
+<p>La versión de <code>across()</code> para operaciones simultáneas por filas se llama <code>c_across()</code> y tiene los mismos fundamentos aplicados a estas situaciones, aunque es mucho más sencilla dado que no tiene argumentos extras.</p>
+<p>Aplicada sobre el último dataframe:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>df  <span class="sc">|&gt;</span>  </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>(nombre) <span class="sc">|&gt;</span>  </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">m =</span> <span class="fu">mean</span>(<span class="fu">c_across</span>(x<span class="sc">:</span>z)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'nombre'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+# Groups:   nombre [2]
+  nombre       m
+  &lt;chr&gt;    &lt;dbl&gt;
+1 Mercurio     3
+2 Venus        4</code></pre>
+</div>
+</div>
+<p>O bien, seleccionando los tipos de datos numéricos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>df  <span class="sc">|&gt;</span>  </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>(nombre) <span class="sc">|&gt;</span>  </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">m =</span> <span class="fu">mean</span>(<span class="fu">c_across</span>(<span class="fu">where</span>(is.numeric))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'nombre'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+# Groups:   nombre [2]
+  nombre       m
+  &lt;chr&gt;    &lt;dbl&gt;
+1 Mercurio     3
+2 Venus        4</code></pre>
+</div>
+</div>
+<p>Sin duda este abordaje tiene mayor utilidad cuando las operaciones por fila contemplan muchas variables.</p>
+</section>
+</section>
+<section id="bucles-tradicionales" class="level2">
+<h2 class="anchored" data-anchor-id="bucles-tradicionales">Bucles tradicionales</h2>
+<p>Un bucle es una estructura de control que permite ejecutar un conjunto de instrucciones repetidamente mientras se cumple una condición específica. Los bucles, se encuentran en todos los lenguajes de programación y se utilizan para automatizar tareas repetitivas (iterar).</p>
+<p>El lenguaje R también los implementa en sus paquetes base y dispone de tres de ellos:</p>
+<blockquote class="blockquote">
+<p><code>for()</code>: estructura de control de flujo de iteración a partir de una secuencia de elementos</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><code>while()</code>: estructura de control de flujo de iteración mientras una condición es verdadera</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><code>repeat()</code>: estructura de control de flujo de iteración de repetición y control manual con <code>break</code></p>
+</blockquote>
+<section id="bucle-for" class="level3">
+<h3 class="anchored" data-anchor-id="bucle-for">Bucle for</h3>
+<p>La idea principal de este bucle es repetir un bloque de código un número específico de veces o para cada elemento en objeto (vector, etc).</p>
+<p>Su esquema de funcionamiento es el siguiente:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/for.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+</figure>
+</div>
+<p>La estructura sintáctica viene dada por un <em>snippet</em> que RStudio escribe por nosotros:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (variable <span class="cf">in</span> vector) {</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Un ejemplo sencillo que muestra su funcionamiento puede ser.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"El valor de i es:"</span>, i, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El valor de i es: 1 
+El valor de i es: 2 
+El valor de i es: 3 
+El valor de i es: 4 
+El valor de i es: 5 </code></pre>
+</div>
+</div>
+<p>Lo que estamos haciendo es recorriendo un vector numérico de 5 posiciones, declarado bajo el nombre de <strong>i</strong> y luego entre llaves se encuentra el código que escribe en pantalla un texto fijo que incluye a los valores de <strong>i</strong> en cada repetición.</p>
+<p>El mismo formato de bucle puede recorrer posiciones y/o elementos de un objeto de la siguiente forma:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">8</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)) {</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(x[i]<span class="sc">*</span><span class="dv">4</span>)     <span class="co"># utiliza la i para recorrer los elementos de x por su indice</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 24
+[1] 16
+[1] 12
+[1] 32</code></pre>
+</div>
+</div>
+<p>Recorre el vector x y multiplica cada elemento por 4. Lo mismo que hace R vectorizadamente de manera simple.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">*</span> <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 24 16 12 32</code></pre>
+</div>
+</div>
+<p>Por supuesto que la mayoría de las tareas que R ejecuta de forma vectorizada hace que no tengamos que usar esta forma de bucle para operaciones comunes pero, a veces cuando el código dentro de las llaves es extenso y complejo será necesario.</p>
+</section>
+<section id="bucle-while" class="level3">
+<h3 class="anchored" data-anchor-id="bucle-while">Bucle while</h3>
+<p>Este bucle se repite mientras la condición especificada es evaluada como verdadera (TRUE). Si en algún momento la condición se evalúa como falsa (FALSE), el bucle se detiene y la ejecución continúa con el código después del bucle.</p>
+<p>Su esquema de funcionamiento es el siguiente:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/while.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+</figure>
+</div>
+<p>Su <em>snippet</em> es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (condition) {</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Un ejemplo posible muestra que primero inicializamos una variable <strong>i</strong> que servirá como contador, luego escribimos una condición en el inicio del bucle indicando que recién saldremos de él cuando esta variable sea igual a 6 y finalmente dentro de las llaves armamos el código que se va a repetir no olvidando de la sumatoria del contador <strong>i</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"El valor de i es:"</span>, i, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>El valor de i es: 1 
+El valor de i es: 2 
+El valor de i es: 3 
+El valor de i es: 4 
+El valor de i es: 5 </code></pre>
+</div>
+</div>
+<p>El último de los bucles, <code>repeat()</code> no tiene automatizada su salida y necesita que incorporemos dentro de su cuerpo entre llaves la función <code>break</code> a partir de alguna condición (se suele utilizar la estructura condicional <code>if()</code>). Esta forma de trabajo lo hace peligroso porque suelen generar bucles infinitos de donde no hay salida, salvo la interrupción abrupta del interprete.</p>
+<p>Dado que su construcción es muy artesanal no vamos a mostrarlo en este documento. Su uso no será necesario durante el curso y probablemente no lo necesiten aplicar en el futuro.</p>
+</section>
+</section>
+<section id="mapeos-con-purrr" class="level2">
+<h2 class="anchored" data-anchor-id="mapeos-con-purrr">Mapeos con purrr</h2>
+<p>El patrón de iterar sobre un vector o variable, hacer algo con cada elemento u observación y almacenar los resultados es tan común que el paquete <strong>purrr</strong> incluído en tidyverse aporta una familia de funciones dedicadas a esta tarea.</p>
+<p>Hay una función para cada tipo de output:</p>
+<p><code>map()</code> crea una lista. <code>map_lgl()</code> crea un vector lógico. <code>map_int()</code> crea un vector de enteros. <code>map_dbl()</code> crea un vector de numérico (double). <code>map_chr()</code> crea un vector de caracteres. <code>map_df()</code> crea un dataframe</p>
+<p>Cada función <strong>map</strong>, mapea, es decir, toma un vector como input, aplica una función a cada elemento y luego devuelve un nuevo vector que tiene la misma longitud (y los mismos nombres) que el input. El tipo de vector está determinado por el sufijo de la función map.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/map.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+</figure>
+</div>
+<p>Su estructura sintáctica es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="at">.x =</span> , </span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">.f =</span> , </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">... =</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Donde en <code>.x</code> es un vector, un data-frame o lista, <code>.f</code> es la función a aplicar y <code>...</code> son otros argumentos opcionales.</p>
+<p>Las funciones map tienen un nivel superior de abstracción y puede llevar mucho tiempo entender cómo funcionan.</p>
+<p>Algunos usuarios evitan los bucles tradicionales porque son lentos o “viejos”, pero esto no es así. Las principales ventajas de usar funciones como <code>map()</code> no es la velocidad, sino la claridad: hacen que tu código sea más fácil de escribir y leer.</p>
+<p>Unos ejemplos simples de uso son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a partir del dataframe datos utilizado anteriormente</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>datos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   grupo       a      b       c        d
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1 B     -1.12    1.52   0.304   1.03   
+ 2 B     -0.403  -1.55   0.448  -0.285  
+ 3 A     -0.467   0.585  0.0530 -1.22   
+ 4 B      0.780   0.124  0.922   0.181  
+ 5 B     -0.0834  0.216  2.05   -0.139  
+ 6 B      0.253   0.380 -0.491   0.00576
+ 7 A     -0.0285 -0.502 -2.31    0.385  
+ 8 A     -0.0429 -0.333  1.01   -0.371  
+ 9 B      1.37   -1.02  -0.709   0.644  
+10 A     -0.226  -1.07  -0.688  -0.220  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="at">.x =</span> datos, <span class="at">.f =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in mean.default(.x[[i]], ...): argument is not numeric or logical:
+returning NA</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       grupo            a            b            c            d 
+          NA  0.002867988 -0.165413060  0.058542390  0.000676731 </code></pre>
+</div>
+</div>
+<p>Calcula la media por cada una de las variables numéricas. Como la variable grupo no lo es me devuelve una advertencia y un NA como resultado.</p>
+<p>Si quisiera evitarlo podemos hacer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="at">.x =</span> datos <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>grupo), </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">.f =</span> mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           a            b            c            d 
+ 0.002867988 -0.165413060  0.058542390  0.000676731 </code></pre>
+</div>
+</div>
+<p>Observen que dentro del argumento <code>.x</code> construimos una estructura con tuberías donde seleccionamos a todas las variables menos a <strong>grupo</strong> (esto se puede hacer en los argumentos de muchas funciones).</p>
 </section>
 
 </main>

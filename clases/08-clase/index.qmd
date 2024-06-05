@@ -24,11 +24,7 @@ editor: source
 
 temas a desarrollar
 
-   c_across()
 
-bucles tradicionales
-
-for - while - repeat
 
 map() de purrr
 
@@ -438,7 +434,7 @@ Cambiamos el dataframe que ahora es:
 #| echo: false
 
 
-df <- tibble(name = c("Mercurio", "Venus"), x = 1:2, y = 3:4, z = 5:6)
+df <- tibble(nombre = c("Mercurio", "Venus"), x = 1:2, y = 3:4, z = 5:6)
 
 df
 ```
@@ -452,7 +448,7 @@ df |>
 
 
 df  |>  
-  rowwise(name) |>  
+  rowwise(nombre) |>  
   summarise(m = mean(c(x, y, z)))
 
 ```
@@ -460,4 +456,168 @@ df  |>
 `rowwise()` es solo una forma especial de agrupación por fila, por lo que si deseamos eliminarla de una tabla, simplemente llamamos a `ungroup()`.
 
 ### `c_across()`
+
+La versión de `across()` para operaciones simultáneas por filas se llama `c_across()` y tiene los mismos fundamentos aplicados a estas situaciones, aunque es mucho más sencilla dado que no tiene argumentos extras.
+
+Aplicada sobre el último dataframe:
+
+```{r}
+df  |>  
+  rowwise(nombre) |>  
+  summarise(m = mean(c_across(x:z)))
+```
+
+O bien, seleccionando los tipos de datos numéricos:
+
+```{r}
+df  |>  
+  rowwise(nombre) |>  
+  summarise(m = mean(c_across(where(is.numeric))))
+```
+
+Sin duda este abordaje tiene mayor utilidad cuando las operaciones por fila contemplan muchas variables.
+
+## Bucles tradicionales
+
+Un bucle es una estructura de control que permite ejecutar un conjunto de instrucciones repetidamente mientras se cumple una condición específica. Los bucles, se encuentran en todos los lenguajes de programación y se utilizan para automatizar tareas repetitivas (iterar).
+
+El lenguaje R también los implementa en sus paquetes base y dispone de tres de ellos:
+
+> `for()`: estructura de control de flujo de iteración a partir de una secuencia de elementos
+
+> `while()`: estructura de control de flujo de iteración mientras una condición es verdadera
+
+> `repeat()`: estructura de control de flujo de iteración de repetición y control manual con `break`
+
+### Bucle for
+
+La idea principal de este bucle es repetir un bloque de código un número específico de veces o para cada elemento en objeto (vector, etc).
+
+Su esquema de funcionamiento es el siguiente:
+
+![](images/for.png){fig-align="center" width="400"}
+
+La estructura sintáctica viene dada por un *snippet* que RStudio escribe por nosotros:
+
+```{r}
+#| echo: true
+#| eval: false
+for (variable in vector) {
+  
+}
+```
+
+
+Un ejemplo sencillo que muestra su funcionamiento puede ser.
+
+```{r}
+for (i in 1:5) {
+  cat("El valor de i es:", i, "\n")
+}
+```
+Lo que estamos haciendo es recorriendo un vector numérico de 5 posiciones, declarado bajo el nombre de **i** y luego entre llaves se encuentra el código que escribe en pantalla un texto fijo que incluye a los valores de **i** en cada repetición.
+
+
+
+El mismo formato de bucle puede recorrer posiciones y/o elementos de un objeto de la siguiente forma:
+
+```{r}
+x <- c(6, 4, 3, 8)
+
+for (i in 1:length(x)) {
+  print(x[i]*4)     # utiliza la i para recorrer los elementos de x por su indice
+}
+```
+Recorre el vector x y multiplica cada elemento por 4. Lo mismo que hace R vectorizadamente de manera simple.
+
+```{r}
+x * 4
+```
+Por supuesto que la mayoría de las tareas que R ejecuta de forma vectorizada hace que no tengamos que usar esta forma de bucle para operaciones comunes pero, a veces cuando el código dentro de las llaves es extenso y complejo será necesario.
+
+### Bucle while
+
+Este bucle se repite mientras la condición especificada es evaluada como verdadera (TRUE). Si en algún momento la condición se evalúa como falsa (FALSE), el bucle se detiene y la ejecución continúa con el código después del bucle.
+
+Su esquema de funcionamiento es el siguiente:
+
+![](images/while.png){fig-align="center" width="400"}
+
+Su *snippet* es:
+
+```{r}
+#| echo: true
+#| eval: false
+while (condition) {
+  
+}
+```
+
+Un ejemplo posible muestra que primero inicializamos una variable **i** que servirá como contador, luego escribimos una condición en el inicio del bucle indicando que recién saldremos de él cuando esta variable sea igual a 6 y finalmente dentro de las llaves armamos el código que se va a repetir no olvidando de la sumatoria del contador **i**.
+
+```{r}
+i <- 1
+
+while (i <= 5) {
+  cat("El valor de i es:", i, "\n")
+  i <- i + 1
+}
+```
+El último de los bucles, `repeat()` no tiene automatizada su salida y necesita que incorporemos dentro de su cuerpo entre llaves la función `break` a partir de alguna condición (se suele utilizar la estructura condicional `if()`). Esta forma de trabajo lo hace peligroso porque suelen generar bucles infinitos de donde no hay salida, salvo la interrupción abrupta del interprete.
+
+Dado que su construcción es muy artesanal no vamos a mostrarlo en este documento. Su uso no será necesario durante el curso y probablemente no lo necesiten aplicar en el futuro.
+
+## Mapeos con purrr
+
+El patrón de iterar sobre un vector o variable, hacer algo con cada elemento u observación y almacenar los resultados es tan común que el paquete **purrr** incluído en  tidyverse aporta una familia de funciones dedicadas a esta tarea. 
+
+Hay una función para cada tipo de output:
+
+`map()` crea una lista.
+`map_lgl()` crea un vector lógico.
+`map_int()` crea un vector de enteros.
+`map_dbl()` crea un vector de numérico (double).
+`map_chr()` crea un vector de caracteres.
+`map_df()`  crea un dataframe
+
+Cada función **map**, mapea, es decir, toma un vector como input, aplica una función a cada elemento y luego devuelve un nuevo vector que tiene la misma longitud (y los mismos nombres) que el input. El tipo de vector está determinado por el sufijo de la función map.
+
+![](images/map.png){fig-align="center" width="400"}
+
+Su estructura sintáctica es:
+
+```{r}
+#| echo: true
+#| eval: false
+map(.x = , 
+    .f = , 
+    ... = )
+```
+
+Donde en `.x` es un vector, un data-frame o lista, `.f` es la función a aplicar y `...` son otros argumentos opcionales.
+
+Las funciones map tienen un nivel superior de abstracción y puede llevar mucho tiempo entender cómo funcionan. 
+
+Algunos usuarios evitan los bucles tradicionales porque son lentos o "viejos", pero esto no es así. Las principales ventajas de usar funciones como `map()` no es la velocidad, sino la claridad: hacen que tu código sea más fácil de escribir y leer.
+
+Unos ejemplos simples de uso son:
+
+```{r}
+# a partir del dataframe datos utilizado anteriormente
+
+datos
+
+map_dbl(.x = datos, .f = mean)
+```
+Calcula la media por cada una de las variables numéricas. Como la variable grupo no lo es me devuelve una advertencia y un NA como resultado.
+
+Si quisiera evitarlo podemos hacer.
+
+```{r}
+map_dbl(.x = datos |> select(-grupo), 
+        .f = mean)
+```
+Observen que dentro del argumento `.x` construimos una estructura con tuberías donde seleccionamos a todas las variables menos a **grupo** (esto se puede hacer en los argumentos de muchas funciones).
+
+
 
