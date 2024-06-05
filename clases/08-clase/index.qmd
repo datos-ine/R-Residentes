@@ -24,18 +24,7 @@ editor: source
 
 temas a desarrollar
 
-operaciones multiples
-
-across()
-
-en mutate para conversion
-
-en summarise para resumenes
-
-filtros - if_any if_all
-
-operaciones por filas
-rowwise()   c_across()
+   c_across()
 
 bucles tradicionales
 
@@ -55,7 +44,7 @@ El paquete **dplyr** de *tidyverse* implementa desde hace poco tiempo un esquema
 
 Esta función se puede utilizar en estructuras de `mutate()` o `summarise()` dependiendo del resultado buscado y tiene dos partes fundamentales: la captura o selección de variables donde vamos a aplicar determinadas funciones y la declaración de las funciones a aplicar.
 
-## `across()`
+### `across()`
 
 La función se incorporó a partir de la versión de dplyr 1.0.0 y su sintaxis general es:
 
@@ -79,6 +68,8 @@ donde los argumentos son:
 
 `.names` = nombres de las columnas de salida. Aquí, {.col} es un marcador especial al que se le puede agregar el sufijo deseado.
 
+### Aplicación en resúmenes
+
 Veamos un ejemplo de uso para situaciones donde queremos obtener resumenes simultáneos.
 
 Tomemos la siguiente tabla de datos ficticios:
@@ -89,6 +80,8 @@ Tomemos la siguiente tabla de datos ficticios:
 #| warning: false
 
 library(tidyverse)
+
+set.seed(123)
 
 datos <- tibble(
   a = rnorm(10),
@@ -211,6 +204,8 @@ Que sucede si entre los datos de esas variables hay valores **NA**?
 ```{r}
 #| echo: false
 
+set.seed(123)
+
 rnorm_na <- function(n, n_na, mean = 0, sd = 1) {
   sample(c(rnorm(n - n_na, mean = mean, sd = sd), rep(NA, n_na)))
 }
@@ -308,4 +303,161 @@ datos_na |>
       .names = "{.fn}_{.col}")
   )
 ```
+
+### Aplicación en conversión o creación de nuevas variables
+
+Hasta el momento trabajamos con la función `across()` dentro de un resumen (`summarise`) pero al comienzo también dijimos que se puede utilizar para transformaciones masivas de datos.
+
+La plataforma para lograr esto es `mutate()` y lo podemos usar  modificando las variables originales o bien creando nuevas variables si cambiamos su nombre con `.names`.
+
+Para ejemplificar, aplicaremos la función `coalesce()` perteneciente a dplyr, para convertir los valores **NA** en ceros, transformando las variables originales anteriores.
+
+```{r}
+#| echo: true
+
+datos_na |> 
+  mutate(
+    across(a:d, \(x) coalesce(x, 0))
+  )
+```
+Si no agregamos ningún otro argumento el reemplazo de los valores **NA** por 0 se realiza en cada variable sobrescribiendo las observaciones.
+
+En cambio, si queremos que coexistan las variables originales con las nuevas incluyendo estos cambios podemos declarar en el argumento `.names` la estructura de los nombres nuevos. 
+
+```{r}
+#| echo: true
+
+datos_na |> 
+  mutate(
+    across(a:d, \(x) coalesce(x, 0),
+      .names = "{.col}_na_cero")
+  )
+```
+Otras conversiones posibles pueden utilizar funciones de reemplazo para variables cuantitativas como por ejemplo `exp()`, `log()`, `scale()`, etc. O bien convertir a factor variables character y hasta  aplicar funciones condicionales como `if_else()` o `case_when()`.  
+
+## Filtros con iteraciones
+
+El paquete **dplyr** trae consigo algunas funciones iterativas emparentadas con `across()` para usar dentro de estructuras de filtro -`filter()`-, es el caso de `if_any()` e `if_all()`.
+
+`if_any()` enmascara una repetición de **OR** lógicos `if_all()` una secuencia de **AND** lógicos.
+
+Usémoslas con los datos con los que venimos trabajando.
+
+```{r}
+#| echo: true
+
+datos_na |> 
+  filter(if_any(a:d, is.na))
+```
+
+Devuelve las observaciones donde en alguna de las variables encuentra algún NA.
+
+Es lo mismo que `filter(is.na(a) | is.na(b) | is.na(c) | is.na(d))`
+
+
+
+```{r}
+#| echo: true
+
+datos_na |> 
+  filter(if_all(a:d, is.na))
+```
+
+Devuelve las observaciones donde en todas las variables encuentra valores NA. En este caso no hay ninguna que cumpla esa condición, por eso el resultado es un dataframe vacío.
+
+Es lo mismo que `filter(is.na(a) & is.na(b) & is.na(c) & is.na(d))`
+
+Una forma rápida de armar filtros por múltiples variables escribiendo poco código.
+
+Las dos funciones de filtro trabajan con el mismo esquema que `across()`, por lo tanto se le puede aplicar una función o expresión de condición (todas deben devolver `TRUE` o `FALSE`)
+
+
+```{r}
+#| echo: true
+
+datos |> 
+  filter(if_all(a:d, \(x) x > -0.5 & x < 1))
+```
+
+Acá el valor de cada en todas las observaciones filtradas debe estar en el rango -0,5 a 1. Hay una que cumple la condición en las 4 variables numéricas.
+
+## Operaciones por fila
+
+La filosofía del tidy-data, es particularmente adecuada para realizar operaciones por columnas (variables). Todas las funciones de resúmenes toman los valores de forma vertical para realizar una operación, como si tuviesemos vectores "parados" dentro de un dataframe.
+
+Hay algunas circunstancias que nos lleva a necesitar realizar operaciones por filas y por supuesto esto es mucho más difícil. 
+
+El paquete **dplyr** incorporó en sus últimas versiones la función  `rowwise()` que implementa un agrupamiento por cada fila, haciendo que sea más sencillo hacer estas tareas.
+
+El uso más común es hacer calculos agregados por filas (por ejemplo, calcular la media de x, y, z).
+
+La apariencia de los resultados de la función son similares a `group_by()` donde solo vemos cambios en los metadatos del dataframe que luego van a ser aprovechados por las funciones siguientes.
+
+Tenemos un pequeño dataframe de prueba:
+
+```{r}
+#| echo: false
+
+
+df <- tibble(x = 1:2, y = 3:4, z = 5:6)
+
+df
+```
+
+Y aplicamos la función `rowwise()`
+
+```{r}
+#| echo: true
+
+df |> 
+  rowwise()
+```
+Lo único que vemos es la aparición de un metadatos que dice "rowwise". Significa que las filas de la tabla está agrupadas a lo ancho y las funciones que vengan despues van a respetar este agrupamiento.
+
+Para ver los cambios que produce este agrupamiento veamos un ejemplo comparativo.
+
+```{r}
+df |>  
+  mutate(m = mean(c(x, y, z)))
+
+df |> 
+  rowwise() |> 
+  mutate(m = mean(c(x, y, z)))
+```
+
+Si usamos `mutate()` con un dataframe normal, calcula la media de x, y, z tomando los valores de todas las filas. Si lo aplicamos a una tabla con **rowwise**, calcula la media de cada fila, tomando los valores de cada una de las tres variables.
+
+Opcionalmente, se puede indicar variables como "identificador". 
+
+Estas variables se conservan cuando se llama a un `summarise()` por ejemplo, por lo que se comportan de manera similar a las variables de agrupación pasadas a `group_by()`.
+
+Cambiamos el dataframe que ahora es:
+
+
+```{r}
+#| echo: false
+
+
+df <- tibble(name = c("Mercurio", "Venus"), x = 1:2, y = 3:4, z = 5:6)
+
+df
+```
+
+```{r}
+
+
+df |> 
+  rowwise() |>   
+  summarise(m = mean(c(x, y, z)))
+
+
+df  |>  
+  rowwise(name) |>  
+  summarise(m = mean(c(x, y, z)))
+
+```
+
+`rowwise()` es solo una forma especial de agrupación por fila, por lo que si deseamos eliminarla de una tabla, simplemente llamamos a `ungroup()`.
+
+### `c_across()`
 
