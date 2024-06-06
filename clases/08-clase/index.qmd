@@ -22,15 +22,9 @@ theme:
 editor: source
 ---
 
-temas a desarrollar
-
-
-
-map() de purrr
-
-ver ajuste de tasas - ver nest unnest
-
 ## Operaciones múltiples
+
+![](images/across.PNG){fig-align="center" width="300"}
 
 Muchas de las tareas que hicimos hasta ahora, ya sea transformando u obteniendo resultados resumenes de variables, las aplicamos variable a variable, es decir repitiendo las operaciones para cada una de las columnas de una tabla.
 
@@ -619,5 +613,201 @@ map_dbl(.x = datos |> select(-grupo),
 ```
 Observen que dentro del argumento `.x` construimos una estructura con tuberías donde seleccionamos a todas las variables menos a **grupo** (esto se puede hacer en los argumentos de muchas funciones).
 
+## Aplicación de un bucle tradicional
+
+Mostramos un ejemplo posible donde necesitamos aplicar un bucle para iterar una serie de repeticiones.
+
+Este ejemplo consiste en leer un archivo habitual en el trabajo epidemiológico como son las proyecciones poblacionales que publica el INDEC luego de cada censo. En este caso particular son proyecciones que van desde 2010 a 2040 para las 24 provincias de Argentina por quinquenios y sexo.
+
+La tabla tiene este formato:
+
+![](images/poblaciones.PNG){fig-align="center" width="700"}
+
+
+Cada provincia se ubica en una hoja del archivo Excel y la estructura de las proyecciones no tiene un formato que reconozcamos como ordenado. El objetivo es producir un dataframe donde nos queden 4 variables (Edad, Sexo, Provincia, Poblacion) con los datos de las proyecciones para 2024.
+
+Lo primero que vamos hacer es almacenar en un vector los nombres de las hojas del archivo.
+Usando la función `excel_sheets()` extraemos estos codigo-nombres (la expresión de índices `[-(1:2)]` sirve para omitir los nombres de la primera hoja oculta que tiene el archivo llamada "GraphData" y la segunda donde esta el total país).
+
+```{r}
+library(readxl)
+
+hojas <- excel_sheets("data/c2_proyecciones_prov_2010_2040.xls")[-(1:2)]
+```
+
+Nos va a quedar el vector **hojas** con los nombres de las 24 provincias que figuran en las hojas Excel.
+
+```{r}
+hojas
+```
+Para aprovechar el contenido vamos a construir otro vector con los códigos solos. Aplicamos la función `str_sub()` sobre **hojas**.
+
+```{r}
+provincias <- str_sub(hojas, start = 1, end = 2)
+```
+
+
+```{r}
+provincias 
+```
+
+A continuación vamos a necesitar separar la parte que no se repite y la parte que si. Por ejemplo, la columna donde está la edad cada 5 años es una parte fija que no necesaria volver a leer en cada hoja del archivo, en cambio las poblaciones si varían entre provincia y provincia.
+
+```{r}
+#| message: false
+grupo_edad <- read_excel("data/c2_proyecciones_prov_2010_2040.xls", 
+                         sheet = 2, range = "A36:A56", col_names = F)  |>  
+  rename("Edad" = "...1")
+```
+
+Leemos el archivo **"c2_proyecciones_prov_2010_2040.xls"** en su segunda hoja (la primera era la occulta) y con el rango "A36:A56". Desactivamos nombres de columnas y renombramos con el nombre `Edad`. Podríamos haber leído cualquiera de las 24 hojas porque la columna de edad es la misma para todas.
+
+```{r}
+grupo_edad
+```
+Nos queda un dataframe de nombre **grupo_edad** con 1 variable (Edad) y 21 observaciones.
+
+Ahora, antes de comenzar con las repeticiones del bucle, debemos estructurar el dataframe contenedor de estas lecturas iterativas.
+
+```{r}
+poblacion <- data.frame(Varon = NA, Mujer = NA, Provincia = NA, Edad = NA)
+```
+
+Creamos **poblacion** como un dataframe con 4 variables Varon, Mujer, Provincia y Edad con datos vacíos (NA).
+
+```{r}
+poblacion
+```
+
+Estamos en condiciones de utilizar un bucle for para ir rellenando el dataframe **poblacion** con las lecturas del archivo Excel.
+
+```{r}
+#| message: false
+#| warning: false
+for (i in 1:length(hojas)) {
+  datai <- read_excel("data/c2_proyecciones_prov_2010_2040.xls", 
+                     sheet = hojas[i], range = "K64:L84", col_names = F)
+  
+  datai <- datai |> mutate(Provincia = provincias[i]) |> 
+             rename("Varon" = "...1",
+                    "Mujer" = "...2") |> 
+             bind_cols(grupo_edad) 
+  
+  poblacion <- poblacion  |>  bind_rows(datai)
+}
+```
+
+Analicemos la estructura del `for()` y el contenido del cuerpo encerrado entre llaves:
+
+- Utilizamos la longitud del vector **hojas** para que la cantidad de repeticiones del bucle sea igual a la cantidad de hojas del archivo (serán 24 repeticiones, 1 por hoja)
+
+```{r}
+1:length(hojas)
+```
+- La primera línea del cuerpo crea el objeto **datai** que lee las poblaciones para el año 2024 de varones y mujeres usando un rango que deberemos construir mirando las ubicaciones dentro del archivo Excel. Además usamos la variable **i** del `for()` para recorrer el vector hojas que tiene el nombre de cada una de las 24 provincias idénticas a las hojas del archivo, por lo que en la vuelta 1 leera el rango de la hoja 02-CABA, en la segunda la de 06-BUENOS AIRES y así hasta la última (94-TIERRA DEL FUEGO).
+
+- La segunda estructura de código agrega a **datai** el código de la provincia en cada repetición recorriendo con la variable **i** el vector **provincias**. Luego renombra las cabeceras sin nombre para Varon y Mujer y finalmente une por columna con `bind_cols()` las edades. Esta forma es la misma en nombre de variables, posición y tipo de datos que el contenedor creado previamente (**poblacion**).
+
+- Por último, une por filas con `bind_rows()` a **datai** con **poblacion**.
+
+La operación construye un dataframe con dimensiones [ `r dim(poblacion)` ], es decir, 505 observaciones por 4 variables.
+
+Hay dos problemas finales para resolver, uno es que la primera observación es la de valores NA que usamos cuando creamos el contenedor.
+
+```{r}
+poblacion |> slice(1:4)
+```
+
+Con `drop_na()` la podemos eliminar sin mayores problemas.
+
+```{r}
+poblacion <- poblacion |> drop_na() # eliminamos primera linea con NA
+```
+
+El otro inconveniente es que la tabla final no cumple con los datos ordenados, porque Varon y Mujer no deberían ser nombres de variables sino categorías de la variable Sexo.
+
+Aplicamos lo que sabemos de pivoteos con **tidyr** para arreglarlo.
+
+```{r}
+poblacion <- poblacion |> 
+               pivot_longer(cols = c(Varon, Mujer), 
+                            names_to = "Sexo",
+                            values_to = "Poblacion")
+```
+
+El resultado final es la tabla buscada con poblaciones proyectada por el INDEC de las 24 provincias por sexo y grupos de edades quinquenales en formato tidy-data:
+
+```{r}
+poblacion
+```
+
+## Aplicación de una iteración map
+
+Imaginemos que tenemos varios archivos de datos con la misma estructura producto de la vigilancia epidemiológica o de un estudio de cohorte donde cada uno de ellos pertenece a un mes. Para analizar todo un año en una sola tabla final, deberíamos leer 12 archivos de nombres diferentes y luego unir los datos uno debajo del otro.
+
+Queremos hacer este trabajo pero simplificando el proceso agilizando el proceso de lectura y obtener una sola tabla con todas las observaciones generando un id que almacene el mes al que pertenece.
+
+Vamos a hacer uso de la función `dis_ls()` del paquete **fs** (file system) que es muy útil cuando debemos hacer operaciones con carpetas y archivos de sistema desde el código (en este caso Windows).
+
+```{r}
+library(fs)
+```
+
+Con la función `dir_ls()` obtenemos listados de directorio (similar a **dir()** de la línea de comandos de Windows). 
+
+Si en la carpeta están solos los archivos de datos no hay que aclarar nada más pero si hay otros se puede usar el argumento *glob* para definir un patrón de búsqueda. Para que esto funcione bien los archivos tienen que tener un mismo formato en su nombre. Por ejemplo, aprovechando el formato de estos archivos vamos a usar el patrón "datos_*". 
+
+```{r}
+archivos <- dir_ls(glob = "datos_*") 
+  
+archivos
+```
+Quedaron almacenados en el vector **archivos** los 12 nombres de los archivos mensuales. Observemos que tienen el formato "datos_mes_vigilancia.csv" y además nos dicen que son de texto plano con separador coma.
+
+A continuación aplicaremos la función `map_df()` del paquete purrr junto a la función `read_csv()` para repetir las lecturas de estos archivos agregando el nombre de cada uno a las observaciones de la tabla final.
+
+```{r}
+#| message: false
+#| warning: false
+datos <- archivos |> 
+           map_df(read_csv, .id = "archivo")
+```
+
+La primera variable que tendrá el mismo nombre que definimos en el argumento **.id** es el nombre completo del archivo fuente.
+
+```{r}
+datos |> count(archivo)
+```
+
+En estos datos de ejemplo ficticios hay 157 observaciones de cada uno de los meses, pero en la realidad estas cantidades seguramente son variantes.
+
+Para resolver el problema de que nos quede solamente el nombre del mes usaremos la función `separate_wider_delim()` de **tidyr** indicando que separe el nombre con el delimitador "_" y con el argumento **names** me quede la parte del medio con nombre mes y se deshaga de las constantes "datos" y "vigilancia".
+
+```{r}
+datos |> 
+  separate_wider_delim(cols = archivo, 
+                       delim = "_", 
+                       names = c(NA, "mes", NA)) |> 
+  count(mes)
+```
+
+La estructura completa unida por tuberías nos quedaría:
+
+
+```{r}
+#| message: false
+#| warning: false  
+datos <- dir_ls(glob = "datos_*")  |> 
+  map_df(read_csv, .id = "archivo") |> 
+  separate_wider_delim(cols = archivo, 
+                       delim = "_", 
+                       names = c(NA, "mes", NA)) 
+```
+
+El resultado final es que leímos 12 archivos (podrían ser muchos más, todos los que quisiéramos) en tan solo 3 líneas de código unidas por dos tuberías.
+
+```{r}
+datos
+```
 
 
