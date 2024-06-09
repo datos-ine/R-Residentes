@@ -1,0 +1,35 @@
+---
+title: "**Creación de funciones en R**"
+author: ""
+date: ""
+format:
+  html:
+    page-layout: full
+    include-in-header: 
+      - text: |
+          <link rel="icon" type="image/x-icon" href="favicon.ico">    
+    toc: true
+    toc-title: Contenidos
+    toc-location: left
+    toc_float: true
+    toc_collapsed: false
+    toc_depth: 4
+number_sections: true
+anchor_sections: true
+theme: 
+  light: [united, custom.scss]
+  dark: darkly
+editor: source
+---
+
+Incorporar:
+
+- Esqueleto de una función
+- argumentos, obligatorias y opcionales
+- manejo de errores mínimos
+- Ejemplo detallado función Gini
+
+
+## xxx
+
+![](images/across.PNG){fig-align="center" width="300"}
