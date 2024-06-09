@@ -128,6 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>Muchas de las tareas que hicimos hasta ahora, ya sea transformando u obteniendo resultados resumenes de variables, las aplicamos variable a variable, es decir repitiendo las operaciones para cada una de las columnas de una tabla.</p>
+<p>Una premisa del tidyverse, y también de la programación en general, es no copiar y pegar el código mas de dos veces. Si bien esta práctica ahorra tiempo y no esta mal en si mismo, hacerlo suele ser una fuente de errores y además incrementa las líneas de código del script.</p>
 <section id="operaciones-múltiples" class="level2">
 <h2 class="anchored" data-anchor-id="operaciones-múltiples">Operaciones múltiples</h2>
 <div class="quarto-figure quarto-figure-center">
@@ -135,8 +137,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="images/across.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
 </figure>
 </div>
-<p>Muchas de las tareas que hicimos hasta ahora, ya sea transformando u obteniendo resultados resumenes de variables, las aplicamos variable a variable, es decir repitiendo las operaciones para cada una de las columnas de una tabla.</p>
-<p>Una premisa del tidyverse, y también de la programación en general, es no copiar y pegar el código mas de dos veces. Si bien esta práctica ahorra tiempo y no esta mal en si mismo, hacerlo suele ser una fuente de errores y además incrementa las líneas de código del script.</p>
 <p>El paquete <strong>dplyr</strong> de <em>tidyverse</em> implementa desde hace poco tiempo un esquema de trabajo para operaciones múltiples o simultáneas a través de su función <code>across()</code>.</p>
 <p>Esta función se puede utilizar en estructuras de <code>mutate()</code> o <code>summarise()</code> dependiendo del resultado buscado y tiene dos partes fundamentales: la captura o selección de variables donde vamos a aplicar determinadas funciones y la declaración de las funciones a aplicar.</p>
 <section id="across" class="level3">
