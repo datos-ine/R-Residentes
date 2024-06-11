@@ -508,7 +508,7 @@ Podríamos utilizar un período en lugar de duración
 intervalo / years()
 ```
 
-Pero lo más útil es la divisón modular para redondear y quedarnos solo con los años:
+Pero lo más útil es la división modular para redondear y quedarnos solo con los años:
 
 ```{r}
 intervalo %/% dyears()
