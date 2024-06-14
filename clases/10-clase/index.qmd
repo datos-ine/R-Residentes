@@ -325,7 +325,111 @@ encuesta |> barras_ordenadas(estado_civil)
 
 ## Estudio de una función particular
 
+Las residentes del Instituto Nacional de Enfermedades Respiratorias (INER) “Emilio Coni” de Santa Fe nos enviaron una función que utilizan para calcular el indice Gini.
 
+El cuerpo de la función es el siguiente:
 
+```{r}
+#| eval: false
+#| echo: true
 
+igini2 <- function(a,b){
+  df <- data.frame(a,b);
+  df$tasa <- a/b;
+  dfo <- df[order(df$tasa,decreasing=TRUE),];
+  pcasos <- dfo$a/sum(dfo$a);
+  acasos <- c(0,cumsum(pcasos));
+  ppob <- dfo$b/sum(dfo$b);
+  apob <- c(0,cumsum(ppob));
+  dfc <- data.frame(acasos,apob);
+  h1 = h.select(apob, acasos, method = 'cv')
+  giniorig = sm.regression(apob,acasos,h = h1, col = 'blue', lty = 1)
+  AUCorig = trapz(giniorig$eval.points,giniorig$estimate)
+  (Giniorig1 = abs((AUCorig-0.5)*2))
+  return(Giniorig1)}
+```
 
+Utiliza funciones de los paquetes **sm** y **pracma** (o **caTools**).
+
+Luego la aplican a los datos mediante la asignación con R base de la variable donde tienen los casos y la variable donde tienen la población según jurisdicción.
+
+```{r}
+#| eval: false
+#| echo: true
+
+valorGini <- igini2(TablaDatosGINI$CASOS,TablaDatosGINI$POBLACION)
+valorGini <- format(round(valorGini, 4), nsmall=4)
+
+```
+
+Un forma de mejorar esta función, sin tocar el procedimiento interno (sobre todo las funciones externas que solo son compatibles con la sintaxis de R base) podría ser:
+
+```{r}
+igini2 <- function(casos, poblacion){
+  
+  if (!require("pacman")) install.packages("pacman")                  # <1>
+  pacman::p_load(dplyr, sm, pracma)
+  
+  df <- data.frame(casos, poblacion)
+  
+  df <- df |> 
+    mutate(tasa = {{ casos }} / {{ poblacion }}) |>                   # <2>
+    arrange(desc(tasa)) |> 
+    mutate(acasos = cumsum({{ casos }}/ sum({{ casos }})),
+           apob = cumsum({{ poblacion }}/ sum({{ poblacion }})))
+  
+  h1 <- h.select(df$apob, df$acasos, method = 'cv')
+  giniorig <- sm.regression(df$apob, df$acasos, h = h1, display = "none")      # <3>
+  AUCorig <- trapz(giniorig$eval.points, giniorig$estimate)
+  Giniorig1 <- abs((AUCorig-0.5)*2)
+  as.numeric(format(round(Giniorig1, 4), nsmall=4))                              # <4>
+}
+```
+1. Incorporamos el manejo de los paquetes necesarios dentro de la función. `p_load()` del paquete **pacman** posibilita instalar la librería antes de activarla si esta no se encuentra previamente instalada.
+2. Usamos formato tidyverse para las cosas que se pueden hacer de esta forma, aplicando el abrazo de las variables de argumento.
+3. Agregamos argumento *display = "none"* para anular el plot innecesario de la función `sm.regression()`
+4. Incorporamos el formateo del valor del índice Gini calculado dentro de la función
+
+La forma de aplicar la función ahora es mediante un summarise() de tidyverse:
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(readxl)
+
+base_dept_2023_2022 <- read_excel("base_dept_2023_2022.xlsx")
+
+base_dept_2023_2022 |> 
+  summarise(gini = igini2(casos, poblacion))
+```
+
+O si necesitamos asignar el valor en un vector independiente:
+
+```{r}
+valorGini <- base_dept_2023_2022 |> 
+  summarise(gini = igini2(casos, poblacion)) |> 
+  pull(gini)
+
+valorGini
+```
+
+## Importar funciones propias
+
+Una de propiedades más interesantes de las funciones creadas es que las podemos introducir en un script que llamaremos en nuestro trabajo cada vez que necesitemos ejecutarlas.
+
+La función `source()` nos permite llamar a ese o esos scripts externos y contar con las funciones a nuestra disposición.
+
+Entonces podemos automatizar algunas tareas, sobre todo en procesos repetitivos o que tienen un mismo esquema. Un ejemplo concreto en la epidemiología son las tareas vinculadas al análisis de datos provenientes de la vigilancia epidemiológica.
+
+La forma de hacerlo es sencilla, si mi scripts de funciones se llama "funciones.R" ejecutamos:
+
+```{r}
+#| eval: false
+#| echo: true
+
+source("funciones.R")
+```
+
+Cada vez que lo hagamos dentro del script de trabajo tendremos a disposición todas las funciones que se encuentran declaradas dentro del archivo "funciones.R".

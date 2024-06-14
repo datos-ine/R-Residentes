@@ -89,7 +89,7 @@ En síntesis, los pasos del método indirecto, para la comparación de dos pobla
 
 -   Obtención de las defunciones reales observadas en la población A por grupos de edad
 
--   Cálculo de las tasas de mortalidad específicas por edad observadas en la población B, es decir las tasas de la población tomada como referencia
+-   Cálculo de las tasas de mortalidad específicas por edad observadas en la población B, es decir las tasas de la población tomada como referencia.
 
 -   Cálculo de las defunciones esperadas para cada grupo de edad de la población A, si se aplican las tasas de mortalidad por grupo de edad de la población B (tasas de la población de referencia) a la estructura de edad de la población A
 
@@ -107,13 +107,15 @@ Se debe tener en cuenta que el ajuste por el método indirecto solo permite comp
 
 ## Ejemplo en lenguaje R
 
+### Método directo
+
 Para mostrar cómo se realiza la estandarización, compararemos tasas ajustadas de mortalidad por todas las causas durante el 2022 de la provincia de Santa Fe y de la Provincia de Buenos Aires.
 
 Necesitaremos las muertes ocurridas por todas las causas durante 2022 de las dos provincias por edad (en categorías de 5 años) y sexo (mujer, varón) y sus poblaciones proyectadas para ese año.
 
 También necesitamos una población de referencia, la población estándar. Para los propósitos de este ejercicio utilizaremos la población argentina de 2022.
 
-Iniciamos activando paquetes, en este caso vamos hacerlo con **tidyverse**, **readxl** para leer archivos Excel y con un paquete específico que nos va a servir para el ajuste directo que se llama **PHEindicatormethods**.
+Iniciamos activando paquetes, en este caso vamos hacerlo con **tidyverse**, **readxl** para leer archivos Excel y con un paquete específico que nos va a servir para el ajuste directo que se llama **PHEindicatormethods**. [link documentación](https://cran.r-project.org/web/packages/PHEindicatormethods/vignettes/DSR-vignette.html)
 
 ```{r}
 #| message: false
@@ -354,3 +356,6 @@ datos  |>
 Visualizamos que en la salida de la función están los valores de tasas ajustadas por 100000 y los intervalos de confianza al 95% para cada jurisdicción.
 
 Las tasas, en general disminuyeron respecto de las crudas y ahora se pueden comparar entre sí. En 2022, la provincia de Santa Fe tuvo casi 883 fallecidos por todas las causas cada 100000 contra 809 de la provincia de Buenos Aires.
+
+### Método indirecto
+
