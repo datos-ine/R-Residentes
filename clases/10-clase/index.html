@@ -87,6 +87,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#funciones-vectoriales" id="toc-funciones-vectoriales" class="nav-link" data-scroll-target="#funciones-vectoriales">Funciones vectoriales</a></li>
   <li><a href="#funciones-de-tablas-de-datos" id="toc-funciones-de-tablas-de-datos" class="nav-link" data-scroll-target="#funciones-de-tablas-de-datos">Funciones de tablas de datos</a></li>
   <li><a href="#funciones-para-gráficos" id="toc-funciones-para-gráficos" class="nav-link" data-scroll-target="#funciones-para-gráficos">Funciones para gráficos</a></li>
+  <li><a href="#estudio-de-una-función-particular" id="toc-estudio-de-una-función-particular" class="nav-link" data-scroll-target="#estudio-de-una-función-particular">Estudio de una función particular</a></li>
+  <li><a href="#importar-funciones-propias" id="toc-importar-funciones-propias" class="nav-link" data-scroll-target="#importar-funciones-propias">Importar funciones propias</a></li>
   </ul>
 </nav>
 </div>
@@ -388,7 +390,132 @@ Caused by warning:
 </div>
 </div>
 </div>
-<p>xx<img src="images/across.PNG" class="img-fluid quarto-figure quarto-figure-center" width="300"></p>
+</section>
+<section id="estudio-de-una-función-particular" class="level2">
+<h2 class="anchored" data-anchor-id="estudio-de-una-función-particular">Estudio de una función particular</h2>
+<p>Las residentes del Instituto Nacional de Enfermedades Respiratorias (INER) “Emilio Coni” de Santa Fe nos enviaron una función que utilizan para calcular el indice Gini.</p>
+<p>El cuerpo de la función es el siguiente:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>igini2 <span class="ot">&lt;-</span> <span class="cf">function</span>(a,b){</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(a,b);</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  df<span class="sc">$</span>tasa <span class="ot">&lt;-</span> a<span class="sc">/</span>b;</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  dfo <span class="ot">&lt;-</span> df[<span class="fu">order</span>(df<span class="sc">$</span>tasa,<span class="at">decreasing=</span><span class="cn">TRUE</span>),];</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  pcasos <span class="ot">&lt;-</span> dfo<span class="sc">$</span>a<span class="sc">/</span><span class="fu">sum</span>(dfo<span class="sc">$</span>a);</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  acasos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(pcasos));</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  ppob <span class="ot">&lt;-</span> dfo<span class="sc">$</span>b<span class="sc">/</span><span class="fu">sum</span>(dfo<span class="sc">$</span>b);</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  apob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">cumsum</span>(ppob));</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  dfc <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(acasos,apob);</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  h1 <span class="ot">=</span> <span class="fu">h.select</span>(apob, acasos, <span class="at">method =</span> <span class="st">'cv'</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  giniorig <span class="ot">=</span> <span class="fu">sm.regression</span>(apob,acasos,<span class="at">h =</span> h1, <span class="at">col =</span> <span class="st">'blue'</span>, <span class="at">lty =</span> <span class="dv">1</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  AUCorig <span class="ot">=</span> <span class="fu">trapz</span>(giniorig<span class="sc">$</span>eval.points,giniorig<span class="sc">$</span>estimate)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  (<span class="at">Giniorig1 =</span> <span class="fu">abs</span>((AUCorig<span class="fl">-0.5</span>)<span class="sc">*</span><span class="dv">2</span>))</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(Giniorig1)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Utiliza funciones de los paquetes <strong>sm</strong> y <strong>pracma</strong> (o <strong>caTools</strong>).</p>
+<p>Luego la aplican a los datos mediante la asignación con R base de la variable donde tienen los casos y la variable donde tienen la población según jurisdicción.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>valorGini <span class="ot">&lt;-</span> <span class="fu">igini2</span>(TablaDatosGINI<span class="sc">$</span>CASOS,TablaDatosGINI<span class="sc">$</span>POBLACION)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>valorGini <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">round</span>(valorGini, <span class="dv">4</span>), <span class="at">nsmall=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Un forma de mejorar esta función, sin tocar el procedimiento interno (sobre todo las funciones externas que solo son compatibles con la sintaxis de R base) podría ser:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="annotated-cell-19"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-19-1"><a href="#annotated-cell-19-1" aria-hidden="true" tabindex="-1"></a>igini2 <span class="ot">&lt;-</span> <span class="cf">function</span>(casos, poblacion, <span class="at">grafico =</span> <span class="cn">TRUE</span>){</span>
+<span id="annotated-cell-19-2"><a href="#annotated-cell-19-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-19-3" class="code-annotation-target"><a href="#annotated-cell-19-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="annotated-cell-19-4"><a href="#annotated-cell-19-4" aria-hidden="true" tabindex="-1"></a>  pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr, sm, pracma)</span>
+<span id="annotated-cell-19-5"><a href="#annotated-cell-19-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="annotated-cell-19-6"><a href="#annotated-cell-19-6" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(casos, poblacion)</span>
+<span id="annotated-cell-19-7"><a href="#annotated-cell-19-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="annotated-cell-19-8"><a href="#annotated-cell-19-8" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-19-9" class="code-annotation-target"><a href="#annotated-cell-19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">tasa =</span>  casos  <span class="sc">/</span>  poblacion ) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-19-10"><a href="#annotated-cell-19-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(tasa)) <span class="sc">|&gt;</span> </span>
+<span id="annotated-cell-19-11"><a href="#annotated-cell-19-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">acasos =</span> <span class="fu">cumsum</span>( casos <span class="sc">/</span> <span class="fu">sum</span>( casos )),</span>
+<span id="annotated-cell-19-12"><a href="#annotated-cell-19-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">apob =</span> <span class="fu">cumsum</span>( poblacion <span class="sc">/</span> <span class="fu">sum</span>( poblacion )))</span>
+<span id="annotated-cell-19-13"><a href="#annotated-cell-19-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="annotated-cell-19-14"><a href="#annotated-cell-19-14" aria-hidden="true" tabindex="-1"></a>  casos <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">pull</span>(acasos)</span>
+<span id="annotated-cell-19-15"><a href="#annotated-cell-19-15" aria-hidden="true" tabindex="-1"></a>  poblacion <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">pull</span>(apob)</span>
+<span id="annotated-cell-19-16"><a href="#annotated-cell-19-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="annotated-cell-19-17"><a href="#annotated-cell-19-17" aria-hidden="true" tabindex="-1"></a>  acasos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, casos)</span>
+<span id="annotated-cell-19-18"><a href="#annotated-cell-19-18" aria-hidden="true" tabindex="-1"></a>  apob <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, poblacion)</span>
+<span id="annotated-cell-19-19"><a href="#annotated-cell-19-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="annotated-cell-19-20"><a href="#annotated-cell-19-20" aria-hidden="true" tabindex="-1"></a>  h1 <span class="ot">&lt;-</span> <span class="fu">h.select</span>(apob, acasos, <span class="at">method =</span> <span class="st">'cv'</span>)</span>
+<span id="annotated-cell-19-21"><a href="#annotated-cell-19-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-19-22" class="code-annotation-target"><a href="#annotated-cell-19-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (grafico <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="annotated-cell-19-23"><a href="#annotated-cell-19-23" aria-hidden="true" tabindex="-1"></a>    giniorig <span class="ot">&lt;-</span> <span class="fu">sm.regression</span>(apob, acasos, <span class="at">h =</span> h1) }</span>
+<span id="annotated-cell-19-24"><a href="#annotated-cell-19-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="annotated-cell-19-25"><a href="#annotated-cell-19-25" aria-hidden="true" tabindex="-1"></a>    giniorig <span class="ot">&lt;-</span> <span class="fu">sm.regression</span>(apob, acasos, <span class="at">h =</span> h1, <span class="at">display =</span> <span class="st">"none"</span>) </span>
+<span id="annotated-cell-19-26"><a href="#annotated-cell-19-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="annotated-cell-19-27"><a href="#annotated-cell-19-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="annotated-cell-19-28"><a href="#annotated-cell-19-28" aria-hidden="true" tabindex="-1"></a>  AUCorig <span class="ot">&lt;-</span> <span class="fu">trapz</span>(giniorig<span class="sc">$</span>eval.points, giniorig<span class="sc">$</span>estimate)</span>
+<span id="annotated-cell-19-29"><a href="#annotated-cell-19-29" aria-hidden="true" tabindex="-1"></a>  Giniorig1 <span class="ot">&lt;-</span> <span class="fu">abs</span>((AUCorig<span class="fl">-0.5</span>)<span class="sc">*</span><span class="dv">2</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-19" data-target-annotation="4" onclick="event.preventDefault();" href="">4</a><span id="annotated-cell-19-30" class="code-annotation-target"><a href="#annotated-cell-19-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">format</span>(<span class="fu">round</span>(Giniorig1, <span class="dv">4</span>), <span class="at">nsmall=</span><span class="dv">4</span>))</span>
+<span id="annotated-cell-19-31"><a href="#annotated-cell-19-31" aria-hidden="true" tabindex="-1"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-19" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="3" data-code-annotation="1">Incorporamos el manejo de los paquetes necesarios dentro de la función. <code>p_load()</code> del paquete <strong>pacman</strong> posibilita instalar la librería antes de activarla si esta no se encuentra previamente instalada.</span>
+</dd>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="9" data-code-annotation="2">Usamos formato tidyverse para las cosas que se pueden hacer de esta forma.</span>
+</dd>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="22" data-code-annotation="3">Agregamos un condicional para consultar sobre el estado del argumento grafico. Si grafico es TRUE se produce el plot, si es FALSE el argumento <em>display = “none”</em> anula el plot de la función <code>sm.regression()</code></span>
+</dd>
+<dt data-target-cell="annotated-cell-19" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-19" data-code-lines="30" data-code-annotation="4">Incorporamos el formateo del valor del índice Gini con 4 decimales calculado dentro de la función.</span>
+</dd>
+</dl>
+</div>
+</div>
+<p>La forma de aplicar la función ahora es mediante un summarise() de tidyverse:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>base_dept_2023_2022 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"base_dept_2023_2022.xlsx"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>base_dept_2023_2022 <span class="sc">|&gt;</span> </span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gini =</span> <span class="fu">igini2</span>(casos, poblacion))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+   gini
+  &lt;dbl&gt;
+1 0.402</code></pre>
+</div>
+</div>
+<p>Como la función se encuentra dentro de un summarise() la salida es un dataframe de 1 x 1. Si solo necesitamos asignar el valor en un vector independiente, sin gráfico hacemos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>valorGini <span class="ot">&lt;-</span> base_dept_2023_2022 <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gini =</span> <span class="fu">igini2</span>(casos, poblacion, <span class="at">grafico =</span> F)) <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(gini)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>valorGini</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4017</code></pre>
+</div>
+</div>
+</section>
+<section id="importar-funciones-propias" class="level2">
+<h2 class="anchored" data-anchor-id="importar-funciones-propias">Importar funciones propias</h2>
+<p>Una de características más interesantes de las funciones creadas es que las podemos introducir en un script que llamaremos en nuestro sesión cada vez que necesitemos ejecutarlas.</p>
+<p>La función <code>source()</code> nos permite llamar a ese o esos scripts externos y contar con las funciones a nuestra disposición.</p>
+<p>Entonces podemos automatizar algunas tareas, sobre todo en procesos repetitivos o que tienen un mismo procedimiento. Un ejemplo concreto en la epidemiología son las tareas vinculadas al análisis de datos provenientes de la vigilancia epidemiológica.</p>
+<p>La forma de hacerlo es sencilla, si mi script de funciones se llama <strong><em>“funciones.R”</em></strong> ejecutamos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"funciones.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Cada vez que lo hagamos dentro del script de trabajo tendremos a disposición todas las funciones que se encuentran declaradas dentro del archivo <strong><em>“funciones.R”</em></strong>.</p>
 </section>
 
 </main>

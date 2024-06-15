@@ -365,7 +365,7 @@ valorGini <- format(round(valorGini, 4), nsmall=4)
 Un forma de mejorar esta función, sin tocar el procedimiento interno (sobre todo las funciones externas que solo son compatibles con la sintaxis de R base) podría ser:
 
 ```{r}
-igini2 <- function(casos, poblacion){
+igini2 <- function(casos, poblacion, grafico = TRUE){
   
   if (!require("pacman")) install.packages("pacman")                  # <1>
   pacman::p_load(dplyr, sm, pracma)
@@ -373,22 +373,34 @@ igini2 <- function(casos, poblacion){
   df <- data.frame(casos, poblacion)
   
   df <- df |> 
-    mutate(tasa = {{ casos }} / {{ poblacion }}) |>                   # <2>
+    mutate(tasa =  casos  /  poblacion ) |>                          # <2>
     arrange(desc(tasa)) |> 
-    mutate(acasos = cumsum({{ casos }}/ sum({{ casos }})),
-           apob = cumsum({{ poblacion }}/ sum({{ poblacion }})))
+    mutate(acasos = cumsum( casos / sum( casos )),
+           apob = cumsum( poblacion / sum( poblacion )))
   
-  h1 <- h.select(df$apob, df$acasos, method = 'cv')
-  giniorig <- sm.regression(df$apob, df$acasos, h = h1, display = "none")      # <3>
+  casos <- df |> pull(acasos)
+  poblacion <- df |> pull(apob)
+  
+  acasos <- c(0, casos)
+  apob <- c(0, poblacion)
+  
+  h1 <- h.select(apob, acasos, method = 'cv')
+  
+  if (grafico == TRUE) {                                               # <3>
+    giniorig <- sm.regression(apob, acasos, h = h1) }
+  else {
+    giniorig <- sm.regression(apob, acasos, h = h1, display = "none") 
+  }
+  
   AUCorig <- trapz(giniorig$eval.points, giniorig$estimate)
   Giniorig1 <- abs((AUCorig-0.5)*2)
-  as.numeric(format(round(Giniorig1, 4), nsmall=4))                              # <4>
+  as.numeric(format(round(Giniorig1, 4), nsmall=4))                    # <4>
 }
 ```
 1. Incorporamos el manejo de los paquetes necesarios dentro de la función. `p_load()` del paquete **pacman** posibilita instalar la librería antes de activarla si esta no se encuentra previamente instalada.
-2. Usamos formato tidyverse para las cosas que se pueden hacer de esta forma, aplicando el abrazo de las variables de argumento.
-3. Agregamos argumento *display = "none"* para anular el plot innecesario de la función `sm.regression()`
-4. Incorporamos el formateo del valor del índice Gini calculado dentro de la función
+2. Usamos formato tidyverse para las cosas que se pueden hacer de esta forma.
+3. Agregamos un condicional para consultar sobre el estado del argumento grafico. Si grafico es TRUE se produce el plot, si es FALSE el argumento *display = "none"* anula el plot de la función `sm.regression()`
+4. Incorporamos el formateo del valor del índice Gini con 4 decimales calculado dentro de la función.
 
 La forma de aplicar la función ahora es mediante un summarise() de tidyverse:
 
@@ -404,12 +416,11 @@ base_dept_2023_2022 <- read_excel("base_dept_2023_2022.xlsx")
 base_dept_2023_2022 |> 
   summarise(gini = igini2(casos, poblacion))
 ```
-
-O si necesitamos asignar el valor en un vector independiente:
+Como la función se encuentra dentro de un summarise() la salida es un dataframe de 1 x 1. Si solo necesitamos asignar el valor en un vector independiente, sin gráfico hacemos:
 
 ```{r}
 valorGini <- base_dept_2023_2022 |> 
-  summarise(gini = igini2(casos, poblacion)) |> 
+  summarise(gini = igini2(casos, poblacion, grafico = F)) |> 
   pull(gini)
 
 valorGini
@@ -417,13 +428,13 @@ valorGini
 
 ## Importar funciones propias
 
-Una de propiedades más interesantes de las funciones creadas es que las podemos introducir en un script que llamaremos en nuestro trabajo cada vez que necesitemos ejecutarlas.
+Una de características más interesantes de las funciones creadas es que las podemos introducir en un script que llamaremos en nuestro sesión cada vez que necesitemos ejecutarlas.
 
 La función `source()` nos permite llamar a ese o esos scripts externos y contar con las funciones a nuestra disposición.
 
-Entonces podemos automatizar algunas tareas, sobre todo en procesos repetitivos o que tienen un mismo esquema. Un ejemplo concreto en la epidemiología son las tareas vinculadas al análisis de datos provenientes de la vigilancia epidemiológica.
+Entonces podemos automatizar algunas tareas, sobre todo en procesos repetitivos o que tienen un mismo procedimiento. Un ejemplo concreto en la epidemiología son las tareas vinculadas al análisis de datos provenientes de la vigilancia epidemiológica.
 
-La forma de hacerlo es sencilla, si mi scripts de funciones se llama "funciones.R" ejecutamos:
+La forma de hacerlo es sencilla, si mi script de funciones se llama ***"funciones.R"*** ejecutamos:
 
 ```{r}
 #| eval: false
@@ -432,4 +443,4 @@ La forma de hacerlo es sencilla, si mi scripts de funciones se llama "funciones.
 source("funciones.R")
 ```
 
-Cada vez que lo hagamos dentro del script de trabajo tendremos a disposición todas las funciones que se encuentran declaradas dentro del archivo "funciones.R".
+Cada vez que lo hagamos dentro del script de trabajo tendremos a disposición todas las funciones que se encuentran declaradas dentro del archivo ***"funciones.R"***.

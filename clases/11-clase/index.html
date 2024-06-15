@@ -105,7 +105,11 @@ div.csl-indent {
   <ul>
   <li><a href="#método-directo" id="toc-método-directo" class="nav-link active" data-scroll-target="#método-directo">Método directo</a></li>
   <li><a href="#método-indirecto" id="toc-método-indirecto" class="nav-link" data-scroll-target="#método-indirecto">Método indirecto</a></li>
-  <li><a href="#ejemplo-en-lenguaje-r" id="toc-ejemplo-en-lenguaje-r" class="nav-link" data-scroll-target="#ejemplo-en-lenguaje-r">Ejemplo en lenguaje R</a></li>
+  <li><a href="#ejemplo-en-lenguaje-r" id="toc-ejemplo-en-lenguaje-r" class="nav-link" data-scroll-target="#ejemplo-en-lenguaje-r">Ejemplo en lenguaje R</a>
+  <ul class="collapse">
+  <li><a href="#método-directo-1" id="toc-método-directo-1" class="nav-link" data-scroll-target="#método-directo-1">Método directo</a></li>
+  <li><a href="#método-indirecto-1" id="toc-método-indirecto-1" class="nav-link" data-scroll-target="#método-indirecto-1">Método indirecto</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -183,7 +187,7 @@ div.csl-indent {
 <p>En síntesis, los pasos del método indirecto, para la comparación de dos poblaciones A y B hipotéticas, son los siguientes:</p>
 <ul>
 <li><p>Obtención de las defunciones reales observadas en la población A por grupos de edad</p></li>
-<li><p>Cálculo de las tasas de mortalidad específicas por edad observadas en la población B, es decir las tasas de la población tomada como referencia</p></li>
+<li><p>Cálculo de las tasas de mortalidad específicas por edad observadas en la población B, es decir las tasas de la población tomada como referencia.</p></li>
 <li><p>Cálculo de las defunciones esperadas para cada grupo de edad de la población A, si se aplican las tasas de mortalidad por grupo de edad de la población B (tasas de la población de referencia) a la estructura de edad de la población A</p></li>
 <li><p>Cálculo del total de defunciones esperadas en la población A</p></li>
 <li><p>Cálculo de la <strong><em>razón de mortalidad estandarizada</em></strong> (<strong>RME</strong>), tomando como numerador las defunciones observadas en la población A, y como denominador, las defunciones esperadas en la población A, si tuviera la estructura de mortalidad (las tasas de mortalidad por grupo de edad) de la población B.</p></li>
@@ -203,6 +207,8 @@ div.csl-indent {
 </section>
 <section id="ejemplo-en-lenguaje-r" class="level2">
 <h2 class="anchored" data-anchor-id="ejemplo-en-lenguaje-r">Ejemplo en lenguaje R</h2>
+<section id="método-directo-1" class="level3">
+<h3 class="anchored" data-anchor-id="método-directo-1">Método directo</h3>
 <p>Para mostrar cómo se realiza la estandarización, compararemos tasas ajustadas de mortalidad por todas las causas durante el 2022 de la provincia de Santa Fe y de la Provincia de Buenos Aires.</p>
 <p>Necesitaremos las muertes ocurridas por todas las causas durante 2022 de las dos provincias por edad (en categorías de 5 años) y sexo (mujer, varón) y sus poblaciones proyectadas para ese año.</p>
 <p>También necesitamos una población de referencia, la población estándar. Para los propósitos de este ejercicio utilizaremos la población argentina de 2022.</p>
@@ -568,7 +574,36 @@ $ POBLACION    &lt;dbl&gt; 680, 503, 361, 25617, 12567, 881, 2659, 11273, 1706, 
 </div>
 <p>Visualizamos que en la salida de la función están los valores de tasas ajustadas por 100000 y los intervalos de confianza al 95% para cada jurisdicción.</p>
 <p>Las tasas, en general disminuyeron respecto de las crudas y ahora se pueden comparar entre sí. En 2022, la provincia de Santa Fe tuvo casi 883 fallecidos por todas las causas cada 100000 contra 809 de la provincia de Buenos Aires.</p>
+</section>
+<section id="método-indirecto-1" class="level3">
+<h3 class="anchored" data-anchor-id="método-indirecto-1">Método indirecto</h3>
+<p>Así como la función <code>phe_dsr()</code> calcula las tasas ajustadas aplicando el método directo, la función <code>calculate_ISRatio()</code> del mismo paquete <strong>PHEindicatormethods</strong> lo hace usando el método indirecto.</p>
+<p>La sintaxis completa de la función es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calculate_ISRatio</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>data,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>x,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>n,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>x_ref,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>n_ref,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="at">refpoptype =</span> <span class="st">"vector"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="at">type =</span> <span class="st">"full"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="at">confidence =</span> <span class="fl">0.95</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Donde los argumentos son:</p>
+<ul>
+<li><p><strong>data</strong>: nombre del dataframe que contiene los <strong>datos</strong> (puede usarse con tidyverse llamando al dataframe a la izquierda de la tubería)</p></li>
+<li><p><strong>x</strong>: nombre de la variable que contiene los casos / eventos</p></li>
+<li><p><strong>n</strong>: nombre de la variable que contiene la población</p></li>
+<li><p><strong>x_ref</strong>: eventos / casos observados en la población de referencia. Puede ser una variable de datos o un vector.</p></li>
+<li><p><strong>n_ref</strong>: población de referencia. Puede ser una variable de datos o un vector.</p></li>
+<li><p><strong>refpoptype</strong>: si es “field” x_ref y n_ref deberán ser variables de datos. si es “vector” busca las referencias como vectores externos; predeterminado = “vector”</p></li>
+<li><p><strong>type</strong>: define que valores muestra en el cálculo. “standard” (para sólo datos) o “full” (para datos y metadatos del calculo); predeterminado = “full”</p></li>
+<li><p><strong>confidence</strong>: nivel de confianza de los IC; 0.95 por defecto</p></li>
+</ul>
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

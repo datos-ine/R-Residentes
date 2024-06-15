@@ -359,3 +359,40 @@ Las tasas, en general disminuyeron respecto de las crudas y ahora se pueden comp
 
 ### Método indirecto
 
+Así como la función `phe_dsr()` calcula las tasas ajustadas aplicando el método directo, la función `calculate_ISRatio()` del mismo paquete **PHEindicatormethods** lo hace usando el método indirecto.
+
+La sintaxis completa de la función es:
+
+```{r}
+#| echo: true
+#| eval: false
+calculate_ISRatio(
+data,
+x,
+n,
+x_ref,
+n_ref,
+refpoptype = "vector",
+type = "full",
+confidence = 0.95
+)
+
+```
+
+Donde los argumentos son:
+
+- **data**:  nombre del dataframe que contiene los **datos** (puede usarse con tidyverse llamando al dataframe a la izquierda de la tubería)
+
+-  **x**: nombre de la variable que contiene los casos / eventos
+
+-  **n**: nombre de la variable que contiene la población 
+
+- **x_ref**:  eventos / casos observados en la población de referencia. Puede ser una variable de datos o un vector.
+
+- **n_ref**: población de referencia. Puede ser una variable de datos o un vector.
+
+- **refpoptype**:  si es "field" x_ref y n_ref deberán ser variables de datos. si es "vector" busca las referencias como vectores externos; predeterminado = "vector"
+
+- **type**: define que valores muestra en el cálculo. "standard" (para sólo datos) o "full" (para datos y metadatos del calculo); predeterminado = "full"
+
+- **confidence**: nivel de confianza de los IC; 0.95 por defecto
