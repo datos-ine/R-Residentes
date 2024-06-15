@@ -138,13 +138,13 @@ Hace unos años a un desarrollador se le ocurrió crear un paquete que contiene 
 
 El paquete se llama **rstatix** y provee un marco simple e intuitivo compatible con el uso de tuberías, coherente con la filosofía de diseño "tidyverse", para realizar pruebas estadísticas descriptivas básicas y otras más avanzadas de inferencia y modelado.
 
-Las funciones relacionadas con la inferencia estadística, como t-test, ANOVAS, correlaciones y tamaños de efecto, así como también valores p ajustados o agregados de etiquetas de significación no serán explicados en este curso pero aquellxs estudiantes que les interese profundizar y utilizarlas le pueden sacar un provecho muy útil a este paquete. 
-
-El sitio web del paquete es  [rstatix](https://rpkgs.datanovia.com/rstatix/index.html)
+Las funciones relacionadas con la inferencia estadística, como t-test, ANOVAS, correlaciones y tamaños de efecto, así como también valores p ajustados o agregados de etiquetas de significación no serán explicados en este curso pero aquellxs estudiantes que les interese profundizar y utilizarlas le pueden sacar un provecho muy útil a este paquete, cuyo sitio es <https://rpkgs.datanovia.com/rstatix/index.html>.
 
 Respecto del ejemplo anterior la función de **rstatix** que reemplaza al `t.test()` tradicional es `t_test()`, es decir que al modo tidyverse reemplaza en el nombre el punto por un guión bajo (sucede en todas las funciones del paquete). 
 
 ```{r}
+#| message: false
+#| warning: false
 library(rstatix)
 
 datos |> 
@@ -301,6 +301,10 @@ datos |>
               missing_text = "Sin dato") |> 
   modify_header(label ~ "**Variable**")
 ```
+
+El argumento `statistic` permite que, mediante una lista, configuremos los estadísticos a presentar. Para todas las variables continuas seleccionamos la media (mean) y el desvío estandar (sd); para todas las variables categóricas el conteo de cada categoría y el porcentaje. Los decimales de las variables continuas quedan definidos en 1 y cuando aparezcan valores NA serán expresados con la etiqueta "Sin dato". Por último, la cabecera de la tabla en la comuna de las variables será "Variable" en negrita.
+
+### Flextable
 
 ![](images/flextable.png){fig-align="center" width="100"}
 
