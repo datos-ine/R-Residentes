@@ -22,10 +22,6 @@ theme:
 editor: source
 ---
 
-Incorporar:
-
-- Ejemplo detallado función Gini
-
 Una de las ventajas de usar lenguajes abiertos como el R es poder crear funciones. 
 
 Las funciones nos permiten automatizar tareas comunes de una manera más potente y general que copiar y pegar. 
@@ -80,7 +76,7 @@ donde:
 
 Para explicar su funcionamiento hagamos un ejemplo sencillo:
 
-Supongamos que un labor habitual en nuestro trabajo sea convertir en años la diferencia entre dos fechas, por ejemplo entre la fecha de nacimiento y otra, para calcular la edad.
+Supongamos que una labor habitual en nuestro trabajo sea convertir en años la diferencia entre dos fechas, por ejemplo entre la fecha de nacimiento y otra, para calcular la edad.
 
 Queremos construir una función que realice este trabajo, recibiendo dos fechas como vectores y devolviendo una cantidad de años como vector.
 
