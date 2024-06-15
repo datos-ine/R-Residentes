@@ -370,7 +370,7 @@ $ POBLACION    &lt;dbl&gt; 680, 503, 361, 25617, 12567, 881, 2659, 11273, 1706, 
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="2">Usamos <code>cur_interval()</code> para crear intervalos de clase cada 5 años (cerrados a izquierda y abiertos a derecha). Produce salidas tipo [0,5] que necesitamos convertir en etiquetas iguales a la de la variable <code>GRUPEDAD</code> de <strong>poblaciones</strong>, es decir 0-4.</span>
+<span data-code-cell="annotated-cell-13" data-code-lines="5" data-code-annotation="2">Usamos <code>cut_interval()</code> para crear intervalos de clase cada 5 años (cerrados a izquierda y abiertos a derecha). Produce salidas tipo [0,5] que necesitamos convertir en etiquetas iguales a la de la variable <code>GRUPEDAD</code> de <strong>poblaciones</strong>, es decir 0-4.</span>
 </dd>
 <dt data-target-cell="annotated-cell-13" data-target-annotation="3">3</dt>
 <dd>
@@ -580,20 +580,19 @@ $ POBLACION    &lt;dbl&gt; 680, 503, 361, 25617, 12567, 881, 2659, 11273, 1706, 
 <p>Así como la función <code>phe_dsr()</code> calcula las tasas ajustadas aplicando el método directo, la función <code>calculate_ISRatio()</code> del mismo paquete <strong>PHEindicatormethods</strong> lo hace usando el método indirecto.</p>
 <p>La sintaxis completa de la función es:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">calculate_ISRatio</span>(</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>data,</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>x,</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>n,</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>x_ref,</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>n_ref,</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="at">refpoptype =</span> <span class="st">"vector"</span>,</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="at">type =</span> <span class="st">"full"</span>,</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="at">confidence =</span> <span class="fl">0.95</span></span>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate_ISRatio</span>(</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span>,</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_ref =</span>,</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_ref =</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">refpoptype =</span> <span class="st">"vector"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"full"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">confidence =</span> <span class="fl">0.95</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Donde los argumentos son:</p>
 <ul>
-<li><p><strong>data</strong>: nombre del dataframe que contiene los <strong>datos</strong> (puede usarse con tidyverse llamando al dataframe a la izquierda de la tubería)</p></li>
 <li><p><strong>x</strong>: nombre de la variable que contiene los casos / eventos</p></li>
 <li><p><strong>n</strong>: nombre de la variable que contiene la población</p></li>
 <li><p><strong>x_ref</strong>: eventos / casos observados en la población de referencia. Puede ser una variable de datos o un vector.</p></li>

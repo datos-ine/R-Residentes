@@ -230,7 +230,7 @@ defunciones <- defunciones |>
 ```
 1. Si la unidad de edad es mayor a 1 (es decir, menor a unidad de tiempo año -meses, días, etc-) le asignamos a la variable `EDAD` cero años.
 
-2. Usamos `cur_interval()` para crear intervalos de clase cada 5 años (cerrados a izquierda y abiertos a derecha). Produce salidas tipo \[0,5\] que necesitamos convertir en etiquetas iguales a la de la variable `GRUPEDAD` de **poblaciones**, es decir 0-4.
+2. Usamos `cut_interval()` para crear intervalos de clase cada 5 años (cerrados a izquierda y abiertos a derecha). Produce salidas tipo \[0,5\] que necesitamos convertir en etiquetas iguales a la de la variable `GRUPEDAD` de **poblaciones**, es decir 0-4.
 
 3. Para lograr ese cambio y como los intervalos se producen como factor convertimos a character para poder operar con `GRUPEDAD`
 
@@ -366,22 +366,20 @@ La sintaxis completa de la función es:
 ```{r}
 #| echo: true
 #| eval: false
-calculate_ISRatio(
-data,
-x,
-n,
-x_ref,
-n_ref,
-refpoptype = "vector",
-type = "full",
-confidence = 0.95
+datos |> 
+  calculate_ISRatio(
+    x =,
+    n =,
+    x_ref =,
+    n_ref =,
+    refpoptype = "vector",
+    type = "full",
+    confidence = 0.95
 )
 
 ```
 
 Donde los argumentos son:
-
-- **data**:  nombre del dataframe que contiene los **datos** (puede usarse con tidyverse llamando al dataframe a la izquierda de la tubería)
 
 -  **x**: nombre de la variable que contiene los casos / eventos
 
