@@ -280,7 +280,7 @@ datos_na |> head(4)
 
 Vemos algunos valores **NA** entre las observaciones.
 
-## Agregar argumentos a las funciones
+## Agregar argumentos a las funciones {.title-top}
 
 <br>
 
