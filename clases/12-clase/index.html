@@ -95,7 +95,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#ejemplo-de-gráfico-de-dispersión" id="toc-ejemplo-de-gráfico-de-dispersión" class="nav-link" data-scroll-target="#ejemplo-de-gráfico-de-dispersión">Ejemplo de gráfico de dispersión</a></li>
   <li><a href="#capa-geométrica" id="toc-capa-geométrica" class="nav-link" data-scroll-target="#capa-geométrica">Capa geométrica</a></li>
   <li><a href="#facetas" id="toc-facetas" class="nav-link" data-scroll-target="#facetas">Facetas</a></li>
-  <li><a href="#colores" id="toc-colores" class="nav-link" data-scroll-target="#colores">Colores</a></li>
+  <li><a href="#colores" id="toc-colores" class="nav-link" data-scroll-target="#colores">Colores</a>
+  <ul class="collapse">
+  <li><a href="#paletas-de-colores" id="toc-paletas-de-colores" class="nav-link" data-scroll-target="#paletas-de-colores">Paletas de colores</a></li>
+  <li><a href="#funciones-scale_" id="toc-funciones-scale_" class="nav-link" data-scroll-target="#funciones-scale_">Funciones scale_*</a></li>
+  </ul></li>
   <li><a href="#personalización" id="toc-personalización" class="nav-link" data-scroll-target="#personalización">Personalización</a></li>
   <li><a href="#exportación" id="toc-exportación" class="nav-link" data-scroll-target="#exportación">Exportación</a></li>
   <li><a href="#composición-de-gráficos" id="toc-composición-de-gráficos" class="nav-link" data-scroll-target="#composición-de-gráficos">Composición de gráficos</a></li>
@@ -275,7 +279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -288,7 +292,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -302,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">shape =</span> <span class="dv">17</span>, <span class="at">size =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">shape =</span> <span class="dv">17</span>, <span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -321,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -339,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> z)) <span class="sc">+</span>           <span class="co"># estética local (solo en puntos)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> z), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>           <span class="co"># estética local (solo en puntos)</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
@@ -436,18 +440,158 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="facetas" class="level2">
 <h2 class="anchored" data-anchor-id="facetas">Facetas</h2>
+<p>Las facetas son una herramienta poderosa en ggplot2 que permite dividir un gráfico en múltiples paneles, cada uno mostrando la información para un subgrupo específico de los datos. Esto resulta particularmente útil para explorar la interacción entre dos o más variables categóricas, facilitando la identificación de patrones y tendencias que podrían pasar desapercibidos en un gráfico único.</p>
+<p>Las facetas se implementan principalmente mediante dos funciones: <code>facet_wrap()</code> y <code>facet_grid()</code>.</p>
+<ul>
+<li><p><code>facet_wrap()</code> organiza los paneles por una única variable categórica, creando filas o columnas de gráficos según el número de niveles de la variable.</p></li>
+<li><p><code>facet_grid()</code> utiliza dos variables categóricas para organizar los paneles en una cuadrícula, permitiendo explorar la interacción entre ambas variables.</p></li>
+</ul>
+<p>Las facetas no solo mejoran la organización de la información, sino que también incrementan la claridad y la legibilidad de los gráficos, especialmente cuando se trata de conjuntos de datos con múltiples categorías. Además, permiten crear gráficos más compactos y eficientes en cuanto al espacio, aprovechando al máximo el área disponible.</p>
+<p>Con los datos anteriores podemos utilizar la variable <code>z</code> para sumar una capa de facetas.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>  </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>z) <span class="co"># formato columnas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="colores" class="level2">
 <h2 class="anchored" data-anchor-id="colores">Colores</h2>
+<p>Otro elemento esencial para lograr gráficos atractivos son los colores. <strong>ggplot2</strong> ofrece una amplia gama de funciones <code>scale_*</code> que permiten personalizar y controlar el uso del color en cada componente del gráfico.</p>
+<section id="paletas-de-colores" class="level3">
+<h3 class="anchored" data-anchor-id="paletas-de-colores">Paletas de colores</h3>
+<p><strong>ggplot2</strong> proporciona paletas predeterminadas para diferentes tipos de datos, como Set1, Set2, Darked, etc.</p>
+<p>Además, existen paquetes externos como <strong>RColorBrewer</strong> y <strong>viridis</strong> que ofrecen una amplia variedad de paletas de colores adicionales. La elección de la paleta dependerá del tipo de datos, la estética deseada y el mensaje que se quiere transmitir con el gráfico.</p>
+<p>Un sitio útil que muestra paquetes de paletas de colores es <a href="https://r-graph-gallery.com/color-palette-finder">Palette finder</a>. Esos paquetes deben ser instalados y activados previamente para poder utilizar sus colores.</p>
+</section>
+<section id="funciones-scale_" class="level3">
+<h3 class="anchored" data-anchor-id="funciones-scale_">Funciones scale_*</h3>
+<p>Existen dos funciones <code>scale_*()</code> principales que permiten ajustar el uso del color en las partes de los elementos gráficos:</p>
+<ul>
+<li><p><code>scale_color_*()</code>: Define la paleta de colores y la asignación de colores de contorno o elementos tipo puntos y lineas.</p></li>
+<li><p><code>scale_fill_*()</code>: Controla el color de relleno para elementos como barras o áreas.</p></li>
+</ul>
+<p>El asterisco se reemplaza por nombres que refieren a una característica de la escala y el tipo de variable asociada:</p>
+<p><code>scale_color_discrete()</code> para variables categóricas</p>
+<p><code>scale_fill_continuous()</code> para variables cuantitativas continuas</p>
+<p><code>scale_color_manual()</code> para definir colores en forma manual</p>
+<p>R es compatible con muchos formatos de colores. Tiene 657 colores bajo nombres que se pueden visualizar mediante la ejecución de la función <code>colors()</code>, también se puede convocar mediante números y expande sus posibilidades a partir del formato hexadecimal hasta 16.777.216 combinaciones.</p>
+<p>La página <a href="https://www.colorhexa.com/">ColorHexa</a> entre otras similares ofrecen seleccionar colores visualmente y copiar el código hexadecimal correspondiente.</p>
+<p>Otra cuestión a tener en cuenta es la accesibilidad para personas daltónicas, es decir utilizar paletas de colores amigables que garanticen que la información sea accesible para todxs. Un paquete en R que aborda este tema es <a href="https://cran.r-project.org/web/packages/colorBlindness/vignettes/colorBlindness.html">colorBlindness</a>.</p>
+</section>
 </section>
 <section id="personalización" class="level2">
 <h2 class="anchored" data-anchor-id="personalización">Personalización</h2>
+<p>La función <code>theme()</code> de ggplot2 brinda el poder de personalizar cada aspecto de la estética de un gráfico.</p>
+<p>Con <code>theme()</code> se puede modificar elementos como:</p>
+<ul>
+<li><strong>Fuentes</strong>: Selecciona las fuentes para títulos, etiquetas y textos del gráfico.</li>
+<li><strong>Leyenda</strong>: Controla la posición, el formato y el estilo de la leyenda.</li>
+<li><strong>Ejes</strong>: Personaliza el grosor, el color, las marcas y las etiquetas de los ejes.</li>
+<li><strong>Título</strong>: Define el estilo y la ubicación del título del gráfico.</li>
+<li><strong>Cuadrícula (grid)</strong>: Controla la apariencia de la cuadrícula de fondo, incluyendo su color, grosor y tipo de línea.</li>
+</ul>
+<p>Los argumentos de la función <code>theme()</code> comienzan con un nombre del elemento en cuestión y le siguen nombres relacionados a caracteristicas de esos elementos.</p>
+<p>Por ejemplo, para los ejes, el argumento <code>axis.*</code> tiene nombres como <code>title</code>, <code>text</code>, <code>ticks</code>, <code>line</code> que se igualan a funciones tipo <code>element_line()</code> para personalización de líneas, <code>element_text()</code> para textos, etc.</p>
+<p>Hagamos un pequeño ejemplo con el gráfico de puntos que desarrollamos en el documento.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grafico de puntos"</span>, <span class="co"># titulo de grafico</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Eje x"</span>, <span class="co"># titulo de eje x</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Eje y"</span>) <span class="sc">+</span> <span class="co"># titulo de eje y</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>, <span class="co"># paleta Set1 en color</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Variable z"</span>) <span class="sc">+</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="co"># titulo de eje x en negrita</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>), <span class="co"># titulo de eje y color rojo</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>), <span class="co"># texto de eje x tamaño 7 pts</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>), <span class="co"># texto de eje y en itálica</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), <span class="co"># titulo de leyenda tamaño 12 pts</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="co"># titulo de grafico tamaño 16 pts y negrita</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Personalizar temas permite mantener un estilo consistente en diferentes gráficos para crear una experiencia visual uniforme y mejorar su legibilidad.</p>
+<p>Es muy útil almacenar la personalización y aplicarla a los gráficos donde la necesitamos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mi_tema <span class="ot">&lt;-</span> <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>), </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>), </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), <span class="co">#</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grafico de puntos"</span>, <span class="co"># titulo de grafico</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Eje x"</span>, <span class="co"># titulo de eje x</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Eje y"</span>) <span class="sc">+</span> <span class="co"># titulo de eje y</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>, <span class="co"># paleta Set1 en color</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Variable z"</span>) <span class="sc">+</span> </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  mi_tema</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Se sugiere comenzar con personalizaciones simples y avanzar gradualmente a modificaciones más complejas de forma progresiva.</p>
 </section>
 <section id="exportación" class="level2">
 <h2 class="anchored" data-anchor-id="exportación">Exportación</h2>
+<p>La función <code>ggsave()</code> exporta los graficos generados por ggplot2 en distintos formatos, tamaños y resoluciones.</p>
+<p>La sintaxis con los argumentos opcionales es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(filename,               <span class="co"># nombre del archivo</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">last_plot</span>(),          <span class="co"># nombre del objeto gráfico</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">device =</span> <span class="cn">NULL</span>,               <span class="co"># formato de salida "jpeg", "png", "tiff", "pdf", etc</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="cn">NA</span>,                  <span class="co"># ancho en unidades de units</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="cn">NA</span>,                 <span class="co"># alto en unidades de units</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="fu">c</span>(<span class="st">"in"</span>, <span class="st">"cm"</span>, <span class="st">"mm"</span>), <span class="co"># unidades de medidas</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>)                   <span class="co"># resolución de salida en dpi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>También es posible introducir las salidas gráficas en fragmentos de código de documentos Quarto para producir archivos html, pdf y docx de Microsoft Word.</p>
 </section>
 <section id="composición-de-gráficos" class="level2">
 <h2 class="anchored" data-anchor-id="composición-de-gráficos">Composición de gráficos</h2>
+<p>Dentro de los paquetes complementarios del sistema ggplot, <strong>patchwork</strong> surge como una herramienta muy útil para la composición de gráficos de manera intuitiva y eficiente. A diferencia de las funciones de facetado propias de ggplot2, patchwork se enfoca en la flexibilidad y personalización, permitiendo crear composiciones complejas con mayor control sobre la disposición y el estilo de los gráficos individuales.</p>
+<p>Se basa en el concepto de fragmentos que se pueden combinar, superponer y organizar libremente utilizando operadores intuitivos como +, | y ~.</p>
+<p>+: Combina gráficos horizontalmente. |: Combina gráficos verticalmente. ~: Apila gráficos uno encima del otro.</p>
+<p>Además de la simple combinación, patchwork ofrece herramientas para personalizar el diseño de la composición final, teniendo en cuenta márgenes, espacios, alineación y proporciones.</p>
+<p>Imaginemos que tenemos varios gráficos que visualizar combinados (en nuestro ejemplo lo haremos con el único gráfico que construimos).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>grafico <span class="ot">&lt;-</span> datos <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>(grafico <span class="sc">+</span> grafico) <span class="sc">/</span> grafico </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
 </main>

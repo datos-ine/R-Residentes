@@ -185,7 +185,7 @@ Agreguemos la primer capa en el ggplot para indicarle que elemento geométrico u
 #| out-width: 50%
 datos |> 
   ggplot(mapping = aes(x = x, y = y)) + 
-  geom_point()
+  geom_point(size = 3)
 ```
 Se puede hacer participar a otra variable más que mapeamos con el color de los puntos. En este caso la variable categórica `z` de datos.
 
@@ -194,7 +194,7 @@ Se puede hacer participar a otra variable más que mapeamos con el color de los 
 #| out-width: 50%
 datos |> 
   ggplot(mapping = aes(x = x, y = y, color = z)) + 
-  geom_point()
+  geom_point(size = 3)
 ```
 Notemos que cuando mapeamos variables lo hacemos dentro de la función `aes()` del mapping del ggplot. Esta función permite mapear ejes, colores de contorno y relleno, opacidades, entre otros elementos graficos.
 
@@ -206,7 +206,7 @@ Si en lugar de mapear una variable queremos definir un color fijo para un elemen
 #| out-width: 50%
 datos |> 
   ggplot(mapping = aes(x = x, y = y)) + 
-  geom_point(color = "blue", shape = 17, size = 2)
+  geom_point(color = "blue", shape = 17, size = 3)
 ```
 
 Las formas de puntos surgen de esta tabla numerada.
@@ -221,7 +221,7 @@ Los mapeos declarados en la función `ggplot()` principal son globales, es decir
 #| out-width: 50%
 datos |> 
   ggplot(mapping = aes(x = x, y = y, color = z)) + 
-  geom_point() +
+  geom_point(size = 3) +
   geom_smooth(method = "lm")
 ```
 El gráfico muestra que para cada conjunto de puntos (categoría A y B de la variable z) de dibuja una recta distinta respectando la declaración global del `aes()`.
@@ -233,7 +233,7 @@ En cambio, si a la variable `z` la declarásemos solo en una de las capas geomé
 #| out-width: 50%
 datos |> 
   ggplot(mapping = aes(x = x, y = y)) + 
-  geom_point(aes(color = z)) +           # estética local (solo en puntos)
+  geom_point(aes(color = z), size = 3) +           # estética local (solo en puntos)
   geom_smooth(method = "lm")
 ```
 ## Capa geométrica
@@ -268,17 +268,173 @@ También se pueden activar otros paquetes que extienden la idea del ggplot para 
 
 ## Facetas
 
+Las facetas son una herramienta poderosa en ggplot2 que permite dividir un gráfico en múltiples paneles, cada uno mostrando la información para un subgrupo específico de los datos. Esto resulta particularmente útil para explorar la interacción entre dos o más variables categóricas, facilitando la identificación de patrones y tendencias que podrían pasar desapercibidos en un gráfico único.
+
+Las facetas se implementan principalmente mediante dos funciones: `facet_wrap()` y `facet_grid()`.
+
+- `facet_wrap()` organiza los paneles por una única variable categórica, creando filas o columnas de gráficos según el número de niveles de la variable.
+
+- `facet_grid()` utiliza dos variables categóricas para organizar los paneles en una cuadrícula, permitiendo explorar la interacción entre ambas variables.
+
+Las facetas no solo mejoran la organización de la información, sino que también incrementan la claridad y la legibilidad de los gráficos, especialmente cuando se trata de conjuntos de datos con múltiples categorías. Además, permiten crear gráficos más compactos y eficientes en cuanto al espacio, aprovechando al máximo el área disponible.
+
+Con los datos anteriores podemos utilizar la variable `z` para sumar una capa de facetas.
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point(size = 3) +  
+  facet_wrap(~z) # formato columnas
+```
 
 ## Colores
 
+Otro elemento esencial para lograr gráficos atractivos son los colores. **ggplot2** ofrece una amplia gama de funciones `scale_*` que permiten personalizar y controlar el uso del color en cada componente del gráfico.
+
+### Paletas de colores
+
+**ggplot2** proporciona paletas predeterminadas para diferentes tipos de datos, como Set1, Set2, Darked, etc.
+
+Además, existen paquetes externos como **RColorBrewer** y **viridis** que ofrecen una amplia variedad de paletas de colores adicionales. La elección de la paleta dependerá del tipo de datos, la estética deseada y el mensaje que se quiere transmitir con el gráfico.
+
+Un sitio útil que muestra paquetes de paletas de colores es [Palette finder](https://r-graph-gallery.com/color-palette-finder). Esos paquetes deben ser instalados y activados previamente para poder utilizar sus colores.
+
+### Funciones scale_*
+
+Existen dos funciones `scale_*()` principales que permiten ajustar el uso del color en las partes de los elementos gráficos:
+
+- `scale_color_*()`: Define la paleta de colores y la asignación de colores de contorno o elementos tipo puntos y lineas.
+
+- `scale_fill_*()`: Controla el color de relleno para elementos como barras o áreas.
+
+El asterisco se reemplaza por nombres que refieren a una característica de la escala y el tipo de variable asociada:
+
+`scale_color_discrete()` para variables categóricas
+
+`scale_fill_continuous()` para variables cuantitativas continuas
+
+`scale_color_manual()` para definir colores en forma manual
+
+R es compatible con muchos formatos de colores. Tiene 657 colores bajo nombres que se pueden visualizar mediante la ejecución de la función `colors()`, también se puede convocar mediante números y expande sus posibilidades a partir del formato hexadecimal hasta 16.777.216 combinaciones.
+
+La página [ColorHexa](https://www.colorhexa.com/) entre otras similares ofrecen seleccionar colores visualmente y copiar el código hexadecimal correspondiente.
+
+Otra cuestión a tener en cuenta es la accesibilidad para personas daltónicas, es decir utilizar paletas de colores amigables que garanticen que la información sea accesible para todxs. Un paquete en R que aborda este tema es [colorBlindness](https://cran.r-project.org/web/packages/colorBlindness/vignettes/colorBlindness.html).
 
 ## Personalización
 
+La función `theme()` de ggplot2 brinda el poder de personalizar cada aspecto de la estética de un gráfico.
+
+Con `theme()` se puede modificar elementos como:
+
+- **Fuentes**: Selecciona las fuentes para títulos, etiquetas y textos del gráfico.
+- **Leyenda**: Controla la posición, el formato y el estilo de la leyenda.
+- **Ejes**: Personaliza el grosor, el color, las marcas y las etiquetas de los ejes.
+- **Título**: Define el estilo y la ubicación del título del gráfico.
+- **Cuadrícula (grid)**: Controla la apariencia de la cuadrícula de fondo, incluyendo su color, grosor y tipo de línea.
+
+Los argumentos de la función `theme()` comienzan con un nombre del elemento en cuestión y le siguen nombres relacionados a caracteristicas de esos elementos.
+
+Por ejemplo, para los ejes, el argumento `axis.*` tiene nombres como `title`, `text`, `ticks`, `line` que se igualan a funciones tipo `element_line()` para personalización de líneas, `element_text()` para textos, etc.
+
+Hagamos un pequeño ejemplo con el gráfico de puntos que desarrollamos en el documento.
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point(size = 3) +
+  labs(title = "Grafico de puntos", # titulo de grafico
+       x = "Eje x", # titulo de eje x
+       y = "Eje y") + # titulo de eje y
+  scale_colour_brewer(palette = "Set1", # paleta Set1 en color
+                      name = "Variable z") + 
+  theme(axis.title.x = element_text(face = "bold"), # titulo de eje x en negrita
+        axis.title.y = element_text(color = "red"), # titulo de eje y color rojo
+        axis.text.x = element_text(size = 8), # texto de eje x tamaño 7 pts
+        axis.text.y = element_text(face = "italic"), # texto de eje y en itálica
+        legend.title = element_text(size = 14), # titulo de leyenda tamaño 12 pts
+        plot.title = element_text(size = 18, face = "bold")) # titulo de grafico tamaño 16 pts y negrita
+```
+
+Personalizar temas permite mantener un estilo consistente en diferentes gráficos para crear una experiencia visual uniforme y mejorar su legibilidad.
+
+Es muy útil almacenar la personalización y aplicarla a los gráficos donde la necesitamos.
+
+```{r}
+mi_tema <- theme(axis.title.x = element_text(face = "bold"), 
+        axis.title.y = element_text(color = "red"),
+        axis.text.x = element_text(size = 8), 
+        axis.text.y = element_text(face = "italic"), 
+        legend.title = element_text(size = 14), #
+        plot.title = element_text(size = 18, face = "bold")) 
+
+```
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point(size = 3) +
+  labs(title = "Grafico de puntos", # titulo de grafico
+       x = "Eje x", # titulo de eje x
+       y = "Eje y") + # titulo de eje y
+  scale_colour_brewer(palette = "Set1", # paleta Set1 en color
+                      name = "Variable z") + 
+  mi_tema
+```
+
+Se sugiere comenzar con personalizaciones simples y avanzar gradualmente a modificaciones más complejas de forma progresiva.
 
 ## Exportación 
 
+La función `ggsave()` exporta los graficos generados por ggplot2 en distintos formatos, tamaños y resoluciones.
 
+La sintaxis con los argumentos opcionales es:
+
+```{r}
+#| eval: false
+#| echo: true
+ggsave(filename,               # nombre del archivo
+  plot = last_plot(),          # nombre del objeto gráfico
+  device = NULL,               # formato de salida "jpeg", "png", "tiff", "pdf", etc
+  width = NA,                  # ancho en unidades de units
+  height = NA,                 # alto en unidades de units
+  units = c("in", "cm", "mm"), # unidades de medidas
+  dpi = 300)                   # resolución de salida en dpi
+```
+
+También es posible introducir las salidas gráficas en fragmentos de código de documentos Quarto para producir archivos html, pdf y docx de Microsoft Word.
 
 ## Composición de gráficos
 
+Dentro de los paquetes complementarios del sistema ggplot, **patchwork** surge como una herramienta muy útil para la composición de gráficos de manera intuitiva y eficiente. A diferencia de las funciones de facetado propias de ggplot2, patchwork se enfoca en la flexibilidad y personalización, permitiendo crear composiciones complejas con mayor control sobre la disposición y el estilo de los gráficos individuales.
+
+Se basa en el concepto de fragmentos que se pueden combinar, superponer y organizar libremente utilizando operadores intuitivos como +, | y ~.
+
++: Combina gráficos horizontalmente.
+|: Combina gráficos verticalmente.
+~: Apila gráficos uno encima del otro.
+
+Además de la simple combinación, patchwork ofrece herramientas para personalizar el diseño de la composición final, teniendo en cuenta márgenes, espacios, alineación y proporciones.
+
+Imaginemos que tenemos varios gráficos que visualizar combinados (en nuestro ejemplo lo haremos con el único gráfico que construimos).
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+#| message: false
+#| warning: false
+grafico <- datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point(size = 3)
+
+library(patchwork)
+
+(grafico + grafico) / grafico 
+```
 
