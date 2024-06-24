@@ -60,7 +60,8 @@ Podría decirse que un propósito general de una visualización es comparar grup
 
 Varios elementos de una visualización pueden contribuir a la eficacia con la que se puede mostrar a la información, pero básicamente todos están compuestos por signos visuales y geométricas primitivas.
 
-![](images/signos.png)
+![](images/signos.png){fig-align="center" width="700"}
+
 Cuando seleccionamos un tipo de gráfico estadístico como un gráfico de barras, un boxplot o una dispersión de puntos estamos usando varios de estos signos visuales como líneas, puntos, areas, con colores, tamaños y posiciones diferentes.
 
 ## Elegir un tipo de visualización
@@ -79,7 +80,7 @@ Los posibles tipos de gráfico están relacionados a las características de los
 
 El sitio [From Data to Viz](https://www.data-to-viz.com/) muestra una serie de árboles de decisión, cada uno de los cuales conduce a diferentes formatos de gráficos recomendados según el tipo de datos seleccionados (numéricos, categóricos, etc.).
 
-![](images/choosing-data-to-viz.png)
+![](images/choosing-data-to-viz.png){fig-align="center" width="700"}
 
 ## Gramática de gráficos
 
@@ -89,7 +90,7 @@ Esta idea fue propuesta por **Leland Wilkinson** en su publicación de 2005 (The
 
 La publicación inspiró a los desarrolladores del paquete  **ggplot2**, el primer paquete del universo tidyverse lanzado en 2007, que se basa en un sistema de capas.
 
-![](images/layers.PNG)
+![](images/layers.PNG){fig-align="center"}
 
 Según la idea de Wilkinson, que aplica ggplot2, todo gráfico parte de los datos que queremos visualizar y vamos enlazando diferentes capas estéticas con elementos geométricos, escalas, ejes, facetas y temas.
 
@@ -143,4 +144,141 @@ El mapeo estético permite definir el rol que cada variable representa en el gr�
 La simultáneidad de variables provoca que se puedan realizar gráficos con 2, 3 o *n* variables.
 
 Por supuesto que esta definición conecta con el elemento geométrico seleccionado. Por ejemplo, si el elemento geométrico es un `geom_point()` generamos un diagrama de dispersión de puntos y para esto necesitamos definir como mínimo una variable en el **eje x** y otra en el **eje y** que deberán ser numéricas. También podríamos definir alguna variable que mapee el color de los puntos, es decir una tercera variable participante.
+
+## Ejemplo de gráfico de dispersión
+
+Nada mejor que ver un ejemplo para explicar el funcionamiento del sistema gráfico de ggplot2. 
+Realicemos paso a paso un gráfico de dispersión de puntos:
+
+Tenemos estos datos ficticios para probar el paquete.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+
+datos <- read_csv2("datos_conf.csv")
+```
+```{r}
+datos
+```
+
+A partir de `datos` vamos a conectar mediante una tubería a la función `ggplot()`, que tiene como argumento obligatorio **mapping**. Dentro del argumento se utiliza la función `aes()` para las definiciones estéticas que *"mapeen"* la o las variables del dataframe `datos`.
+
+Definimos que la variable `x` se grafique en el eje x y la variable `y` lo haga en el eje y. Por supuesto que las coordenadas que utilice el gráfico serán cartesianas. 
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y))
+```
+
+Observemos que tanto `x` como `y` aparecen en cada eje como etiqueta y que las escalas se generan automáticamente a partir de las escalas de las variables. Dentro del lienzo gris del plot no se visualiza aún ningún elemento geométrico.
+
+Agreguemos la primer capa en el ggplot para indicarle que elemento geométrico usaremos. En este caso `geom_point()` define una capa de puntos. La capa geométrica le da forma y nombre al tipo de gráfico.
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y)) + 
+  geom_point()
+```
+Se puede hacer participar a otra variable más que mapeamos con el color de los puntos. En este caso la variable categórica `z` de datos.
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point()
+```
+Notemos que cuando mapeamos variables lo hacemos dentro de la función `aes()` del mapping del ggplot. Esta función permite mapear ejes, colores de contorno y relleno, opacidades, entre otros elementos graficos.
+
+Si en lugar de mapear una variable queremos definir un color fijo para un elemento gráfico debemos escribirlo fuera del `aes()`. Por ejemplo, para que todos los puntos sean color azul debemos escribir el argumento color = "blue" dentro del `geom_point()` directamente. Además cambiamos el tamaño y forma del punto.
+
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y)) + 
+  geom_point(color = "blue", shape = 17, size = 2)
+```
+
+Las formas de puntos surgen de esta tabla numerada.
+
+
+![](images/shapes.PNG){fig-align="center" width="300"}
+
+Los mapeos declarados en la función `ggplot()` principal son globales, es decir que aplican a todas las capas con elementos geométricos posteriores. Para mostrar su efecto agregamos una capa de recta de regresión (en este caso con el método de regresión lineal).
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+El gráfico muestra que para cada conjunto de puntos (categoría A y B de la variable z) de dibuja una recta distinta respectando la declaración global del `aes()`.
+
+En cambio, si a la variable `z` la declarásemos solo en una de las capas geométricas (por ejemplo la de puntos), obtendríamos una sola recta de regresión, dado que esa definición termina siendo local y no global.
+
+```{r}
+#| fig-align: center
+#| out-width: 50%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y)) + 
+  geom_point(aes(color = z)) +           # estética local (solo en puntos)
+  geom_smooth(method = "lm")
+```
+## Capa geométrica
+
+Anteriormente decíamos que el tipo de gráfico que queremos construir se decide por el elemento geométrico utilizado en la estructura del ggplot.
+
+Entre las funciones más utilizadas tenemos:
+
+| Gráfico | Función |
+|---|---|
+| Área | `geom_area()` |
+| Densidad | `geom_density()` |
+| Polígono de frecuencia | `geom_freqpoly()` |
+| Histograma | `geom_histogram()` |
+| QQ-Plot | `geom_qq()` |
+| Barras | `geom_bar()` |
+| Puntos | `geom_point()` |
+| Línea regresión | `geom_smooth()` |
+| Líneas | `geom_line(`) |
+| Boxplot | `geom_boxplot()` |
+| Violin plot | `geom_violin()` |
+| Barras de error | `geom_errorbar()` |
+| Dotplot | `geom_dotplot()` |
+| Puntos al azar | `geom_jitter()` |
+| Texto | `geom_text()` |
+| Etiquetas | `geom_label()` |
+
+Muchas de estas funciones se utilizan simultáneamente en capas diferentes del gráfico, por ejemplo podemos hacer un gráfico de barras con una capa de etiquetas. Algunas de las funciones se construyen con estéticas cuantitativas (boxplot) o categóricas (barras), pero también se pueden combinar (por ejemplo, un boxplot por cada categoría de una variable cualitativa).
+
+También se pueden activar otros paquetes que extienden la idea del ggplot para crear gráficos con otras capas, como heatmap, ridgeline, dispersión de puntos con barras marginales, rain plot, treemaps, waffles, Upset, etc.
+
+
+## Facetas
+
+
+## Colores
+
+
+## Personalización
+
+
+## Exportación 
+
+
+
+## Composición de gráficos
+
 
