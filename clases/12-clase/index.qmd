@@ -416,9 +416,11 @@ Dentro de los paquetes complementarios del sistema ggplot, **patchwork** surge c
 
 Se basa en el concepto de fragmentos que se pueden combinar, superponer y organizar libremente utilizando operadores intuitivos como +, | y ~.
 
-+: Combina gráficos horizontalmente.
-|: Combina gráficos verticalmente.
-~: Apila gráficos uno encima del otro.
+| Operador | Función |
+|---|---|
+|+ | Combina gráficos horizontalmente.|
+| \| | Combina gráficos verticalmente.|
+|~ |Apila gráficos uno encima del otro.|
 
 Además de la simple combinación, patchwork ofrece herramientas para personalizar el diseño de la composición final, teniendo en cuenta márgenes, espacios, alineación y proporciones.
 
@@ -426,12 +428,12 @@ Imaginemos que tenemos varios gráficos que visualizar combinados (en nuestro ej
 
 ```{r}
 #| fig-align: center
-#| out-width: 50%
+#| out-width: 70%
 #| message: false
 #| warning: false
 grafico <- datos |> 
   ggplot(mapping = aes(x = x, y = y, color = z)) + 
-  geom_point(size = 3)
+  geom_point(size = 2)
 
 library(patchwork)
 
