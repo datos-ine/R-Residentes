@@ -398,6 +398,34 @@ igini2 <- function(casos, poblacion, grafico = TRUE){
 3. Agregamos un condicional para consultar sobre el estado del argumento grafico. Si grafico es TRUE se produce el plot, si es FALSE el argumento *display = "none"* anula el plot de la función `sm.regression()`
 4. Incorporamos el formateo del valor del índice Gini con 4 decimales calculado dentro de la función.
 
+Podemos explicar paso a paso el código de la función:
+
+1. **Carga de paquetes:**
+   - La función comienza verificando si el paquete "pacman" está instalado. Si no lo está, se instala con `install.packages("pacman")`.
+   - Luego, carga los paquetes necesarios: "dplyr", "sm" y "pracma" mediante `pacman::p_load(dplyr, sm, pracma)`.
+
+2. **Creación de un dataframe:**
+   - Se crea un dataframe llamado `df` a partir de los vectores `casos` y `poblacion`.
+
+3. **Cálculo de tasas y acumulados:**
+   - Se calcula la tasa como `casos / poblacion` y se ordena el marco de datos por esta tasa en orden descendente.
+   - Luego, se calculan los acumulados de casos y población normalizados mediante `cumsum`.
+
+4. **Selección del ancho de banda (h):**
+   - Se selecciona el ancho de banda óptimo utilizando el método de validación cruzada (`method = 'cv'`) y se almacena en `h1`.
+
+5. **Ajuste de regresión local (gráfico opcional):**
+   - Si `grafico` es verdadero (`TRUE`), se ajusta una regresión local utilizando los datos de acumulados de población y casos.
+   - Si `grafico` es falso (`FALSE`), se realiza el ajuste sin mostrar el gráfico (usando `display = "none"`).
+
+6. **Cálculo del índice Gini:**
+   - Se calcula el área bajo la curva (AUC) utilizando la función `trapz` para evaluar la regresión local.
+   - Luego, se obtiene el índice Gini como `abs((AUCorig - 0.5) * 2)`.
+
+7. **Resultado final:**
+   - La función devuelve el índice Gini redondeado a 4 decimales.
+
+
 La forma de aplicar la función ahora es mediante un summarise() de tidyverse:
 
 ```{r}
@@ -412,7 +440,7 @@ base_dept_2023_2022 <- read_excel("base_dept_2023_2022.xlsx")
 base_dept_2023_2022 |> 
   summarise(gini = igini2(casos, poblacion))
 ```
-Como la función se encuentra dentro de un summarise() la salida es un dataframe de 1 x 1. Si solo necesitamos asignar el valor en un vector independiente, sin gráfico hacemos:
+Como la función se encuentra dentro de un `summarise()` la salida es un dataframe de 1 x 1. Si solo necesitamos asignar el valor en un vector independiente, sin gráfico hacemos:
 
 ```{r}
 valorGini <- base_dept_2023_2022 |> 

@@ -467,6 +467,41 @@ Caused by warning:
 </dl>
 </div>
 </div>
+<p>Podemos explicar paso a paso el código de la función:</p>
+<ol type="1">
+<li><strong>Carga de paquetes:</strong>
+<ul>
+<li>La función comienza verificando si el paquete “pacman” está instalado. Si no lo está, se instala con <code>install.packages("pacman")</code>.</li>
+<li>Luego, carga los paquetes necesarios: “dplyr”, “sm” y “pracma” mediante <code>pacman::p_load(dplyr, sm, pracma)</code>.</li>
+</ul></li>
+<li><strong>Creación de un dataframe:</strong>
+<ul>
+<li>Se crea un dataframe llamado <code>df</code> a partir de los vectores <code>casos</code> y <code>poblacion</code>.</li>
+</ul></li>
+<li><strong>Cálculo de tasas y acumulados:</strong>
+<ul>
+<li>Se calcula la tasa como <code>casos / poblacion</code> y se ordena el marco de datos por esta tasa en orden descendente.</li>
+<li>Luego, se calculan los acumulados de casos y población normalizados mediante <code>cumsum</code>.</li>
+</ul></li>
+<li><strong>Selección del ancho de banda (h):</strong>
+<ul>
+<li>Se selecciona el ancho de banda óptimo utilizando el método de validación cruzada (<code>method = 'cv'</code>) y se almacena en <code>h1</code>.</li>
+</ul></li>
+<li><strong>Ajuste de regresión local (gráfico opcional):</strong>
+<ul>
+<li>Si <code>grafico</code> es verdadero (<code>TRUE</code>), se ajusta una regresión local utilizando los datos de acumulados de población y casos.</li>
+<li>Si <code>grafico</code> es falso (<code>FALSE</code>), se realiza el ajuste sin mostrar el gráfico (usando <code>display = "none"</code>).</li>
+</ul></li>
+<li><strong>Cálculo del índice Gini:</strong>
+<ul>
+<li>Se calcula el área bajo la curva (AUC) utilizando la función <code>trapz</code> para evaluar la regresión local.</li>
+<li>Luego, se obtiene el índice Gini como <code>abs((AUCorig - 0.5) * 2)</code>.</li>
+</ul></li>
+<li><strong>Resultado final:</strong>
+<ul>
+<li>La función devuelve el índice Gini redondeado a 4 decimales.</li>
+</ul></li>
+</ol>
 <p>La forma de aplicar la función ahora es mediante un summarise() de tidyverse:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -490,7 +525,7 @@ Caused by warning:
 1 0.402</code></pre>
 </div>
 </div>
-<p>Como la función se encuentra dentro de un summarise() la salida es un dataframe de 1 x 1. Si solo necesitamos asignar el valor en un vector independiente, sin gráfico hacemos:</p>
+<p>Como la función se encuentra dentro de un <code>summarise()</code> la salida es un dataframe de 1 x 1. Si solo necesitamos asignar el valor en un vector independiente, sin gráfico hacemos:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>valorGini <span class="ot">&lt;-</span> base_dept_2023_2022 <span class="sc">|&gt;</span> </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gini =</span> <span class="fu">igini2</span>(casos, poblacion, <span class="at">grafico =</span> F)) <span class="sc">|&gt;</span> </span>
