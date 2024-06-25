@@ -1,5 +1,5 @@
 ---
-title: "**Resumenes, indicadores y funciones estadísticas**"
+title: "**Resúmenes, indicadores y funciones estadísticas**"
 author: ""
 date: ""
 format:
@@ -134,7 +134,7 @@ Lo importante acá no es el resultado sino la forma en que lo devuelve. Observar
 datos |> 
   summarise(IC = t.test(Edad ~ Muestra))
 ```
-Hace unos años a un desarrollador se le ocurrió crear un paquete que contiene todas estas funciones y algunas más del R base en espejo pero compatibles con tidyverse, esto es reciben un dataframe y devuelven un dataframe.
+Hace unos años a un desarrollador se le ocurrió crear un paquete que contiene todas estas funciones (y algunas más) del R base ***en espejo*** pero compatibles con tidyverse, esto es: reciben un dataframe y devuelven un dataframe.
 
 El paquete se llama **rstatix** y provee un marco simple e intuitivo compatible con el uso de tuberías, coherente con la filosofía de diseño "tidyverse", para realizar pruebas estadísticas descriptivas básicas y otras más avanzadas de inferencia y modelado.
 
