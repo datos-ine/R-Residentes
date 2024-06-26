@@ -93,13 +93,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#gramática-de-gráficos" id="toc-gramática-de-gráficos" class="nav-link" data-scroll-target="#gramática-de-gráficos">Gramática de gráficos</a></li>
   <li><a href="#ejemplo-de-gráfico-de-dispersión" id="toc-ejemplo-de-gráfico-de-dispersión" class="nav-link" data-scroll-target="#ejemplo-de-gráfico-de-dispersión">Ejemplo de gráfico de dispersión</a></li>
+  <li><a href="#estéticas" id="toc-estéticas" class="nav-link" data-scroll-target="#estéticas">Estéticas</a></li>
   <li><a href="#capa-geométrica" id="toc-capa-geométrica" class="nav-link" data-scroll-target="#capa-geométrica">Capa geométrica</a></li>
+  <li><a href="#ejes" id="toc-ejes" class="nav-link" data-scroll-target="#ejes">Ejes</a></li>
   <li><a href="#facetas" id="toc-facetas" class="nav-link" data-scroll-target="#facetas">Facetas</a></li>
   <li><a href="#colores" id="toc-colores" class="nav-link" data-scroll-target="#colores">Colores</a>
   <ul class="collapse">
   <li><a href="#paletas-de-colores" id="toc-paletas-de-colores" class="nav-link" data-scroll-target="#paletas-de-colores">Paletas de colores</a></li>
   <li><a href="#funciones-scale_" id="toc-funciones-scale_" class="nav-link" data-scroll-target="#funciones-scale_">Funciones scale_*</a></li>
   </ul></li>
+  <li><a href="#coordenadas" id="toc-coordenadas" class="nav-link" data-scroll-target="#coordenadas">Coordenadas</a></li>
   <li><a href="#personalización" id="toc-personalización" class="nav-link" data-scroll-target="#personalización">Personalización</a></li>
   <li><a href="#exportación" id="toc-exportación" class="nav-link" data-scroll-target="#exportación">Exportación</a></li>
   <li><a href="#composición-de-gráficos" id="toc-composición-de-gráficos" class="nav-link" data-scroll-target="#composición-de-gráficos">Composición de gráficos</a></li>
@@ -142,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>La visualización de datos puede ser un medio muy eficaz para identificar patrones en los datos y transmitir un mensaje.</p>
 <p>El objetivo científico de cualquier visualización es permitir al lector comprender datos y extraer información intuitivamente, de la forma más precisa y eficiente.</p>
 <p>Generalmente construimos visualizaciones para dos fines:</p>
-<p>Como parte del <strong>Análisis exploratorio (EDA)</strong> para descubrir y describir patrones en los datos o para <strong>presentar y comunicar</strong>, logrando transmitir el mensaje de forma clara y atractiva.</p>
+<p>Como parte del <strong>análisis exploratorio (EDA)</strong> para descubrir y describir patrones en los datos o para <strong>presentar y comunicar</strong>, logrando transmitir el mensaje de forma clara y atractiva.</p>
 <p>Es importante, al crear una visualización, considerar las características del público objetivo. La interpretación está en el ojo del espectador, y una visualización sólo logrará transmitir su mensaje si se diseña teniendo en cuenta a su audiencia.</p>
 <p>Una visualización de datos exitosa logra:</p>
 <ul>
@@ -151,8 +154,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Aumentar la precisión:</strong> Las narrativas suelen ser menos precisas que una representación visual que muestra puntos de datos y sus ejes correspondientes, mientras que un texto con demasiados datos puede dificultar el seguimiento de la línea argumental.</p></li>
 <li><p><strong>Resumir contenido:</strong> Los gráficos y tablas permiten resumir contenido textual complejo, ayudando al lector a memorizar puntos clave.</p></li>
 </ul>
-<p>Por estas razones, las visualizaciones de datos son elementos clave en casi cualquier tipo de publicación: artículos científicos, presentaciones, posters, etc</p>
-<p>Las tablas también son una forma de visualizar datos o resúmenes estadísticos y pueden ser componentes igualmente importantes en una publicación. En algunos casos, una tabla puede visualizar los datos mejor que un gráfico.</p>
+<p>Por estas razones, las visualizaciones de datos son elementos clave en cualquier tipo de publicación: artículos científicos, presentaciones, posters, etc</p>
+<p>Las tablas también son una forma de visualizar datos y resúmenes estadísticos. Suelen ser componentes igualmente importantes en una publicación y en algunos casos, una tabla puede visualizar los datos mejor que un gráfico.</p>
 <section id="principios-y-elementos-de-las-visualizaciones" class="level2">
 <h2 class="anchored" data-anchor-id="principios-y-elementos-de-las-visualizaciones">Principios y elementos de las visualizaciones</h2>
 <p>Las visualizaciones de datos deben tener un propósito que no debemos de perder de vista en el proceso de construcción.</p>
@@ -193,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="gramática-de-gráficos">Gramática de gráficos</h2>
 <p>La llamada <strong>“La gramática de gráficos”</strong> define un conjunto de reglas para construir gráficos estadísticos combinando diferentes tipos de capas, de manera similar a la gramática lingüística.</p>
 <p>Esta idea fue propuesta por <strong>Leland Wilkinson</strong> en su publicación de 2005 (The Grammar of Graphics - Statistics and Computing - USA).</p>
-<p>La publicación inspiró a los desarrolladores del paquete <strong>ggplot2</strong>, el primer paquete del universo tidyverse lanzado en 2007, que se basa en un sistema de capas.</p>
+<p>La publicación inspiró a los desarrolladores del paquete <a href="https://ggplot2.tidyverse.org/">ggplot2</a>, el primer paquete del universo tidyverse lanzado en 2007, que se basa en un sistema de capas. El “gg” en el nombre se refiere a la <em>“gramática de los gráficos”</em> utilizada para construir las figuras.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/layers.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
@@ -357,6 +360,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="estéticas" class="level2">
+<h2 class="anchored" data-anchor-id="estéticas">Estéticas</h2>
+<p>Observamos que la <strong>estética</strong> de un gráfico refiere a alguna propiedad visual que representa a los datos que estamos mostrando graficamente.</p>
+<p>Los argumentos posibles dentro de <code>aes()</code> son:</p>
+<p><code>color =</code> color de la línea de contorno de un polígono tipo barra, boxplot, etc., o el color de punto y lineas.</p>
+<p><code>fill =</code> el color de relleno de polígonos (por ejemplo, de una barra, boxplot, áreas, etc)</p>
+<p><code>shape =</code> formas que representan un punto (estrella, triángulo, cuadrado, círculo, etc)</p>
+<p><code>size =</code> tamaño del geom (por ejemplo, grosor de línea, tamaño de punto)</p>
+<p><code>alpha =</code> transparencia (1 = opaco, 0 = invisible)</p>
+<p><code>width =</code> ancho de las columnas de un gráfico de barras</p>
+<p><code>linetype =</code> tipo de línea (por ejemplo, sólida, discontinua, punteada)</p>
+</section>
 <section id="capa-geométrica" class="level2">
 <h2 class="anchored" data-anchor-id="capa-geométrica">Capa geométrica</h2>
 <p>Anteriormente decíamos que el tipo de gráfico que queremos construir se decide por el elemento geométrico utilizado en la estructura del ggplot.</p>
@@ -437,6 +452,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Muchas de estas funciones se utilizan simultáneamente en capas diferentes del gráfico, por ejemplo podemos hacer un gráfico de barras con una capa de etiquetas. Algunas de las funciones se construyen con estéticas cuantitativas (boxplot) o categóricas (barras), pero también se pueden combinar (por ejemplo, un boxplot por cada categoría de una variable cualitativa).</p>
 <p>También se pueden activar otros paquetes que extienden la idea del ggplot para crear gráficos con otras capas, como heatmap, ridgeline, dispersión de puntos con barras marginales, rain plot, treemaps, waffles, Upset, etc.</p>
+<p>Las estéticas van a cambiar en base al elemento geométrico elegido. En un diagrama de puntos puede que usemos <code>size</code>, <code>color</code>, <code>shape</code> para el tamaño, el color y la forma del punto respectivamente y en un gráfico de barras podemos usar <code>fill</code> y <code>width</code> para el color de relleno y el ancho de la barra, por ejemplo.</p>
+</section>
+<section id="ejes" class="level2">
+<h2 class="anchored" data-anchor-id="ejes">Ejes</h2>
+<p>Los gráficos con coordenadas cartesianas tienen dos ejes. Estos se pueden configurar mediante las capas <code>scale_x_*</code> y <code>scale_y_*</code>. Hay escalas para distintos tipos de datos y ggplot implementa funciones con sufijos como:</p>
+<ul>
+<li><code>continuous</code>: valores continuos</li>
+<li><code>date</code>: valores tipo fecha</li>
+<li><code>datetime</code>: valores fecha y hora</li>
+<li><code>log10</code>: valores logaritmicos</li>
+<li><code>discrete</code>: valores discretos</li>
+</ul>
+<p>Estas funciones tienen argumentos comunes para definir los límites (<code>limits</code>), el titulo (<code>name</code>) y los cortes que queremos para las marcas del eje (<code>breaks</code>).</p>
+<p>En ocasiones necesitamos construir gráficos con doble eje y, es decir visualizar simultáneamente dos variables relacionadas con el mismo eje x donde cada una tiene una escala diferente.</p>
+<p>Algunas de esta funciones de escala traen un argumento especial llamado <code>sec.axis =</code> que se puede combinar con la función de ggplot del mismo nombre (<code>sec_axis()</code>) para definir ese segundo eje que será representado en el extremo derecho del gráfico.</p>
+<p><code>sec_axis()</code> no permite construir un eje <strong>y</strong> completamente nuevo. Simplemente construye uno basado en el primero, aplicando una transformación matemática, como el logaritmo o la raíz cuadrada.<br>
+Habrá que tener en cuenta que las magnitudes de escala de ambas capas sean consistentes para lograr una visualización armoniosa.</p>
 </section>
 <section id="facetas" class="level2">
 <h2 class="anchored" data-anchor-id="facetas">Facetas</h2>
@@ -487,6 +519,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Otra cuestión a tener en cuenta es la accesibilidad para personas daltónicas, es decir utilizar paletas de colores amigables que garanticen que la información sea accesible para todxs. Un paquete en R que aborda este tema es <a href="https://cran.r-project.org/web/packages/colorBlindness/vignettes/colorBlindness.html">colorBlindness</a>.</p>
 </section>
 </section>
+<section id="coordenadas" class="level2">
+<h2 class="anchored" data-anchor-id="coordenadas">Coordenadas</h2>
+<p>Es muy fácil invertir un gráfico. La función de coordenadas <code>coord_flip()</code> es todo lo que se necesita para hacerlo. Esto es útil con gráficos de barras para dibujarlas horizontales, por ejemplo. También funciona con cualquier otro tipo de capa geométrica.</p>
+<p>Si necesitamos ajustar un eje con respecto a otro (relación de aspecto del sistema de coordenadas cartesianas) se puede aplicar <code>coord_fixed()</code>.</p>
+<p>Tomando el diagrama de dispersión previo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>(<span class="at">ratio =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>También se puede transformar a las coordenadas cartesianas en polares con <code>coord_polar()</code> para la construicción de gráficos circulares como de torta/sectores o similares.</p>
+</section>
 <section id="personalización" class="level2">
 <h2 class="anchored" data-anchor-id="personalización">Personalización</h2>
 <p>La función <code>theme()</code> de ggplot2 brinda el poder de personalizar cada aspecto de la estética de un gráfico.</p>
@@ -502,24 +554,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Por ejemplo, para los ejes, el argumento <code>axis.*</code> tiene nombres como <code>title</code>, <code>text</code>, <code>ticks</code>, <code>line</code> que se igualan a funciones tipo <code>element_line()</code> para personalización de líneas, <code>element_text()</code> para textos, etc.</p>
 <p>Hagamos un pequeño ejemplo con el gráfico de puntos que desarrollamos en el documento.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grafico de puntos"</span>, <span class="co"># titulo de grafico</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Eje x"</span>, <span class="co"># titulo de eje x</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Eje y"</span>) <span class="sc">+</span> <span class="co"># titulo de eje y</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>, <span class="co"># paleta Set1 en color</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Variable z"</span>) <span class="sc">+</span> </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="co"># titulo de eje x en negrita</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>), <span class="co"># titulo de eje y color rojo</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>), <span class="co"># texto de eje x tamaño 7 pts</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>), <span class="co"># texto de eje y en itálica</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), <span class="co"># titulo de leyenda tamaño 12 pts</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="co"># titulo de grafico tamaño 16 pts y negrita</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grafico de puntos"</span>, <span class="co"># titulo de grafico</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Eje x"</span>, <span class="co"># titulo de eje x</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Eje y"</span>) <span class="sc">+</span> <span class="co"># titulo de eje y</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>, <span class="co"># paleta Set1 en color</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Variable z"</span>) <span class="sc">+</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="co"># titulo de eje x en negrita</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>), <span class="co"># titulo de eje y color rojo</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>), <span class="co"># texto de eje x tamaño 7 pts</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>), <span class="co"># texto de eje y en itálica</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), <span class="co"># titulo de leyenda tamaño 12 pts</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) <span class="co"># titulo de grafico tamaño 16 pts y negrita</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -527,27 +579,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Personalizar temas permite mantener un estilo consistente en diferentes gráficos para crear una experiencia visual uniforme y mejorar su legibilidad.</p>
 <p>Es muy útil almacenar la personalización y aplicarla a los gráficos donde la necesitamos.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mi_tema <span class="ot">&lt;-</span> <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>),</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>), </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>), </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), <span class="co">#</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mi_tema <span class="ot">&lt;-</span> <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"red"</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>), </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>), </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>), <span class="co">#</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grafico de puntos"</span>, <span class="co"># titulo de grafico</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Eje x"</span>, <span class="co"># titulo de eje x</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Eje y"</span>) <span class="sc">+</span> <span class="co"># titulo de eje y</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>, <span class="co"># paleta Set1 en color</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Variable z"</span>) <span class="sc">+</span> </span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  mi_tema</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Grafico de puntos"</span>, <span class="co"># titulo de grafico</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Eje x"</span>, <span class="co"># titulo de eje x</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Eje y"</span>) <span class="sc">+</span> <span class="co"># titulo de eje y</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>, <span class="co"># paleta Set1 en color</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Variable z"</span>) <span class="sc">+</span> </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  mi_tema</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -559,13 +611,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>La función <code>ggsave()</code> exporta los graficos generados por ggplot2 en distintos formatos, tamaños y resoluciones.</p>
 <p>La sintaxis con los argumentos opcionales es:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(filename,               <span class="co"># nombre del archivo</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">last_plot</span>(),          <span class="co"># nombre del objeto gráfico</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">device =</span> <span class="cn">NULL</span>,               <span class="co"># formato de salida "jpeg", "png", "tiff", "pdf", etc</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="cn">NA</span>,                  <span class="co"># ancho en unidades de units</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="cn">NA</span>,                 <span class="co"># alto en unidades de units</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="fu">c</span>(<span class="st">"in"</span>, <span class="st">"cm"</span>, <span class="st">"mm"</span>), <span class="co"># unidades de medidas</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>)                   <span class="co"># resolución de salida en dpi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(filename,               <span class="co"># nombre del archivo</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">last_plot</span>(),          <span class="co"># nombre del objeto gráfico</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">device =</span> <span class="cn">NULL</span>,               <span class="co"># formato de salida "jpeg", "png", "tiff", "pdf", etc</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="cn">NA</span>,                  <span class="co"># ancho en unidades de units</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="cn">NA</span>,                 <span class="co"># alto en unidades de units</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="fu">c</span>(<span class="st">"in"</span>, <span class="st">"cm"</span>, <span class="st">"mm"</span>), <span class="co"># unidades de medidas</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>)                   <span class="co"># resolución de salida en dpi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>También es posible introducir las salidas gráficas en fragmentos de código de documentos Quarto para producir archivos html, pdf y docx de Microsoft Word.</p>
 </section>
@@ -598,21 +650,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Además de la simple combinación, patchwork ofrece herramientas para personalizar el diseño de la composición final, teniendo en cuenta márgenes, espacios, alineación y proporciones.</p>
 <p>Imaginemos que tenemos varios gráficos que visualizar combinados (en nuestro ejemplo lo haremos con el único gráfico que construimos).</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>grafico <span class="ot">&lt;-</span> datos <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>(grafico <span class="sc">+</span> grafico) <span class="sc">/</span> grafico </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>grafico <span class="ot">&lt;-</span> datos <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> z)) <span class="sc">+</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>(grafico <span class="sc">+</span> grafico) <span class="sc">/</span> grafico </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Combinamos mediante operadores básicos una salida de tres gráficos.</p>
 </section>
 
 </main>

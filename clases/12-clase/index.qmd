@@ -32,7 +32,7 @@ El objetivo científico de cualquier visualización es permitir al lector compre
 
 Generalmente construimos visualizaciones para dos fines:
 
-Como parte del **Análisis exploratorio (EDA)** para descubrir y describir patrones en los datos o para **presentar y comunicar**, logrando transmitir el mensaje de forma clara y atractiva. 
+Como parte del **análisis exploratorio (EDA)** para descubrir y describir patrones en los datos o para **presentar y comunicar**, logrando transmitir el mensaje de forma clara y atractiva. 
 
 Es importante, al crear una visualización, considerar las características del público objetivo. La interpretación está en el ojo del espectador, y una visualización sólo logrará transmitir su mensaje si se diseña teniendo en cuenta a su audiencia.
 
@@ -46,9 +46,9 @@ Una visualización de datos exitosa logra:
 
 - **Resumir contenido:** Los gráficos y tablas permiten resumir contenido textual complejo, ayudando al lector a memorizar puntos clave.
 
-Por estas razones, las visualizaciones de datos son elementos clave en casi cualquier tipo de publicación: artículos científicos, presentaciones, posters, etc
+Por estas razones, las visualizaciones de datos son elementos clave en cualquier tipo de publicación: artículos científicos, presentaciones, posters, etc
 
-Las tablas también son una forma de visualizar datos o resúmenes estadísticos y pueden ser componentes igualmente importantes en una publicación. En algunos casos, una tabla puede visualizar los datos mejor que un gráfico. 
+Las tablas también son una forma de visualizar datos y resúmenes estadísticos. Suelen ser componentes igualmente importantes en una publicación y en algunos casos, una tabla puede visualizar los datos mejor que un gráfico. 
 
 ## Principios y elementos de las visualizaciones
 
@@ -88,7 +88,7 @@ La llamada **"La gramática de gráficos"** define un conjunto de reglas para co
 
 Esta idea fue propuesta por **Leland Wilkinson** en su publicación de 2005 (The Grammar of Graphics - Statistics and Computing - USA).
 
-La publicación inspiró a los desarrolladores del paquete  **ggplot2**, el primer paquete del universo tidyverse lanzado en 2007, que se basa en un sistema de capas.
+La publicación inspiró a los desarrolladores del paquete  [ggplot2](https://ggplot2.tidyverse.org/), el primer paquete del universo tidyverse lanzado en 2007, que se basa en un sistema de capas. El “gg” en el nombre se refiere a la *“gramática de los gráficos”* utilizada para construir las figuras.
 
 ![](images/layers.PNG){fig-align="center"}
 
@@ -236,6 +236,27 @@ datos |>
   geom_point(aes(color = z), size = 3) +           # estética local (solo en puntos)
   geom_smooth(method = "lm")
 ```
+
+## Estéticas
+
+Observamos que la **estética** de un gráfico refiere a alguna propiedad visual que representa a los datos que estamos mostrando graficamente. 
+
+Los argumentos posibles dentro de `aes()` son:
+
+`color =` color de la línea de contorno de un polígono tipo barra, boxplot, etc., o el color de punto y lineas.
+
+`fill =` el color de relleno de polígonos (por ejemplo, de una barra, boxplot, áreas, etc)
+
+`shape =` formas que representan un punto (estrella, triángulo, cuadrado, círculo, etc)
+
+`size =` tamaño del geom (por ejemplo, grosor de línea, tamaño de punto)
+
+`alpha =` transparencia (1 = opaco, 0 = invisible)
+
+`width =` ancho de las columnas de un gráfico de barras
+
+`linetype =` tipo de línea (por ejemplo, sólida, discontinua, punteada)
+
 ## Capa geométrica
 
 Anteriormente decíamos que el tipo de gráfico que queremos construir se decide por el elemento geométrico utilizado en la estructura del ggplot.
@@ -265,6 +286,26 @@ Muchas de estas funciones se utilizan simultáneamente en capas diferentes del g
 
 También se pueden activar otros paquetes que extienden la idea del ggplot para crear gráficos con otras capas, como heatmap, ridgeline, dispersión de puntos con barras marginales, rain plot, treemaps, waffles, Upset, etc.
 
+Las estéticas van a cambiar en base al elemento geométrico elegido. En un diagrama de puntos puede que usemos `size`, `color`, `shape` para el tamaño, el color y la forma del punto respectivamente y en un gráfico de barras podemos usar `fill` y `width` para el color de relleno y el ancho de la barra, por ejemplo. 
+
+## Ejes
+
+Los gráficos con coordenadas cartesianas tienen dos ejes. Estos se pueden configurar mediante las capas `scale_x_*` y `scale_y_*`. Hay escalas para distintos tipos de datos y ggplot implementa funciones con sufijos como:
+
+- `continuous`: valores continuos
+- `date`: valores tipo fecha
+- `datetime`: valores fecha y hora
+- `log10`: valores logaritmicos
+- `discrete`: valores discretos
+
+Estas funciones tienen argumentos comunes para definir los límites (`limits`), el titulo (`name`) y los cortes que queremos para las marcas del eje (`breaks`).
+
+En ocasiones necesitamos construir gráficos con doble eje y, es decir visualizar simultáneamente dos variables relacionadas con el mismo eje x donde cada una tiene una escala diferente.
+
+Algunas de esta funciones de escala traen un argumento especial llamado `sec.axis =` que se puede combinar con la función de ggplot del mismo nombre (`sec_axis()`) para definir ese segundo eje que será representado en el extremo derecho del gráfico.
+
+`sec_axis()` no permite construir un eje **y** completamente nuevo. Simplemente construye uno basado en el primero, aplicando una transformación matemática, como el logaritmo o la raíz cuadrada.   
+Habrá que tener en cuenta que las magnitudes de escala de ambas capas sean consistentes para lograr una visualización armoniosa.
 
 ## Facetas
 
@@ -322,6 +363,27 @@ R es compatible con muchos formatos de colores. Tiene 657 colores bajo nombres q
 La página [ColorHexa](https://www.colorhexa.com/) entre otras similares ofrecen seleccionar colores visualmente y copiar el código hexadecimal correspondiente.
 
 Otra cuestión a tener en cuenta es la accesibilidad para personas daltónicas, es decir utilizar paletas de colores amigables que garanticen que la información sea accesible para todxs. Un paquete en R que aborda este tema es [colorBlindness](https://cran.r-project.org/web/packages/colorBlindness/vignettes/colorBlindness.html).
+
+## Coordenadas
+
+Es muy fácil invertir un gráfico. La función de coordenadas `coord_flip()` es todo lo que se necesita para hacerlo. Esto es útil con gráficos de barras para dibujarlas horizontales, por ejemplo. También funciona con cualquier otro tipo de capa geométrica.
+
+Si necesitamos ajustar un eje con respecto a otro (relación de aspecto del sistema de coordenadas cartesianas) se puede aplicar `coord_fixed()`.
+
+Tomando el diagrama de dispersión previo:
+
+```{r}
+#| echo: true
+#| fig-align: center
+#| out-width: 70%
+datos |> 
+  ggplot(mapping = aes(x = x, y = y, color = z)) + 
+  geom_point(size = 2) +
+  coord_fixed(ratio = 1/3) 
+```
+
+También se puede transformar a las coordenadas cartesianas en polares con `coord_polar()` para la construicción de gráficos circulares como de torta/sectores o similares.
+
 
 ## Personalización
 
@@ -439,4 +501,8 @@ library(patchwork)
 
 (grafico + grafico) / grafico 
 ```
+
+Combinamos mediante operadores básicos una salida de tres gráficos.
+
+
 
