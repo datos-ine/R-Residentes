@@ -1,0 +1,338 @@
+---
+pagetitle: "Indicadores estadísticos"
+format: 
+  revealjs:
+    self-contained: true
+    width: 1920
+    height: 1080
+    slide-number: true
+    transition: fade
+    theme: [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+##  {#intro-diapo .invert data-menu-title="Indicadores estadísticos"}
+
+[**Indicadores estadísticos**]{.custom-title}
+
+[***Encuentro 5***]{.custom-subtitle}
+
+
+## Paquete rstatix {.title-top}
+
+<br>
+
+El paquete `rstatix` simplifica el proceso de realizar análisis estadísticos complejos. 
+   
+. . .
+   
+- sintaxis intuitiva y basada en el paradigma de la *"gramática de datos"* de tidyverse
+
+. . .
+
+- permite realizar pruebas estadísticas comunes, como t-tests, ANOVA, y correlaciones, de manera rápida y eficiente 
+
+. . .
+
+- diseño que facilita la integración de resultados en flujos de trabajo de análisis reproducibles, asegurando que las conclusiones derivadas de los datos sean robustas y transparentes.
+
+## Paquete rstatix {.title-top}
+
+- Muchas de sus funciones son espejos de las funciones estadísticas de R base pero compatibles con tidyverse, por lo que siempre devuelven los resultados en dataframes
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(readxl)
+
+datos <- read_excel("valores.xlsx")
+```
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library(rstatix)
+
+datos |> 
+  t_test(Edad ~ Sexo)
+```
+Lo que nos permite conectar el resultado mediante tuberías hacia otras funciones del tidyverse, como `select()` o `filter()`.
+
+## Paquete rstatix {.title-top}
+
+<br>
+
+Tiene dos funciones de resumenes para variables cuantitativas y cualitativas:
+
+```{r}
+#| echo: true
+datos |> get_summary_stats(Edad, type = "mean_sd")
+
+datos |> get_summary_stats(Edad, type = "median_iqr")
+```
+
+
+
+
+## Paquete rstatix {.title-top}
+
+<br>
+
+```{r}
+#| echo: true
+datos |> group_by(Sexo) |> 
+  get_summary_stats(Edad, type = "common")
+
+datos |> freq_table(Sexo)
+```
+
+
+## Paquete janitor {.title-top}
+
+<br>
+
+El paquete janitor tiene numerosas funciones de las cuales vamos a destacar la familia **tabyl**.
+
+. . .
+
+La función `tabyl()` permite crear tablas de frecuencia de una variable o tablas de contingencia para dos o más variables categóricas.
+
+. . .
+
+El paquete además tiene otras funciones que se enlazan con tabyl para personalizar los resultados en estas tablas (por ejemplo, agregar totales o representar frecuencias realtivas como porcentajes)
+
+## Paquete janitor {.title-top}
+
+<br>
+
+Se puede personalizar la tabla conectando por tuberías el agregado de otras funciones del paquete. 
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library(janitor)
+
+datos  |>   
+  tabyl(Sexo) |>  
+  adorn_totals(where = "row") |>  
+  adorn_pct_formatting(digits = 2) 
+```
+
+Incorporamos totales con `adorn_totals()` y configuramos los porcentajes con `adorn_pct_formatting()`.
+
+
+## gtsummary {.title-top}
+
+<br>
+
+Este paquete permite crear tablas de resumen elegantes y personalizables que destacan las estadísticas descriptivas, resultados de modelos, y comparaciones de grupos. 
+
+. . . 
+
+Estas tablas son esenciales para reportes, publicaciones y presentaciones, asegurando que la información clave sea fácilmente comprensible.
+
+. . . 
+
+Las salidas buscan producir estéticas compatibles con las tablas que se envían a publicar en la mayoría de las revistas científicas, así como también en otras publicaciones similares.
+
+## gtsummary {.title-top}
+
+<br>
+
+Un ejemplo de una tabla descriptiva con variables cuanti y cuali estratificada por Sexo.
+
+
+![](images/gtsummary.PNG){fig-align="center" width="1000"}
+
+## flextable {.title-top}
+
+<br>
+
+Este paquete es similar a otras librerías como **gt**, **huxtable**, **kableExtra**, etc, que transforman las tablas y dataframes de R en salidas elegantes.
+
+. . . 
+
+La documentación oficial dice *"crear tablas flexibles y altamente personalizables en formatos de Microsoft Word, PowerPoint y HTML".* 
+
+. . . 
+
+La elección de este paquete sobre las otras opciones tiene que ver con la amplitud de opciones en la compatibilidad de los formatos de salida.
+
+. . .
+
+Las funciones del paquete se integran facilmente con Quarto
+
+## flextable {.title-top}
+
+<br>
+
+Una tablita que creamos anteriormente con `freq_table()` de **rstatix** fue:
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+
+datos |> freq_table(Sexo)
+
+```
+
+La salida tradicional de consola se visualiza estéticamente fea.
+
+## flextable {.title-top}
+
+Con flextable podemos configurar esa misma tabla, para mejorar su presentación:
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+library(flextable)
+
+datos |> freq_table(Sexo) |> 
+  flextable() |> 
+  fontsize(size = 30, part = "all") |> 
+  align(align = "center", part = "all") |> 
+  line_spacing(space = 2, part = "all") |> 
+  padding(padding = 6, part = "header") |> 
+  set_header_labels(n = "Frecuencia", prop = "%") |> 
+  theme_zebra()
+```
+
+## Funciones {.title-top}
+
+<br>
+
+Las funciones nos permiten automatizar tareas comunes de una manera más potente y general que copiar y pegar.
+
+. . .
+
+> Funciones vectoriales que toman uno o más vectores como entrada y devuelven un vector como salida.
+
+. . .
+
+> Funciones de tablas de datos que toman un dataframe como entrada y devuelven un dataframe como salida.
+
+. . .
+
+> Funciones gráficas que toman un dataframe como entrada y devuelven un gráfico como salida.
+
+## Ejemplo de una función {.title-top}
+
+<br>
+
+En el material de ajuste de tasas de esta unidad, hay un momento donde creamos grupos etarios regulares cada 5 años y tenemos el problema que las etiquetas de `cut_interval()` no coinciden con las leídas en las proyecciones de población.
+
+Tomamos entonces el dataframe defunciones a la altura de tener EDAD y UNIEDAD antes de construir los grupos etarios.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+defunciones <- read_csv("def2022.csv", 
+                        locale = locale(encoding = "ISO-8859-1"))
+
+defunciones <- defunciones |> 
+  filter(JURI %in% c("82", "06")) |> 
+  select(JURI, EDAD, UNIEDAD, SEXO) 
+
+defunciones
+  
+```
+
+
+## Ejemplo de una función {.title-top}
+
+<br>
+
+El código que sigue es el trabajo que hay que hacer para generar los grupos y que sean coincidentes con los grupos de las proyecciones de población.
+
+```{r}
+#| eval: false
+#| echo: true
+
+defunciones <- defunciones |> 
+  mutate(EDAD = if_else(UNIEDAD > 1,
+                        true = 0,  
+                        false = EDAD),                   
+         GRUPEDAD = cut_interval(EDAD,
+                                 length = 5,
+                                 right = F),
+         GRUPEDAD = as.character(GRUPEDAD),
+         GRUPEDAD = str_sub(GRUPEDAD,
+                            start = 2, 
+                            end = str_length(GRUPEDAD)-1),
+         x = str_split_fixed(GRUPEDAD, ",",
+                             n = 2),
+         x2 = as.numeric(x[,2])-1,
+         GRUPEDAD = str_c(x[,1],"-",x2),
+         GRUPEDAD = if_else(EDAD >= 80,
+                            true ="80 y más", 
+                            false = GRUPEDAD)) |> 
+  select(!c(x, x2, EDAD, UNIEDAD))
+```
+
+## Ejemplo de una función {.title-top}
+
+<br>
+
+Entonces podemos pensar en una función que automatice la tarea para aplicarla cada vez que la necesitemos.
+
+```{r}
+#| echo: true
+
+grupo_5 <- function(datos, EDAD, UNIEDAD) {
+  datos |> 
+  mutate(EDAD = if_else({{ UNIEDAD }} > 1,
+                        true = 0,  
+                        false = {{ EDAD }}),                   
+         GRUPEDAD = cut_interval(EDAD,
+                                 length = 5,
+                                 right = F),
+         GRUPEDAD = as.character(GRUPEDAD),
+         GRUPEDAD = str_sub(GRUPEDAD,
+                            start = 2, 
+                            end = str_length(GRUPEDAD)-1),
+         x = str_split_fixed(GRUPEDAD, ",",
+                             n = 2),
+         x2 = as.numeric(x[,2])-1,
+         GRUPEDAD = str_c(x[,1],"-",x2),
+         GRUPEDAD = if_else(EDAD >= 80,
+                            true ="80 y más", 
+                            false = GRUPEDAD)) |> 
+  select(!c(x, x2, EDAD, UNIEDAD))
+}
+```
+
+## Ejemplo de una función {.title-top}
+
+<br>
+
+Aplicamos la función a los datos **defunciones**
+
+<br>
+
+```{r}
+#| echo: true
+
+defunciones |> grupo_5(EDAD, UNIEDAD)
+
+```
+
