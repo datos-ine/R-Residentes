@@ -239,7 +239,7 @@ datos |>
 
 ## Estéticas
 
-Observamos que la **estética** de un gráfico refiere a alguna propiedad visual que representa a los datos que estamos mostrando graficamente. 
+Observamos que la **estética** de un gráfico refiere a alguna propiedad visual que representa a los datos que estamos mostrando gráficamente. 
 
 Los argumentos posibles dentro de `aes()` son:
 
