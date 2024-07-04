@@ -1,0 +1,375 @@
+---
+pagetitle: "Visualización de datos"
+format: 
+  revealjs:
+    self-contained: true
+    width: 1920
+    height: 1080
+    slide-number: true
+    transition: fade
+    theme: [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+
+##  {#intro-diapo .invert data-menu-title="Visualización de datos"}
+
+[**Visualización de datos**]{.custom-title}
+
+[***Encuentro 6***]{.custom-subtitle}
+
+
+## Visualización {.title-top}
+
+<br>
+
+La idea en esta presentación es mostrar paso a paso la construcción de un gráfico.
+
+- Partiremos del objetivo deseado, en este caso un tipo de gráfico que ya existe, pero podría ser algún otro ejemplo o un bosquejo de lo imaginado garabateado en un papel.
+
+- El segundo paso es determinar cuales son las variables necesarias para construir ese gráfico y donde se mapean.
+
+- El tercer paso es trabajar con los datos y transformarlos para que estén preparados para graficar.
+
+- El cuarto es el gráfico en si mismo con todas las personalizaciones de sus partes. 
+
+
+## Gráfico objetivo {.title-top}
+
+<br>
+
+Queremos construir un gráfico similar a este
+
+![](images/graf_objetivo.PNG){fig-align="center" width="1000"}
+
+## Variables participantes {.title-top}
+
+<br>
+
+- El análisis del modelo indica que hay dos capas geométricas simultáneas: una de **barras** y otra de **líneas**.
+
+- También hay dos ejes `y` (a izquierda **Números de casos** y a derecha **Tasas por 100.000**) y un eje `x` (**Años**)
+
+- Las variables participantes son tres: 
+  - el número de casos que mapea en `y1`, 
+  - las tasas que mapean en `y2` y 
+  - los años de la tendencia que se ubican en `x`.
+
+## Lectura y adecuación de los datos {.title-top}
+
+<br>
+
+Importamos datos de la tendencia de TB de la provincia de Santa Fe entre los años 1980 y 2008
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(readxl)
+
+tendencia1 <- read_excel("Tendencia tb 1980 2008 por provincia.xls", 
+                        sheet = "SFE", range = "A6:A34", col_names = F) |> 
+   rename("Año" = ...1)
+
+tendencia2 <- read_excel("Tendencia tb 1980 2008 por provincia.xls", 
+                        sheet = "SFE", range = "D6:E34", col_names = F) |> 
+  rename("Casos" = ...1,
+         "Tasa" = ...2)
+
+tendencia <- tendencia1 |> 
+  bind_cols(tendencia2) 
+```
+## Lectura y adecuación de los datos {.title-top}
+
+<br>
+
+El dataframe necesario para este gráfico nos quedaría así:
+
+```{r}
+tendencia
+```
+
+## Primer gráfico {.title-top}
+
+<br>
+
+Iniciamos con el gráfico de barras. Mapeamos `x` e `y`, indicamos color de relleno e identidad porque las barras se van a construir con el conteo previo (datos agregados)
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue")
+```
+
+## Capa de texto {.title-top}
+
+<br>
+
+Agregamos capa de texto con los valores de los casos.
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_text()
+```
+
+## Capa de texto {.title-top}
+
+<br>
+
+Adecuamos los valores en las barras.
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white")
+```
+
+## Eje x {.title-top}
+
+<br>
+
+Configuramos eje `x`
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  scale_x_continuous(name = "Años", breaks = seq(1980, 2008, 1))
+```
+
+## Eje x {.title-top}
+
+<br>
+
+Personalizamos mejor el eje `x` (ángulo de las etiquetas, etc)
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  scale_x_continuous(name = "Años", breaks = seq(1980, 2008, 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 11))
+```
+
+## Eje y {.title-top}
+
+<br>
+
+Configuramos el eje `y` asociado a las barras
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  scale_x_continuous(name = "Años", breaks = seq(1980, 2008, 1)) +
+  scale_y_continuous(name = "Número de casos", breaks = seq(0, 1000, 200)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 11),
+        axis.text.y = element_text(size = 11))
+```
+
+## Segundo gráfico {.title-top}
+
+<br>
+
+Incoporamos el segundo gráfico o segunda capa geométrica. Utilizamos una constante para llevar los valores al mismo orden de los valores de las barras.
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_line(aes(y = Tasa*35), color = "red", linewidth = 1.5) +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  scale_x_continuous(name = "Años", 
+                     breaks = seq(1980, 2008, 1)) +
+  scale_y_continuous(name = "Número de casos", 
+                     breaks = seq(0, 1000, 200),
+                     sec.axis = sec_axis(~./35, 
+                                         name = "Tasa")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 11),
+        axis.text.y = element_text(size = 11))
+```
+
+## Etiquetas del segundo gráfico {.title-top}
+
+<br>
+
+Agregamos etiquetas asociadas a la capa geométrica `line`
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos)) +
+  geom_bar(stat = "identity", 
+           fill = "royalblue") +
+  geom_line(aes(y = Tasa*35), color = "red", linewidth = 1.5) +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  geom_text(aes(label = round(Tasa,1), y = Tasa*35), angle = 45, hjust = -0.2, vjust = -0.5) +
+  scale_x_continuous(name = "Años",
+                     breaks = seq(1980, 2008, 1)) +
+  scale_y_continuous(name = "Número de casos", 
+                     breaks = seq(0, 1400, 200),
+                     limits = c(0,1400),
+                     sec.axis = sec_axis(~./35, 
+                                         name = "Tasas por 100.000", 
+                                         breaks = seq(0, 60, 10))) +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1, 
+                                   size = 11),
+        axis.text.y = element_text(size = 11))
+```
+
+## Leyendas {.title-top}
+
+<br>
+
+Al igual que el modelo del gráfico, sumamos dentro del mismo las leyendas
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos, fill = "Número de casos")) +
+  geom_bar(stat = "identity") +
+  geom_line(aes(y = Tasa*35, color = "Tasas por 100.000"), linewidth = 1.5) +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  geom_text(aes(label = round(Tasa,1), y = Tasa*35), angle = 45, hjust = -0.2, vjust = -0.5) +
+  scale_x_continuous(name = "Años",
+                     breaks = seq(1980, 2008, 1)) +
+  scale_y_continuous(name = "Número de casos", 
+                     breaks = seq(0, 1400, 200),
+                     limits = c(0,1400),
+                     sec.axis = sec_axis(~./35, 
+                                         name = "Tasas por 100.000", 
+                                         breaks = seq(0, 60, 10))) +
+  scale_fill_manual(values = "royalblue") +
+  scale_color_manual(values = "red") +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1, 
+                                   size = 11),
+        axis.text.y = element_text(size = 11),
+        legend.position = "inside",
+        legend.position.inside = c(0.8, 0.8),
+        legend.background = element_rect(fill = "transparent"),
+        legend.text.position = "right",
+        legend.title=element_blank()) +
+  guides(color = guide_legend(order = 0),
+         fill = guide_legend(order = 1))
+```
+
+## Título y demás {.title-top}
+
+<br>
+
+Por último, definimos estructura de titulo, subtitulo y pie de gráfico (habría que reemplazarlos por la definición de cada uno).
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+#| out-width: 200%
+#| output-location: slide
+
+tendencia |> 
+  ggplot(aes(x = Año, y = Casos, label = Casos, fill = "Número de casos")) +
+  geom_bar(stat = "identity") +
+  geom_line(aes(y = Tasa*35, color = "Tasas por 100.000"), linewidth = 1.5) +
+  geom_text(hjust = 1.2, vjust = 0.5, angle = 90, color = "white") +
+  geom_text(aes(label = round(Tasa,1), y = Tasa*35), angle = 45, hjust = -0.2, vjust = -0.5) +
+  scale_x_continuous(name = "Años",
+                     breaks = seq(1980, 2008, 1)) +
+  scale_y_continuous(name = "Número de casos", 
+                     breaks = seq(0, 1400, 200),
+                     limits = c(0,1400),
+                     sec.axis = sec_axis(~./35, 
+                                         name = "Tasas por 100.000", 
+                                         breaks = seq(0, 60, 10))) +
+  scale_fill_manual(values = "royalblue") +
+  scale_color_manual(values = "red") +
+  labs(title = "Titulo", subtitle = "subtitulo", caption = "pie de grafico" ) +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1, 
+                                   size = 11),
+        axis.text.y = element_text(size = 11),
+        legend.position = "inside",
+        legend.position.inside = c(0.8, 0.8),
+        legend.background = element_rect(fill = "transparent"),
+        legend.text.position = "right",
+        legend.title=element_blank()) +
+  guides(color = guide_legend(order = 0),
+         fill = guide_legend(order = 1))
+```
