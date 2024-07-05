@@ -382,7 +382,7 @@ datos |>
   coord_fixed(ratio = 1/3) 
 ```
 
-También se puede transformar a las coordenadas cartesianas en polares con `coord_polar()` para la construicción de gráficos circulares como de torta/sectores o similares.
+También se puede transformar a las coordenadas cartesianas en polares con `coord_polar()` para la construcción de gráficos circulares como de torta/sectores o similares.
 
 
 ## Personalización
