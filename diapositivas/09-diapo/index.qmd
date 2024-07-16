@@ -1,0 +1,793 @@
+---
+pagetitle: "Documentos estáticos de Quarto® segunda parte"
+format: 
+  revealjs:
+    self-contained: true
+    slide-number: true
+    width: 1920
+    height: 1080
+    transition: fade
+    theme:  [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+```{r}
+#| include: false
+library(countdown)
+countdown_timer <- function(
+    minutes = 1, 
+    play_sound = TRUE, 
+    font_size = "2em", 
+    ...
+) {
+  countdown(
+    minutes = minutes,
+    # Fanfare when it's over
+    play_sound = play_sound,
+    # Set timer theme to match solarized colors
+    color_border              = "#404041",
+    color_text                = "white",
+    color_background = "#d78e1c",
+    color_running_background  = "#72994E",
+    color_running_text        = "white",
+    color_finished_background = "#EE6331",
+    color_finished_text       = "white",
+    font_size = font_size,
+    ...
+  )
+}
+```
+
+##  {#docu-estaticos-title data-menu-title="Documentos estáticos de Quarto® segunda parte" background-image="images/fondo.jpg" aria-label="Imprenta"}
+
+[Documentos estáticos de Quarto® 2da. parte]{.custom-title .centrar}
+
+[Encuentro 8]{.custom-subtitle}
+
+
+## Artículos científicos {.title-top}
+
+<br>
+
+Quarto soporta la construcción de artículos científicos a través de plantillas preformateadas o personalizadas donde encontraremos:
+
+:::: columns
+
+::: {.column width="50%"}
+
+::: incremental
+
+<br>
+
+-   un esquema estandarizado para autores que se puede expresar una vez en el documento fuente (aunque se apliquen multiples plantillas de salida),
+
+-   el uso de **Citation Style Language** (CSL) para automatizar el formato de citas y bibliografías,
+
+-   herramientas de **RStudio** *modo Visual* para trabajar con **Zotero**, DOI's, CrossRef, DataCite, PubMed y archivos .bib,
+
+
+-   salida a `pdf`, `html` y `docx` con formato personalizado,
+:::
+
+:::
+
+::: {.column width="50%"}
+
+![](images/Q.png){.absolute top="350" left="1250" width="400"}
+
+:::
+
+::::
+
+## Formatos de revistas {.title-top}
+
+<br>
+
+Existen plantillas preformateadas que cumplen con requisitos dispuestos por varias revistas científicas internacionales que se pueden aplicar en Quarto.
+
+- [American Psychological Association, Septima Edición (APA7)](https://github.com/wjschne/apaquarto) 
+
+- [Elsevier](https://github.com/quarto-journals/elsevier)
+
+- [Public Library of Science (PLOS)](https://github.com/quarto-journals/plos)
+
+- [Plantilla para preprints arxiv](https://github.com/mikemahoney218/quarto-arxiv)
+
+- [Springer Nature](https://github.com/christopherkenny/nature)
+
+<br>
+
+También existen formas de estructurar una plantilla propia o con especificaciones particulares.
+
+<br>
+
+Para ver las extensiones disponibles de [Quarto - Journal Articles](https://quarto.org/docs/extensions/listing-journals.html) 
+
+## Autores {.title-top}
+
+Metadatos de YAML para codificar datos de autores y sus afiliaciones. Ver capítulo [Authors & Affiliations](https://quarto.org/docs/journals/authors.html)
+
+``` markdown
+author:
+  - id: string
+    number: number
+    name:
+      given: string
+      family: string
+      literal: string
+      dropping-particle: string
+      non-dropping-particle: string
+    url: string
+    email: string
+    phone: string
+    fax: string
+    degrees: 
+    orcid: string
+    note: string
+    acknowledgements: string
+    attributes:
+      corresponding: boolean
+      equal-contributor: boolean
+      deceased: boolean
+    roles: 
+    metadata: object
+    affiliations: 
+``` 
+
+## Citas bibliográficas {.title-top}
+
+![](images/DOI.jpg){.absolute top="600" left="720" width="450"}
+
+<br>
+
+Quarto utiliza la representación de Mardown estándar de Pandoc para las citas (por ejemplo [\@cita]): las citas van entre corchetes y están separadas por punto y coma. Cada cita debe tener una clave, compuesta por "\@" + el identificador de la cita de la base de datos.
+
+
+<br>
+
+Pandoc le brinda el formato a las citas bibliograficas. De forma predeterminada, usa el formato autor-fecha del estilo Chicago, pero puede especificarse un formato personalizado utilizando **CSL** (Citation Style Language) en la cabecera YAML del documento.
+
+## Citas bibliográficas {.title-top}
+
+<br>
+
+En la cabecera YAML se define:
+
+- el nombre del archivo **.bib** o **.bibtex** donde están las citas a usar - metadato bibliography:
+
+- el archivo **.csl** que determina el formato de cita - metadato csl: - acceder a [Repositorio archivos CSL](https://github.com/citation-style-language/styles) y [Repositorio CSL Zotero](https://www.zotero.org/styles)
+
+- en formato PDF se puede seleccionar si se maneja el sistema de citas con `citeproc` de Pandoc o alternativamente `natlib` o `BibLatex` - metadato cite-method:
+
+<br>
+
+Muchas de estas configuraciones ya vienen predeterminadas en las plantillas de revistas.
+
+## Inclusión de código en Quarto {.title-top}
+
+<br>
+
+En todo documento Quarto se puede incluir código de diferentes lenguajes de programación (R, python, julia, javascript, etc).
+
+. . .
+
+<br>
+
+Habitualmente el código sirve para mostrar resultados estadísticos en forma de tabla y/o gráfico. Otras veces el código produce diversas tareas que no se muestran hasta tanto se produzca la salida de resultados. Y en ocasiones, cuando el producto tiene un fin docente sobre el lenguaje de programación en si, se muestran las líneas de código junto a lo que produce.
+
+. . . 
+
+<br>
+
+Toda la ejecución del código se maneja desde las opciones de ejecución que se configuran como metadatos dentro de los fragmentos (chunks).
+
+## Opciones de ejecución de código {.title-top}
+
+<br>
+
+Algunas de las opciones de control de ejecución de los chunck de código.
+
+::: {style="font-size: 1em"}
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Opción    | Descripción                                                                                                                                                                                       |
++===========+===================================================================================================================================================================================================+
+| `eval`    | Evalua el codigo del chunk (si es `false`, saltea el código y no lo ejecuta).                                                                                                                     |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `echo`    | Incluye el código fuente en la salida                                                                                                                                                             |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `output`  | Incluye el resultado de la ejecución del código en la salida (`true`, `false`, or `asis` para indicar que muestre los resultados en forma cruda).                                                 |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `warning` | Gestiona las advertencias en la salida.                                                                                                                                                           |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `error`   | Gestiona los errores en la salida.                                                                                                                                                                |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `include` | Evita que se incluya cualquier salida (código o resultados) (por ejemplo `include: false` suprime toda la salida del bloque de código).                                                           |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `message` | Gestiona los mensajes en la salida                                                                                                                                                                |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| `fig-*`   | Familia de opciones para las figuras (alto, ancho, alineación, nombre, resolución, etc)                                                                                                           |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+:::
+
+
+## Tablas desde código {.title-top}
+
+<br>
+
+Salida directa, igual que en consola y estéticamente feas.
+
+```{r}
+#| echo: fenced
+library(datos)
+
+pinguinos |> 
+  slice(1:6)
+```
+
+## Tablas desde código {.title-top}
+
+<br>
+
+El paquete **knitr**, incuído en RStudio, puede convertir las salidas estos dataframes en tablas visuales con `knitr::kable()`:
+
+<br>
+
+```{r}
+library(knitr)
+
+pinguinos |> 
+  slice(1:8) |> 
+  kable()
+```
+
+## Tablas desde código {.title-top}
+
+<br>
+
+Existen numerosos paquetes para darle formato a las tablas producidas mediante código. 
+
+Un ejemplo muy completo es el paquete **flextable**, que vimos en clases anteriores.
+
+Además de salidas HTML es compatible con pdf y Word (docx). 
+
+La documentación se encuentra en este [enlace](https://ardata-fr.github.io/flextable-book/)
+
+<br>
+
+```{r}
+library(flextable)
+
+head(pinguinos) |> 
+flextable() |> 
+fontsize(size = 26, part = "all") |> 
+height_all(height = 1, part = "all", unit = "in") |> 
+colformat_num(big.mark = "", decimal.mark = ",", digits = 2, na_str = "N/A") |>  
+theme_zebra()
+```
+
+## Tablas desde código {.title-top}
+
+<br>
+
+Otro paquete para tablas elaboradas es **gt**. 
+
+Aquí podemos encontrar [todo lo que ofrece](https://gt.rstudio.com/).
+
+<br>
+
+```{r}
+#| output-location: column-fragment
+
+library(gt)
+
+head(pinguinos) |> 
+  gt() |>
+ tab_options(table.font.size = 40) |> 
+  tab_style(
+    style = list(
+      cell_fill(color = "pink"),
+      cell_text(style = "italic")
+      ),
+    locations = cells_body(
+      columns = largo_pico_mm,
+      rows = largo_pico_mm > 40
+    )
+  )
+```
+
+
+## Gráficos desde código {.title-top auto-animate="true"}
+
+<br>
+
+:::: columns
+
+::: {.column width="50%"}
+
+```` markdown
+```{{r}}
+library(datos)
+library(ggplot2)
+
+pinguinos |> 
+  ggplot(aes(x = largo_pico_mm,
+                     y = alto_pico_mm,
+                     col = isla)) +
+  geom_point()
+```
+````
+:::
+
+::: {.column .fragment width="50%"}
+
+```{r}
+#| echo: false
+library(datos)
+library(ggplot2)
+
+pinguinos |> 
+  ggplot(aes(x = largo_pico_mm,
+                     y = alto_pico_mm,
+                     col = isla)) +
+  geom_point() +
+  theme_grey(base_size = 18)
+```
+
+:::
+
+::::
+
+## Ejemplo: Gráficos desde código {.title-top auto-animate="true"}
+
+<br>
+
+::: columns
+::: {.column width="50%"}
+```` markdown
+```{{r}}
+#| fig-width: 5
+#| fig-height: 3
+
+library(datos)
+library(ggplot2)
+
+pinguinos |> 
+  ggplot(aes(x = largo_pico_mm,
+                     y = alto_pico_mm,
+                     col = isla)) +
+  geom_point()
+```
+````
+:::
+
+::: {.column .fragment width="50%"}
+```{r}
+#| echo: false
+#| fig-width: 5
+#| fig-height: 3
+
+library(datos)
+library(ggplot2)
+
+pinguinos |> 
+  ggplot(aes(x = largo_pico_mm,
+                     y = alto_pico_mm,
+                     col = isla)) +
+  geom_point() +
+  theme_grey(base_size = 18)
+```
+:::
+:::
+
+## Ejemplo: Gráficos desde código {.title-top auto-animate="true"}
+
+<br>
+
+::: columns
+::: {.column width="50%"}
+```` markdown
+```{{r}}
+#| fig-width: 5
+#| fig-height: 3
+#| fig-cap: "Tamaño de los pingüinos en 
+tres islas del Archipelago Palmer."
+#| fig-alt: "Diagrama de dispersión que 
+muestra el tamaño de los picos de los 
+pingüinos en tres islas"
+
+library(datos)
+library(ggplot2)
+
+pinguinos |> 
+  ggplot(aes(x = largo_pico_mm,
+                     y = alto_pico_mm,
+                     col = isla)) +
+  geom_point()
+```
+````
+:::
+
+::: {.column .fragment width="50%"}
+```{r}
+#| echo: false
+#| fig-width: 5
+#| fig-height: 3
+#| fig-cap: "Tamaño de los pingüinos en tres islas del Archipelago Palmer."
+#| fig-alt: "Diagrama de dispersión que muestra el tamaño de los picos de los pingüinos en tres islas"
+
+
+library(datos)
+library(ggplot2)
+
+pinguinos |> 
+  ggplot(aes(x = largo_pico_mm,
+                     y = alto_pico_mm,
+                     col = isla)) +
+  geom_point()+
+  theme_grey(base_size = 18)
+```
+:::
+::::
+
+
+
+
+
+
+## Formatos posibles {.title-top}
+
+<br>
+
+Editando la cabecera YAML se puede definir formatos de documentos distintos a HTML.
+
+Entre las opciones de documentos con fines de impresión se encuentran:
+
+<br>
+
+::: columns
+::: {.column width="40%"}
+
+<br>
+
+-   **PDF** (en base a **LaTeX**)
+
+-   **PDF** (en base a **typst**)
+
+-   **docx** (archivo **Word**)
+:::
+
+::: {.column width="60%"}
+![](images/tipos.webp){.absolute top="450" left="900" width="850"}
+:::
+:::
+
+## PDF (LaTeX) {.title-top}
+
+![](images/adobe_pdf.PNG){.absolute top="0" left="1500" width="280"}
+
+<br> <br> <br>
+
+. . .
+
+Para procesar documentos PDF de Quarto (documentos tradicionales pdf de RMarkdown) nuestra computadora debe cumplir con el requerimiento de tener instalado una distribución actualizada de **Tex**.
+
+. . .
+
+Existen varios motores PDF pero se recomienda utilizar [TinyTeX](https://yihui.org/tinytex/) (basado en TexLive) que podemos instalar fácilmente desde RStudio.
+
+. . .
+
+<br>
+
+Otras distribuciones posibles para Windows son: **MikTex** o **Tex Live**, pero deben descargase e instalarse independientemente de RStudio.
+
+## TinyTex {.title-top}
+
+<br>
+
+**TinyTeX** es una distribución **LaTeX** personalizada, basada en *TeX Live*, que es pequeña en tamaño pero funciona bien en la mayoría de los casos, especialmente para usuarios de R.
+
+Se instala ejecutando la siguiente linea en la **Terminal** de **RStudio**
+
+<br>
+
+``` markdown
+quarto install tinytex --update-path
+```
+
+<br>
+
+Luego activamos la opción:
+
+**Use tinytex when compiling .tex files**
+
+en **Global options** de RStudio y reiniciamos.
+
+## Cabecera PDF {.title-top}
+
+<br>
+
+Las cabecera básica de documentos PDF basados en **LaTeX** es:
+
+``` rmardown
+---
+title: "Mi Documento"
+format:
+  pdf:
+    toc: true
+---
+```
+
+\* en este ejemplo, además activamos tabla de contenidos.
+
+La mayoría de las *opciones de ejecución* vistas para HTML sirven para este tipo de documentos.
+
+Quarto utiliza clases de documentos [KOMA Script](https://ctan.org/pkg/koma-script) de forma predeterminada para libros y documentos PDF.
+
+## Clases de documentos {.title-top}
+
+<br>
+
+La opción de ejecución `documentclass:` posibilita cambiar de clase utilizando la configuración KOMA Script.
+
+| Opción   | Descripción                                                                                         |
+|------------------------------------|------------------------------------|
+| scrartcl | Es la clase estándar. Diseñada para artículos (más o menos cortos)                                  |
+| scrreprt | Clase reportes, similar a los libros. Se diferencian principalmente en los valores predeterminados. |
+| scrbook  | Diseñada para libros desde aproximadamente una docena hasta miles de páginas                        |
+
+## Clases de documentos {.title-top}
+
+<br>
+
+Seleccionar que clase de documento pdf queremos tendrá que ver con lo que estemos produciendo.
+
+Por ejemplo, los artículos estan configurados predeterminandamente con una sola cara, lo mismo que los reportes. En cambio, los libros son de doble cara.
+
+De todas maneras, las opciones se pueden cambiar con `classoption:` (oneside, twoside)
+
+<br>
+
+::: {.callout-note .especial appearance="simple" icon="false"}
+## Ejemplo
+
+Configurar el documento de clase `scrbook` automatizará muchas de las necesidades comunes para imprimir y encuadernar archivos PDF en un libro físico (es decir, los capítulos comienzan en páginas impares, tamaños de márgenes alternos, etc.)
+:::
+
+## Otras opciones de ejecución {.title-top}
+
+<br>
+
+| Opción      | Descripción                                              |
+|-------------|----------------------------------------------------------|
+| `papersize` | Configura tamaño de papel                                |
+| `lot`       | Activa tabla de tablas                                   |
+| `lof`       | Activa tabla de figuras                                  |
+| `fontsize`  | Tamaño de fuente                                         |
+| `mainfont`  | Fuente principal                                         |
+| `geometry`  | Llama a paquete latex geometrías - define margenes, etc. |
+
+## Librerías latex {.title-top}
+
+<br>
+
+Algunas librerías Latex como `geometry` vienen implementadas dentro de **TinyTex** y asociadas a la cabecera YAML de Quarto. Otras librerías pueden llamarse desde la opción `include-in-header` para inyectar comandos **Latex**.
+
+Por ejemplo, incluyendo una fuente específica para el texto.
+
+``` markdown
+format:
+  pdf:
+    include-in-header:
+      - text: |
+          \usepackage{sourcesanspro}
+```
+
+<br>
+
+::: {.callout-note .especial appearance="simple" icon="false"}
+Quarto instalará todos los paquetes especificados mediante inclusiones que aún no haya instalado localmente durante la renderización del documento usando TinyTex.
+:::
+
+## Latex puro {.title-top}
+
+<br>
+
+Al crear un documento PDF, Pandoc permite el uso de código **LaTex** puro entre el markdown.
+
+::: columns
+::: {.column width="40%"}
+``` markdown
+\begin{tabular}{ll}
+A & B \\
+A & B \\
+\end{tabular}
+```
+:::
+
+::: {.column width="60%"}
+![](images/latex.png){.absolute top="210" left="1050" width="500"}
+:::
+:::
+
+Si bien es muy conveniente para este formato, el código se ignora cuando se procesa en otros como HTML y Word.
+
+<br>
+
+> Tengamos en cuenta que en algunos casos, el LaTeX puro requerirá paquetes de LaTeX adicionales (que deberemos incluir en la cabecera).
+
+## PDF (typst) {.title-top}
+
+![](images/typst.png){fig-align="center" width="70%"}
+
+**Typst** es un nuevo sistema de composición tipográfica de código abierto basado en un lenguaje de marcas que está diseñado para ser tan potente como LaTeX y al mismo tiempo mucho más fácil de aprender y usar. Genera buenos resultados en PDF con tiempos de renderizado muy rápidos.
+
+<br>
+
+> Dado que Typst está en desarrollo activo y fue incorporado en la última versión de Quarto, todavía existen algunas limitaciones en el soporte. Es decir, que algunas caracterísiticas nativas como el diseño de página avanzado no están del todo implementadas.
+
+## Cabecera typst {.title-top}
+
+<br>
+
+``` rmardown
+
+---
+title: "Mi Documento"
+format:
+  typst:
+    columns: 2
+---
+```
+
+\* en esta cabecera, además definimos 2 columnas para el documento.
+
+La gran mayoría de opciones de cabecera generales de YAML para Quarto funcionan en **typst**.
+
+## Diseño de página {.title-top}
+
+<br>
+
+Se puede controlar el diseño de la página mediante opciones de cabecera:
+
+-   `papersize`: tamaño de la página ("a4", "us-letter", "us-legal", etc)
+-   `margin`: márgenes de la página (top, right, bottom, left - medido en pulgadas `in` o centímetros `cm`)
+-   `columns`: cuantas columnas tendrá el diseño (por defecto 1 columna)
+-   `mainfont`: fuente principal (busca fuentes instaladas en el sistema pero se puede indicar rutas adicionales con `font-paths`)
+-   `fontsize`: tamaño de fuente base (medida en puntos `pt`)
+
+## typst puro {.title-top}
+
+<br>
+
+Al igual que el **LaTeX** se puede insertar bloques de código **typst** sin formato dentro del documento
+
+``` markdown
+
+```{=typst} 
+#set par(justify: true)
+
+== Título
+Este es un ejemplo de texto en typst.
+
+
+```
+
+Para obtener más información sobre marcado **typst**, consulte el tutorial aquí: <https://typst.app/docs/tutorial/>
+
+## Bloques nativos typst {.title-top}
+
+<br>
+
+Se puede cambiar la apariencia de bloques mediante llamadas nativas de **Typst**, utilizando la clase `.block` en un **Div** con los argumentos apropiados.
+
+``` markdown
+
+::: {.block fill="luma(230)" inset="8pt" radius="4pt"}
+
+Este es un bloque con fondo gris y las aristas redondeadas. 
+
+:::
+```
+
+## Fórmulas typst {.title-top}
+
+<br>
+
+Typst tiene composición tipográfica matemática incorporada y utiliza su propia notación.
+
+La notación va encerrada entre signos \$, de forma similar al LaTeX.
+
+``` markdown
+{=typst} 
+$ 7.32 beta +
+  sum_(i=0)^nabla
+    (Q_i (a_i - epsilon)) / 2 $
+```
+
+
+
+![](images/ecuacion.PNG){.absolute bottom="200" left="15" width="400"}
+
+## Pantillas personalizadas {.title-top}
+
+
+Existen plantillas typst preconfeccionadas que se pueden utilizar o bien personalizar una propia.
+
+| Formato   | Uso                                                      |
+|-----------|----------------------------------------------------------|
+| Poster    | quarto use template quarto-ext/typst-templates/poster    |
+| IEEE      | quarto use template quarto-ext/typst-templates/ieee      |
+| AMS       | quarto use template quarto-ext/typst-templates/ams       |
+| Letter    | quarto use template quarto-ext/typst-templates/letter    |
+| Fiction   | quarto use template quarto-ext/typst-templates/fiction   |
+| Dept News | quarto use template quarto-ext/typst-templates/dept-news |
+
+En el siguiente [tutorial](https://typst.app/docs/tutorial/making-a-template/) de typst guian en la creación de una plantilla.
+
+<br>
+
+También en el sitio [Awesome Quarto](https://github.com/qjcg/awesome-typst#templates--libraries) hay páginas de plantillas de terceros disponibles para utilizar.
+
+
+## Word (docx) {.title-top}
+
+![](images/Word.PNG){.absolute top="0" left="1500" width="250"}
+
+<br>
+
+Las cabecera básica de documentos Word es:
+
+``` rmardown
+---
+title: "Mi Documento"
+format:
+  docx:
+    toc: true
+    toc-depth: 2
+    toc-title: Contenidos
+---
+```
+
+\* en el ejemplo, además activamos tabla de contenidos, con una profundidad de 2 y título de tabla "Contenidos" (en español).
+
+<br>
+
+La mayoría de las opciones de ejecución vistas para HTML sirven para este tipo de documentos.
+
+
+## Plantillas Word {.title-top}
+
+Para personalizar la apariencia de los documentos resultantes en Word se puede añadir en la cabecera una plantilla con diseño modificado. Para esto se sigue el siguiente paso a paso:
+
+::: {.fragment .fade-in-then-semi-out}
+
+1. Desde Word se crea un nuevo documento y se modifica el estilo del documento (tipo de hoja, orientación, márgenes, fuentes, colores, etc)
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+2. Se almacena el archivo .docx resultante en la carpeta del proyecto RStudio donde estamos construyendo el documento Quarto.
+
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+3. En la cabecera YAML del documento Quarto se incluye la línea `reference-doc:` con el nombre del documento anterior (ejemplo: *plantilla.docx*)
+:::
+
+::: {.fragment .fade-in-then-semi-out}
+
+4. Al renderizar Quarto toma las características de apariencia definidas y las reproduce en la salida del documento generado.
+
+:::
+
