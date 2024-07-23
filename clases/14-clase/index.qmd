@@ -202,7 +202,7 @@ format: dashboard
 
 ## Tarjetas
 
-Las tarjetas son la unidad fundamental de visualización dentro de los tableros ()
+Las tarjetas son la unidad fundamental de visualización dentro de los tableros.
 
 Pueden encerrar tanto texto markdown como código que produzca alguna salida tipo valor, tabla o gráfico.
 
@@ -244,22 +244,136 @@ n <- mtcars |>
 
 list(
   icon = "trash",
-  color = "#F52A32",
+  color = "red",
   value = n
 )
 
 
 ````
 
+
 ![](images/valuebox.PNG){fig-align="center" width="250"}
 
+Aquí se incluyen también dispositivos con cierta interactividad directa como son los `htmlwidgets` o si se conoce el lenguaje, código de Observable JS.
+
+La galería de `widgets` disponibles en la actualidad cuenta con 132 dispositivos que se puede ver en <https://gallery.htmlwidgets.org/>
 
 
--   Interactividad
--   Inputs
--   Temas
--   Publicación
+## Interactividad
 
-Los paneles suelen ser simplemente páginas HTML estáticas, por lo que se pueden implementar en cualquier servidor web o servidor web. Estático Representado una sola vez (por ejemplo, cuando los datos subyacentes nunca cambian) Programado Representado según un cronograma (por ejemplo, a través de una tarea cron) para adaptarse a los datos cambiantes. Variaciones parametrizadas de cuadros de mando estáticos o programados en función de parámetros. Panel interactivo totalmente interactivo con Shiny (requiere un servidor para la implementación).
+Los documentos que tienen elementos interactivos de R utilizan **Shiny** como servidor. **Shiny** es una librería para producir aplicaciones interactivas bajo R y recientemente en python.
+
+Anteriormente vimos que la cabecera YAML tiene que tener la opción `server: shiny` para que este se encuentre activo y pueda utilizarse dentro del tablero.
+
+La estructura de Shiny necesita de dos componentes:
+
+- la interfaz de usuario (ui)
+- el servidor Shiny
+
+El funcionamiento interno es tipo cliente/servidor, donde en la interfaz de usuario se ubican los `inputs` con los que el usuario se vincula y del lado del servidor se responde a los cambios de esas entradas.
+
+Generalmente los `inputs` van dentro de la barra lateral y el `server` se declara como contexto en los fragmentos de código. Por ejemplo:
+
+````{.yaml}
+
+## {.sidebar}
+
+```{{r}}
+selectInput(
+    "variableChoice",
+    "Seleccione una variable:",
+    choices = names(mtcars)
+  )
+```
+
+## Row
+
+```{{r}}
+#| context: server
+
+output$variablePlot <- renderPlot({
+  yVar <- mtcars[[input$variableChoice]]
+  plot(mtcars$index, yVar)
+})
+```
+
+
+````
+
+Este código tiene un `input` de selección en la barra lateral, donde el usuario puede seleccionar una variable del dataset mtcars, y un fragmento de contexto servidor donde renderiza un gráfico de dispersión en base a la variable elegida (input$variableChoice).
+
+## Inputs
+
+Las entradas de Shiny son funciones que sirven para crear elementos de interfaz de usuario que solicitan al usuario valores de entrada o interacción.
+
+Algunos de sus inputs básicos son:
+
+![](images/basic-widgets.png){fig-align="center" width="700"}
+
+Botones, casillas de verificación (sola o múltiples), ingreso de fechas, números y texto, rangos, cajas de selección, barras de desplazamiento, etc son algunos de los muchos dispositivos que vienen ya preparados.
+
+La referencia a esas funciones las podrán encontrar en <https://shiny.posit.co/r/reference/shiny/latest/>.
+
+## Temas
+
+De la misma forma que en los productos Quarto anteriores se pueden definir temas estéticos preconfigurados o personalizar uno propio, mediante la declaración en la cabecera YAML de `theme:`.
+
+Entre los predeterminados, encontramos 25 posibles ([Bootswatch project](https://bootswatch.com/)): `lumen`, `materia`, `minty`, `slate` son alguno de ellos.
+
+Para personalizar un tema se procede a utilizar archivos css o scss ([Sass](https://sass-lang.com/)). Bootstrap define más de 1400 variables `Sass` que controlan fuentes, colores, relleno, bordes y mucho más. Se pueden ver todas las variables aquí:
+
+<https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss>
+
+Para personalizar un tema Bootstrap existente con un conjunto propio de variables o reglas, solo definimos el tema base y luego los archivos de tema personalizados:
+
+````{.yaml}
+
+theme:
+  - cosmo
+  - custom.scss
+
+
+````
+
+El archivo de personalización Sass `custom.scss` podría ser:
+
+````{.yaml}
+/*-- scss:defaults --*/
+$h2-font-size:          1.6rem !default;
+
+
+/*-- scss:rules --*/
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);
+}
+
+````
+
+
+Donde en la sección indicada por `/*-- scss:defaults --*/` pertenece a las variables (`$h2-font-size:` tamaño de fuente en encabezado 2) y la sección de reglas (donde van las reglas CSS normales) está indicada por el `/*-- scss:rules --*/` (`text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);` sombreado en encabezados desde 1 al 6).
+
+
+Naturalmente, también se puede crear un tema totalmente personalizado y proporcionar solo eso (en este caso, se hereda el tema Bootstrap predeterminado):
+
+````{.yaml}
+
+theme: custom.scss
+
+````
+
+
+Las variables Sass más comunes estan publicadas en: <https://quarto.org/docs/dashboards/theming.html#sass-variables>
+
+Mas información sobre temas HTML en <https://quarto.org/docs/output-formats/html-themes-more.html>
+
+## Publicación
+
+Los tableros suelen ser simplemente páginas HTML estáticas, por lo que se pueden implementar en cualquier servidor web.
+
+Estos tableros, a su vez si se combinan con una lectura periódica pueden mostrar actualizaciones según vayan variando los datos. A esto se le llama **tablero programado**  (por ejemplo, a través de una tarea cron). 
+
+También se pueden parametrizar, a traves de `parameters` en la cabecera YAML o bien pasar a ser tableros completamente interactivos con Shiny, donde se requiere un servidor especial para su implementación.
+
+
 
 

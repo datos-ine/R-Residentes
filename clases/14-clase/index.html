@@ -93,6 +93,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#diseño" id="toc-diseño" class="nav-link" data-scroll-target="#diseño">Diseño</a></li>
   <li><a href="#tarjetas" id="toc-tarjetas" class="nav-link" data-scroll-target="#tarjetas">Tarjetas</a></li>
+  <li><a href="#interactividad" id="toc-interactividad" class="nav-link" data-scroll-target="#interactividad">Interactividad</a></li>
+  <li><a href="#inputs" id="toc-inputs" class="nav-link" data-scroll-target="#inputs">Inputs</a></li>
+  <li><a href="#temas" id="toc-temas" class="nav-link" data-scroll-target="#temas">Temas</a></li>
+  <li><a href="#publicación" id="toc-publicación" class="nav-link" data-scroll-target="#publicación">Publicación</a></li>
   </ul>
 </nav>
 </div>
@@ -284,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="tarjetas" class="level2">
 <h2 class="anchored" data-anchor-id="tarjetas">Tarjetas</h2>
-<p>Las tarjetas son la unidad fundamental de visualización dentro de los tableros ()</p>
+<p>Las tarjetas son la unidad fundamental de visualización dentro de los tableros.</p>
 <p>Pueden encerrar tanto texto markdown como código que produzca alguna salida tipo valor, tabla o gráfico.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">:</span><span class="fu">:</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="at">.card</span><span class="kw">}</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -312,22 +316,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">list(</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">  icon = "trash",</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">  color = "</span><span class="co">#F52A32",</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">  color = "red",</span></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">  value = n</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">)</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/valuebox.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" width="200"></p>
+<p><img src="images/valuebox.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" width="250"></p>
 </figure>
 </div>
+<p>Aquí se incluyen también dispositivos con cierta interactividad directa como son los <code>htmlwidgets</code> o si se conoce el lenguaje, código de Observable JS.</p>
+<p>La galería de <code>widgets</code> disponibles en la actualidad cuenta con 132 dispositivos que se puede ver en <a href="https://gallery.htmlwidgets.org/" class="uri">https://gallery.htmlwidgets.org/</a></p>
+</section>
+<section id="interactividad" class="level2">
+<h2 class="anchored" data-anchor-id="interactividad">Interactividad</h2>
+<p>Los documentos que tienen elementos interactivos de R utilizan <strong>Shiny</strong> como servidor. <strong>Shiny</strong> es una librería para producir aplicaciones interactivas bajo R y recientemente en python.</p>
+<p>Anteriormente vimos que la cabecera YAML tiene que tener la opción <code>server: shiny</code> para que este se encuentre activo y pueda utilizarse dentro del tablero.</p>
+<p>La estructura de Shiny necesita de dos componentes:</p>
 <ul>
-<li>Interactividad</li>
-<li>Inputs</li>
-<li>Temas</li>
-<li>Publicación</li>
+<li>la interfaz de usuario (ui)</li>
+<li>el servidor Shiny</li>
 </ul>
-<p>Los paneles suelen ser simplemente páginas HTML estáticas, por lo que se pueden implementar en cualquier servidor web o servidor web. Estático Representado una sola vez (por ejemplo, cuando los datos subyacentes nunca cambian) Programado Representado según un cronograma (por ejemplo, a través de una tarea cron) para adaptarse a los datos cambiantes. Variaciones parametrizadas de cuadros de mando estáticos o programados en función de parámetros. Panel interactivo totalmente interactivo con Shiny (requiere un servidor para la implementación).</p>
+<p>El funcionamiento interno es tipo cliente/servidor, donde en la interfaz de usuario se ubican los <code>inputs</code> con los que el usuario se vincula y del lado del servidor se responde a los cambios de esas entradas.</p>
+<p>Generalmente los <code>inputs</code> van dentro de la barra lateral y el <code>server</code> se declara como contexto en los fragmentos de código. Por ejemplo:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">## {.sidebar}</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">```{r}</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">selectInput(</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"variableChoice"</span><span class="at">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="st">"Seleccione una variable:"</span><span class="at">,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">    choices = names(mtcars)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">  )</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">```</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">## Row</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">```{r}</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#| context: server</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="at">output$variablePlot &lt;- renderPlot({</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="at">  yVar &lt;- mtcars[[input$variableChoice]]</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="at">  plot(mtcars$index, yVar)</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">})</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="at">```</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Este código tiene un <code>input</code> de selección en la barra lateral, donde el usuario puede seleccionar una variable del dataset mtcars, y un fragmento de contexto servidor donde renderiza un gráfico de dispersión en base a la variable elegida (input$variableChoice).</p>
+</section>
+<section id="inputs" class="level2">
+<h2 class="anchored" data-anchor-id="inputs">Inputs</h2>
+<p>Las entradas de Shiny son funciones que sirven para crear elementos de interfaz de usuario que solicitan al usuario valores de entrada o interacción.</p>
+<p>Algunos de sus inputs básicos son:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/basic-widgets.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="700"></p>
+</figure>
+</div>
+<p>Botones, casillas de verificación (sola o múltiples), ingreso de fechas, números y texto, rangos, cajas de selección, barras de desplazamiento, etc son algunos de los muchos dispositivos que vienen ya preparados.</p>
+<p>La referencia a esas funciones las podrán encontrar en <a href="https://shiny.posit.co/r/reference/shiny/latest/" class="uri">https://shiny.posit.co/r/reference/shiny/latest/</a>.</p>
+</section>
+<section id="temas" class="level2">
+<h2 class="anchored" data-anchor-id="temas">Temas</h2>
+<p>De la misma forma que en los productos Quarto anteriores se pueden definir temas estéticos preconfigurados o personalizar uno propio, mediante la declaración en la cabecera YAML de <code>theme:</code>.</p>
+<p>Entre los predeterminados, encontramos 25 posibles (<a href="https://bootswatch.com/">Bootswatch project</a>): <code>lumen</code>, <code>materia</code>, <code>minty</code>, <code>slate</code> son alguno de ellos.</p>
+<p>Para personalizar un tema se procede a utilizar archivos css o scss (<a href="https://sass-lang.com/">Sass</a>). Bootstrap define más de 1400 variables <code>Sass</code> que controlan fuentes, colores, relleno, bordes y mucho más. Se pueden ver todas las variables aquí:</p>
+<p><a href="https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss" class="uri">https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss</a></p>
+<p>Para personalizar un tema Bootstrap existente con un conjunto propio de variables o reglas, solo definimos el tema base y luego los archivos de tema personalizados:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> cosmo</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> custom.scss</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El archivo de personalización Sass <code>custom.scss</code> podría ser:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="at">/*-- scss:defaults --*/</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">$h2-font-size</span><span class="kw">:</span><span class="at">          1.6rem !default;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="at">/*-- scss:rules --*/</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="at">h1, h2, h3, h4, h5, h6 {</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">text-shadow</span><span class="kw">:</span><span class="at"> -1px -1px 0 rgba(0, 0, 0, .3);</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="at">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Donde en la sección indicada por <code>/*-- scss:defaults --*/</code> pertenece a las variables (<code>$h2-font-size:</code> tamaño de fuente en encabezado 2) y la sección de reglas (donde van las reglas CSS normales) está indicada por el <code>/*-- scss:rules --*/</code> (<code>text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);</code> sombreado en encabezados desde 1 al 6).</p>
+<p>Naturalmente, también se puede crear un tema totalmente personalizado y proporcionar solo eso (en este caso, se hereda el tema Bootstrap predeterminado):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span><span class="kw">:</span><span class="at"> custom.scss</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Las variables Sass más comunes estan publicadas en: <a href="https://quarto.org/docs/dashboards/theming.html#sass-variables" class="uri">https://quarto.org/docs/dashboards/theming.html#sass-variables</a></p>
+<p>Mas información sobre temas HTML en <a href="https://quarto.org/docs/output-formats/html-themes-more.html" class="uri">https://quarto.org/docs/output-formats/html-themes-more.html</a></p>
+</section>
+<section id="publicación" class="level2">
+<h2 class="anchored" data-anchor-id="publicación">Publicación</h2>
+<p>Los tableros suelen ser simplemente páginas HTML estáticas, por lo que se pueden implementar en cualquier servidor web.</p>
+<p>Estos tableros, a su vez si se combinan con una lectura periódica pueden mostrar actualizaciones según vayan variando los datos. A esto se le llama <strong>tablero programado</strong> (por ejemplo, a través de una tarea cron).</p>
+<p>También se pueden parametrizar, a traves de <code>parameters</code> en la cabecera YAML o bien pasar a ser tableros completamente interactivos con Shiny, donde se requiere un servidor especial para su implementación.</p>
 </section>
 
 </main>
