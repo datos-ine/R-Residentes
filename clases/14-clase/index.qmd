@@ -1,0 +1,265 @@
+---
+title: "**Tableros de Quarto**"
+author: ""
+date: ""
+format:
+  html:
+    page-layout: full
+    include-in-header: 
+      - text: |
+          <link rel="icon" type="image/x-icon" href="favicon.ico">    
+    toc: true
+    toc-title: Contenidos
+    toc-location: left
+    toc_float: true
+    toc_collapsed: false
+    toc_depth: 4
+number_sections: true
+anchor_sections: true
+theme: 
+  light: [united, custom.scss]
+  dark: darkly
+editor: source
+---
+
+## Introducción
+
+A partir de la versión 1.4, Quarto incorpora la creación de tableros (dashboard). Con una forma de producción más sencilla tiene varios elementos similares a los utilizados por el paquete *flexdashboard* de RMarkdown.
+
+Los tableros pueden ser estáticos o interactivos, se les puede incluir una gran variedad de componentes como dispositivos externos provenientes de [htmlwidgets](https://www.htmlwidgets.org/) y sus diseños suelen ser flexibles y adaptativos (los componentes se redimensionan de forma inteligente para llenar el navegador y se adaptan para su visualización en dispositivos móviles).
+
+## Cabecera YAML
+
+La cabecera que define un tablero tiene el formato configurado en `dashboard`.
+
+``` yaml
+---
+format: dashboard
+---
+```
+
+Algunas opciones de ejecución YAML son similares a las conocidas para otros documentos: `title`, `author`, `theme`, `toc`, otras son particulares de este formato: `orientation`, `scrolling`, `expandable`, `nav-buttons`, etc.
+
+Cuando el tablero tiene componentes de interactividad debemos indicar en la cabecera el motor **Shiny** que manejará el código, de la siguiente forma:
+
+``` yaml
+---
+format: dashboard
+server: shiny
+---
+```
+
+::: {.callout-note appearance="simple" icon="false"}
+En tableros con componentes interactivos **htmlwidgets** basados en JavaScript u **Observable JS** no hace falta incluir nada especial en la cabecera.
+:::
+
+
+## Componentes de un tablero
+
+Los componentes básicos de un tablero son:
+
+### Barra de navegación (páginas): 
+
+Suele ser la barra superior horizontal donde incluimos el ícono, título y autor junto con enlaces a subpáginas (si se define más de una página). 
+
+Aquí un ejemplo de barra de navegación:
+
+![](images/navegacion.PNG){fig-align="center" width="700"}
+
+### Barras laterales, filas y columnas y conjuntos de pestañas: 
+
+En estas barras se ubican muchas veces las entradas (inputs) interactivas.
+
+Además se pueden agregar filas y columnas con encabezados markdown (atributos opcionales para controlar la altura, el ancho, etc.) y conjuntos de pestañas para dividir aún más el contenido. 
+
+![](images/sidebar.PNG){fig-align="center" width="150"}
+
+
+### Tarjetas (gráficos, tablas, cajas de valores, contenido): 
+
+Las tarjetas (cards) son contenedores para resultados de celdas y texto markdown de formato libre. El contenido de las tarjetas normalmente se asigna a las celdas de su documento fuente.
+
+En estas celdas se suele incluir valores, tablas, gráficos, elementos dinámicos o interactivos. Algunos formatos vienen previamente soportados como las cajas de valores (valuebox)
+
+## Diseño
+
+A la combinación de barras y tarjetas con su ubicación y orientación la llamamos diseño del tablero.
+
+El diseño va a estar dado por los distintos componentes que deseemos mostrar. Mientras las páginas se declaran con encabezados 1 (#) los bloques fila o columna se hacen con encabeczados 2 (##), a los cuales se le puede agregar definición de ancho con `width` o alto con `height`. 
+
+Las barras laterales se arman con encabezados 1 (#) con estilo `.sidebar` y las pestañas con encabezados 2 y estilo `.tabset`.
+
+Algunos ejemplos:
+
+**Barra lateral**
+
+````{.yaml}
+---
+title: "Mi Tablero"
+format: dashboard
+---
+
+# Pagina 1
+
+## {.sidebar}
+
+```{{r}}
+
+```
+
+## Column
+
+```{{r}}
+
+```
+
+```{{r}}
+
+```
+
+````
+
+![](images/layout2.PNG){fig-align="center" width="600"}
+
+
+**Filas**
+
+````{.yaml}
+---
+title: "Mi Tablero"
+format: dashboard
+---
+
+## Row {height=70%}
+
+```{{r}}
+```
+
+## Row {height=30%}
+
+```{{r}}
+```
+
+```{{r}}
+```
+
+````
+
+![](images/layout3.PNG){fig-align="center" width="600"}
+
+
+**Columnas**
+
+````{.yaml}
+---
+title: "Mi Tablero"
+format: dashboard
+---
+
+## Column {width=60%}
+
+```{{r}}
+```
+
+## Column {width=40%}
+
+```{{r}}
+```
+
+```{{r}}
+```
+
+````
+
+![](images/layout4.PNG){fig-align="center" width="600"}
+
+**Pestañas**
+
+````{.yaml}
+---
+title: "Mi Tablero"
+format: dashboard
+---
+
+## Row
+
+```{{r}}
+```
+
+## Row {.tabset}
+
+```{{r}}
+#| title: Chart 2
+```
+
+```{{r}}
+#| title: Chart 3
+```
+
+````
+
+![](images/layout1.PNG){fig-align="center" width="600"}
+
+## Tarjetas
+
+Las tarjetas son la unidad fundamental de visualización dentro de los tableros ()
+
+Pueden encerrar tanto texto markdown como código que produzca alguna salida tipo valor, tabla o gráfico.
+
+````{.yaml}
+::: {.card}
+
+Aquí va el contenido de la tarjeta. Puede ser un markdown directo o la salida de código.
+
+```{{r}}
+
+```
+
+:::
+
+````
+
+Las cajas de valor son tarjetas especiales que se declaran con el estilo reservado `.valuebox`.
+
+````{.yaml}
+
+::: {.valuebox}
+Fecha actual
+
+`{r} Sys.Date()`
+:::
+
+````
+
+
+También se pueden declarar con metadatos dentro del bloque de código:
+
+````{.yaml}
+#| content: valuebox
+#| title: "Caja de valor"
+n <- mtcars |> 
+  tibble::as_tibble() |> 
+  dplyr::count() |> 
+  dplyr::pull(n)
+
+list(
+  icon = "trash",
+  color = "#F52A32",
+  value = n
+)
+
+
+````
+
+![](images/valuebox.PNG){fig-align="center" width="250"}
+
+
+
+-   Interactividad
+-   Inputs
+-   Temas
+-   Publicación
+
+Los paneles suelen ser simplemente páginas HTML estáticas, por lo que se pueden implementar en cualquier servidor web o servidor web. Estático Representado una sola vez (por ejemplo, cuando los datos subyacentes nunca cambian) Programado Representado según un cronograma (por ejemplo, a través de una tarea cron) para adaptarse a los datos cambiantes. Variaciones parametrizadas de cuadros de mando estáticos o programados en función de parámetros. Panel interactivo totalmente interactivo con Shiny (requiere un servidor para la implementación).
+
+
