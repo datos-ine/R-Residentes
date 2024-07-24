@@ -24,7 +24,7 @@ editor: source
 
 ## Introducción
 
-A partir de la versión 1.4, Quarto incorpora la creación de tableros (dashboard). Con una forma de producción más sencilla tiene varios elementos similares a los utilizados por el paquete *flexdashboard* de RMarkdown.
+A partir de la versión 1.4, Quarto incorpora la creación de tableros (dashboard). Con una forma de producción sencilla que tiene varios elementos similares a los utilizados por el paquete *flexdashboard* de RMarkdown.
 
 Los tableros pueden ser estáticos o interactivos, se les puede incluir una gran variedad de componentes como dispositivos externos provenientes de [htmlwidgets](https://www.htmlwidgets.org/) y sus diseños suelen ser flexibles y adaptativos (los componentes se redimensionan de forma inteligente para llenar el navegador y se adaptan para su visualización en dispositivos móviles).
 
@@ -85,7 +85,7 @@ En estas celdas se suele incluir valores, tablas, gráficos, elementos dinámico
 
 A la combinación de barras y tarjetas con su ubicación y orientación la llamamos diseño del tablero.
 
-El diseño va a estar dado por los distintos componentes que deseemos mostrar. Mientras las páginas se declaran con encabezados 1 (#) los bloques fila o columna se hacen con encabeczados 2 (##), a los cuales se le puede agregar definición de ancho con `width` o alto con `height`. 
+El diseño va a estar dado por los distintos componentes que deseemos mostrar. Mientras las páginas se declaran con encabezados 1 (#) los bloques fila o columna se hacen con encabezados 2 (##), a los cuales se le puede agregar definición de ancho con `width` o alto con `height`. 
 
 Las barras laterales se arman con encabezados 1 (#) con estilo `.sidebar` y las pestañas con encabezados 2 y estilo `.tabset`.
 
@@ -370,9 +370,64 @@ Mas información sobre temas HTML en <https://quarto.org/docs/output-formats/htm
 
 Los tableros suelen ser simplemente páginas HTML estáticas, por lo que se pueden implementar en cualquier servidor web.
 
-Estos tableros, a su vez si se combinan con una lectura periódica pueden mostrar actualizaciones según vayan variando los datos. A esto se le llama **tablero programado**  (por ejemplo, a través de una tarea cron). 
+Estos tableros, a su vez si se combinan con una lectura periódica de la fuente de datos pueden mostrar actualizaciones según vayan variando esos datos. A esto se le llama **tablero programado**  (por ejemplo, a través de una tarea [cron](https://es.wikipedia.org/wiki/Cron_(Unix)#:~:text=En%20el%20sistema%20operativo%20Unix,especifican%20en%20el%20archivo%20crontab%20.)). 
 
 También se pueden parametrizar, a traves de `parameters` en la cabecera YAML o bien pasar a ser tableros completamente interactivos con Shiny, donde se requiere un servidor especial para su implementación.
+
+RStudio trae incorporado en su IDE accesos directos de publicación a [Posit Connect Cloud](https://connect.posit.cloud/) mediante el botón ![](images/connect.PNG), dado que pertenece a la misma empresa **Posit**. Sus servicios son los que mejor se adaptan a los requerimientos de usuarios que producen estos documentos pero con planes comerciales. 
+
+Otras opciones de sitios que publican tableros estáticos gratuitamente son:
+
+- **Quarto Pub**
+
+Es un servicio gratuito de publicación de contenido hecho en Quarto. Además de tableros se puede alojar blogs, sitios web, libros, presentaciones y otros documentos.
+
+Estas publicaciones serán siempre visibles por cualquier usuario de Internet, no pueden tener más de 100 Mb y poseen un ancho de banda de navegación de 10 Gb por mes.
+
+Se puede publicar mediante el comando `quarto publish` en la Terminal. Deberá tener una cuenta a su nombre que podrá obtener en <https://www.quarto.pub>. La dirección creada agrega como dominio **quarto.pub** a su nombre de usuario y luego la dirección al sitio creado (puede tener varios). La administración se realiza desde el propio sitio web.
+
+Más información en <https://quarto.org/docs/publishing/quarto-pub.html>
+
+- **Confluence**
+
+[Atlassian Confluence](https://www.atlassian.com/software/confluence) es una plataforma de publicación que soporta la colaboración en equipo.
+
+Quarto proporciona la cpacidad de publicar documentos individuales, así como proyectos compuestos por múltiples documentos en [Confluence Spaces](https://support.atlassian.com/confluence-cloud/docs/use-spaces-to-organize-your-work/).
+
+Confluence cuenta con una variedad de opciones de alojamiento que incluyen planes de suscripción gratuitos y pagos.
+
+Se puede publicar mediante el comando `quarto publish confluence` en la Terminal de RStudio, siempre y cuando contemos con una cuenta configurada.
+
+Para más información ver en <https://quarto.org/docs/publishing/confluence.html>
+
+- **GitHub Pages**
+
+Es un servicio de alojamiento de [sitios web](https://pages.github.com/) que le permite publicar contenido basado en código fuente administrado dentro de un repositorio de GitHub.
+
+Los repositorios [GitHub](https://github.com/) se alojan en una plataforma online de desarrollo de software basada en la nube que permite a los desarrolladores almacenar, compartir y trabajar juntos en proyectos de código abierto. GitHub utiliza un sistema de control de versiones llamado Git para alojar los proyectos y llevar un registro de los cambios. Esto permite colaborar y realizar cambios en los proyectos compartidos, al tiempo que mantienen un seguimiento detallado del progreso.
+
+También se puede publicar mediante el comando `quarto publish gh-pages` en la Terminal de RStudio, mientras exista la cuenta y repositorio del proyecto y esté habilitada la opción de GitHub Pages.
+
+
+Para más información leer <https://quarto.org/docs/publishing/github-pages.html>
+
+En el caso de tableros interactivos, que necesiten de un servidor Shiny, se puede usar versiones en la nube tipo:
+
+- **shinyapps.io**
+
+[Shiny Apps](https://shiny.posit.co/) de Posit es un sitio de alojamiento con recursos de servidor para aplicaciones interactivas Shiny.
+
+El plan gratuito consta de un máximo de 5 aplicaciones subidas y 25 horas activas (uso de la aplicación). Luego posee planes comerciales con mayores recursos.
+
+La publicación viene integrada con RStudio y utiliza el paquete `rsconnect` para realizar las tareas necesarias.
+
+- **Hugging Face**
+
+[Hugging Face](https://huggingface.co/) es una plataforma open source de ciencia de datos y machine learning que proporciona herramientas para construir, entrenar y desplegar soluciones de aprendizaje automático. Como repositorio es similar a GitHub y tiene un servicio de **Spaces** donde se pueden publicar aplicaciones [Shiny](https://huggingface.co/docs/hub/spaces-sdks-docker-shiny) mediante tecnología [Docker](https://es.wikipedia.org/wiki/Docker_(software)).
+
+
+
+O instalación de servidores locales como [Shiny Server](https://posit.co/products/open-source/shinyserver/) (open-source), que seguramente necesitará de personal formado como Administrador de TI y disponer de un servidor linux con conexión simétrica a Internet y firewall, entre otros recursos.  
 
 
 
