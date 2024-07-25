@@ -438,11 +438,59 @@ pinguinos |>
 ::::
 
 
+## Temas estéticos {.title-top}
 
+<br>
 
+Los documentos HTML renderizados con Quarto usan **Bootstrap 5** de forma predeterminada. Esto se puede personalizar a través de la opción de `theme:` en la cabecera YAML.
 
+```{.yaml}
+theme: default # bootstrap 5 predeterminado
+theme: cosmo   # tema cosmo bootswatch 
+theme: pandoc  # tratamiento de pandoc predeterminado
+theme: none    # no usa ningún tema css 
+```
 
-## Formatos posibles {.title-top}
+Quarto incluye 25 temas del proyecto [Bootswatch](https://bootswatch.com/), entre los cuales se encuentran: `lumen`, `minty`, `journal`, etc.
+
+En la cabecera YAML, junto al tema se puede definir algunas variables estéticas que se usarán al renderizar el documento, como `mainfont`, `fontsize`, `fontcolor`, etc. 
+
+```{.yaml}
+title: "Mi Documento"
+format:
+  html: 
+    theme: lumen      # tema lumen
+    fontsize: 12pt    # tamaño de la fuente en 12 puntos
+    fontcolor: blue   # color azul
+```
+
+## Personalización {.title-top}
+
+<br>
+
+Podemos realizar una amplia personalización de temas utilizando [Sass](https://sass-lang.com/). Existen más de 1400 variables **Sass** que controlan fuentes, colores, relleno, bordes y mucho más. 
+
+Este idioma, extensión de CSS, se utiliza en archivos `.scss` que se incluyen en la cabecera YAML.
+
+```{.yaml}
+theme:
+  - lumen
+  - custom.scss
+```
+
+<br>
+
+El contenido del archivo `custom.scss`, que debe estar ubicado en la misma carpeta donde está el `.qmd`, podría ser:
+
+```{.yaml}
+/*-- scss:defaults --*/
+
+$h2-font-size: 20pt;    # tamaño de fuente 20 pt en cabecera 2
+$font-size-base: 12pt;  # tamaño de fuente 12 pt en texto base
+$link-color: #af3434;   # color de enlace web
+```
+
+## Otros formatos de salida posibles {.title-top}
 
 <br>
 
@@ -790,4 +838,6 @@ Para personalizar la apariencia de los documentos resultantes en Word se puede a
 4. Al renderizar Quarto toma las características de apariencia definidas y las reproduce en la salida del documento generado.
 
 :::
+
+
 
