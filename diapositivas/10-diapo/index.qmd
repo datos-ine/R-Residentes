@@ -1,0 +1,281 @@
+---
+pagetitle: "Tableros de Quarto®"
+format: 
+  revealjs:
+    self-contained: true
+    slide-number: true
+    width: 1920
+    height: 1080
+    transition: fade
+    theme:  [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+```{r}
+#| include: false
+library(countdown)
+countdown_timer <- function(
+    minutes = 1, 
+    play_sound = TRUE, 
+    font_size = "2em", 
+    ...
+) {
+  countdown(
+    minutes = minutes,
+    # Fanfare when it's over
+    play_sound = play_sound,
+    # Set timer theme to match solarized colors
+    color_border              = "#404041",
+    color_text                = "white",
+    color_background = "#d78e1c",
+    color_running_background  = "#72994E",
+    color_running_text        = "white",
+    color_finished_background = "#EE6331",
+    color_finished_text       = "white",
+    font_size = font_size,
+    ...
+  )
+}
+```
+
+##  {#docu-estaticos-title data-menu-title="Tableros de Quarto®" background-image="images/fondo.jpg" aria-label="Imprenta"}
+
+[Tableros de Quarto®]{.custom-title .centrar}
+
+[Encuentro 9]{.custom-subtitle}
+
+
+## Dashboard {.title-top}
+
+<br>
+
+Los dashboards o tableros de Quarto son archivos **HTML** que pueden ser:
+
+- **Estáticos** 
+Se representan una sola vez y los datos no cambian - pueden incluir elementos dinámicos.
+
+- **Programados** 
+Se representan a partir de un cronograma donde los datos se actualizan
+
+- **Parametrizados** 
+Se modifican a partir de parámetros
+
+- **Interactivo** 
+Mediante Shiny - requieren de servidor especial
+
+
+## Cabecera YAML {.title-top}
+
+<br>
+
+El formato de la cabecera YAML de los tableros de Quarto es `dashboard`. 
+
+<br>
+
+````{.yaml}
+---
+title: "Mi tablero"
+format: dashboard
+---
+````
+
+<br>
+
+La salida generada es HTML y la estructura se asemeja al uso del paquete flexdashboard de RMarkdown.
+
+Se puede definir como será la orientación y si se habilita el `scrolling` de la página.
+
+Otras opciones específicas de la cabecera YAML para tableros son los logotipos y los botones de navegación.
+
+## Cabecera YAML {.title-top}
+
+Se reconocen alias para botones especiales predeterminados: `linkedin`, `facebook`, `reddit`, `twitter` y `github`. También se pueden crear botones personalizados a partir de [íconos bootstrap](https://icons.getbootstrap.com/).
+
+````{.yaml}
+    logo: images/INE.gif
+    nav-buttons: 
+      - linkedin
+      - twitter
+      - github
+      - facebook
+      - reddit
+      - icon: hospital
+        href: https://www.ine.gov.ar
+        target: _blank
+````
+
+![](images/botones_nav.PNG)
+
+## Componentes {.title-top}
+
+Los tableros constan de varios componentes:
+
+**Barra de navegación**: ícono, título y autor junto con enlaces a subpáginas (si se define más de una página).
+
+**Páginas, filas, columnas y conjuntos de pestañas**: las páginas, filas y columnas se definen mediante encabezados de Markdown (con atributos opcionales para controlar la altura, el ancho, etc.). Los conjuntos de pestañas se pueden utilizar para dividir aún más el contenido dentro de una fila o columna.
+
+**Tarjetas, barras laterales y barras de herramientas**: las tarjetas son contenedores para gráficos, visualización de datos y contenido de formato libre. El contenido de las tarjetas generalmente se asigna a celdas en el documento fuente. Las barras laterales y las barras de herramientas se utilizan para presentar entradas dentro de tableros interactivos.
+
+## Diseño {.title-top}
+
+Los elementos de diseño básico son `paginas`, `filas`, `columnas` y `pestañas`.
+
+Las `paginas` se definen con encabezados tamaño 1 (#)
+
+Las filas y columnas se declaran con encabezados tamaño 2 (##)
+
+Las pestañas utilizan la clase `{.tabset}` en filas tipo ## y cada pestaña se declara con un encabezado de tamaño 3 (###)
+
+
+## Páginas {.title-top}
+
+<br>
+
+````{.yaml}
+# Pagina 1 
+
+# Pagina 2 
+
+# Pagina 3 
+````
+
+<br>
+
+![](images/Paginas.PNG)
+
+## Filas {.title-top}
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+````{.yaml}
+## Row {height=30%}
+
+::: {.card title="Fila 30%"}
+:::
+
+## Row {height=70%}
+
+::: {.card title="Fila 70%"}
+:::
+````
+
+:::
+
+::: {.column width="70%"}
+
+![](images/Filas.PNG)
+
+:::
+
+::::
+
+
+## Columnas {.title-top}
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+````{.yaml}
+## Column {width=30%}
+
+::: {.card title="Columna 30%"}
+:::
+
+## Column {width=70%}
+
+::: {.card title="Columna 70%"}
+:::
+````
+
+:::
+
+::: {.column width="70%"}
+
+![](images/Columnas.PNG)
+
+:::
+
+::::
+
+
+
+## Pestañas {.title-top}
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+````{.yaml}
+## Row {.tabset}
+
+### Pestaña 1
+
+::: {.card title=""}
+:::
+
+### Pestaña 2
+
+::: {.card title=""}
+:::
+````
+
+:::
+
+::: {.column width="70%"}
+
+![](images/Pestañas.PNG)
+
+:::
+
+::::
+
+## Barra lateral {.title-top}
+
+<br>
+
+![](images/Sidebar.PNG)
+
+## Tarjetas {.title-top}
+
+<br>
+
+Las tarjetas que se ubican en las celdas que generan las filas, las columnas y/o las pestañas tienen un botón de expansión automático que maximiza la visualización.
+
+![](images/Expand_1.PNG){fig-align="center"}
+
+![](images/Expand_2.PNG){fig-align="center"}
+
+## Tarjetas - texto {.title-top}
+
+
+
+## Cajas de valor {.title-top}
+
+
+## Tablas desde código {.title-top}
+
+## Gráficos desde código {.title-top}
+
+## Componentes interactivos {.title-top}
+
+## htmlwidgets {.title-top}
+
+
+
