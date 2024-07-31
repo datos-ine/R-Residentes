@@ -8,42 +8,33 @@ $font-family-sans-serif: "Atkinson Hyperlegible", sans-serif;
 $code-block-font-size: 0.7em;
 $presentation-font-size-root: 50px;
 
-$link-color: #af3434;
+$link-color: #693ab8;
 
  
 
 /*-- scss:rules --*/
 
 .reveal .custom-title {
-  font-family: 'Special Elite', bold;
   color: #ffffff;
-  font-size: 1.8em;
+  font-size: 2.6em;
   position: absolute; 
-  left: 700px; 
-  top: 45px
+  left: 400px; 
+  top: 280px
 }
 
 .reveal .custom-subtitle {
-  font-family: 'Special Elite', regular;
   color: #ffffff;
-  font-size: 1.4em;
+  font-size: 1.8em;
   position: absolute; 
-  left: -30px; 
-  bottom: 300px
-}
-
-.reveal .custom-author {
-  font-family: 'Special Elite', regular;
-  color: #ffffff;
-  position: absolute; 
-  text-align: right;
-  font-size: 1.2em;
-  left: 1200px;
-  bottom: 70px;
-  line-height: 1.5em;
+  left: 750px; 
+  top: 450px
 }
 
 
+.reveal .invert {
+  background-color: #5c17d1 !important;
+  color: #ffffff;
+}
 
 .reveal .title-top h2 {
   font-family: 'Atkinson Hyperlegible', regular;

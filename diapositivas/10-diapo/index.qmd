@@ -46,11 +46,11 @@ countdown_timer <- function(
 }
 ```
 
-##  {#docu-estaticos-title data-menu-title="Tableros de Quarto®" background-image="images/fondo.jpg" aria-label="Imprenta"}
+##  {#tableros-title .invert data-menu-title="Tableros de Quarto®"}
 
-[Tableros de Quarto®]{.custom-title .centrar}
+[**Tableros de Quarto®**]{.custom-title .centrar}
 
-[Encuentro 9]{.custom-subtitle}
+[***Encuentro 9***]{.custom-subtitle}
 
 
 ## Dashboard {.title-top}
@@ -126,11 +126,19 @@ Los tableros constan de varios componentes:
 
 ## Diseño {.title-top}
 
+<br>
+
 Los elementos de diseño básico son `paginas`, `filas`, `columnas` y `pestañas`.
+
+<br>
 
 Las `paginas` se definen con encabezados tamaño 1 (#)
 
+<br>
+
 Las filas y columnas se declaran con encabezados tamaño 2 (##)
+
+<br>
 
 Las pestañas utilizan la clase `{.tabset}` en filas tipo ## y cada pestaña se declara con un encabezado de tamaño 3 (###)
 
@@ -250,7 +258,33 @@ Las pestañas utilizan la clase `{.tabset}` en filas tipo ## y cada pestaña se 
 
 <br>
 
+:::: {.columns}
+
+::: {.column width="30%"}
+
+````{.yaml}
+## {.sidebar}
+
+```{{r}}
+cat("Barra lateral")
+
+cat("Input 1")
+
+cat("Input 2")
+
+cat("Input 3")
+```
+````
+
+:::
+
+::: {.column width="70%"}
+
 ![](images/Sidebar.PNG)
+
+:::
+
+::::
 
 ## Tarjetas {.title-top}
 
@@ -262,20 +296,197 @@ Las tarjetas que se ubican en las celdas que generan las filas, las columnas y/o
 
 ![](images/Expand_2.PNG){fig-align="center"}
 
-## Tarjetas - texto {.title-top}
+## Tarjetas - contenido {.title-top}
 
+<br>
 
+La sintaxis de una tarjeta incluída en el diseño de página de un tablero tiene la forma:
+
+````{.yaml}
+::: {.card title="Título de la tarjeta"}
+
+Aquí va el texto o elemento markdown / HTML a publicar
+
+:::
+````
+
+<br>
+
+El contenido de las tarjetas puede ser cualquiera de los elementos vistos anteriormente en Quarto basados en markdown o código HTML puro. También es útil incorporar valores dinámicos mediante código en línea. 
 
 ## Cajas de valor {.title-top}
+
+<br>
+
+Los cajas de valor son una excelente forma de mostrar valores simples de manera destacada dentro de un tablero.
+
+![](images/valor.PNG){fig-align="center"}
+
+## Cajas de valor {.title-top}
+
+La sintaxis dentro de un fragmento de código R tiene la siguiente estructura:
+
+````{.yaml}
+```{{r}}
+#| content: valuebox 
+#| title: "Texto de la caja de valor" 
+ 
+list(
+  icon = "nombre-icono",
+  color = "color de la caja",
+  value = valor a mostrar)
+)
+
+```
+````
+
+Los íconos pueden ser cualquiera de los 2000 disponibles en [íconos de bootstrap](https://icons.getbootstrap.com/)
+
+En color puede especificarse alguno de la paleta general hexadecimal o con palabras reservadas tipo `primary`, `success`, `danger`, etc. Estos colores variaran según el tema estético aplicado al tablero.
+
+## Cajas de valor {.title-top}
+
+<br>
+
+También se pueden crear cajas de valores usando Markdown simple, en cuyo caso normalmente se incluye el valor mediante una expresión en línea. Por ejemplo:
+
+<br>
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+````{.yaml}
+## Row
+
+::: {.valuebox icon="heart-pulse-fill" color="danger"}
+Cantidad de enfermos
+
+´{r} enfermos´
+:::
+````
+
+:::
+
+::: {.column width="30%"}
+
+![](images/enfermos.PNG)
+
+:::
+
+::::
 
 
 ## Tablas desde código {.title-top}
 
+
+Se pueden incluir tablas dentro de estos tableros de dos formas:
+
+- Como una presentación tabular simple
+- Como un widget interactivo que incluya, por ejemplo ordenamiento y filtrado.
+
+Si lo que se quiere mostrar es una cantidad pequeña de observaciones se puede utilizar funciones de `knitr` o `flextable` sin problemas.
+
+````{.yaml}
+```{{r}}
+knitr::kable(datos)
+
+# o con flextable
+
+datos |> 
+  flextable()
+```
+```` 
+
+Estas tablas tendrán composición Markdown simples y llenan automáticamente al  contenedor (desplazándose horizontal y verticalmente según sea necesario).
+
+
+## Tablas desde código {.title-top}
+
+<br>
+
+Si la tabla que queremos mostrar tiene muchos registros o es conveniente que se pueda ordenar de formas ascendente o descendente por alguna/s variable/s o hacer alguna busqueda particular, tenemos que hacer uso de algún paquete que incluya cierta interactividad.
+
+<br>
+
+Por ejemplo, el paquete DT, esta basado en una interfaz de JavaScript DataTables y agrega filtrado, paginación y ordenamiento a sus salidas.
+
+<br>
+
+````{.yaml}
+```{{r}}
+library(DT)
+datatable(datos)
+```
+```` 
+
+## Tablas desde código {.title-top}
+
+
+```{r}
+#| echo: false
+
+library(DT)
+library(datos)
+
+encuesta |> 
+  select(estado_civil, edad, partido, ingreso) |> 
+datatable(class = 'cell-border stripe', 
+          rownames = F, 
+          options = list(
+            pageLength = 3, 
+            autoWidth = TRUE))
+```
+
+
 ## Gráficos desde código {.title-top}
 
-## Componentes interactivos {.title-top}
+<br>
+
+Los gráficos son los elementos más comunes mostrados en tableros. Al igual que las tablas pueden ser estáticos o dinámicos/interactivos.
+
+<br>
+
+- Los estáticos serán gráficos generalmente producidos con **ggplot2**
+- Los dinámicos estarán basados en alguna librería de JavaScript que incluyen los paquetes especiales `ggiraph`, `Plotly`, `highcharter`, `dygraphs`, etc.
+- También hay algunas librerías para mostrar mapas como `Leaflet` o `mapview`
+
+## Gráficos desde código {.title-top}
+
+Ejemplo con `ggiraph`
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-align: center
+#| fig-height: 4
+
+library(ggplot2)
+library(ggiraph)
+data <- mtcars
+data$carname <- row.names(data)
+
+gg_point = ggplot(data = data) +
+    geom_point_interactive(aes(x = wt, y = qsec, color = disp,
+    tooltip = carname, data_id = carname), size = 2) + 
+  theme_minimal()
+
+girafe(ggobj = gg_point, options = list(
+    opts_toolbar(saveaspng = TRUE)
+  ))
+
+```
 
 ## htmlwidgets {.title-top}
 
+<br>
 
+Estos componentes dinámicos / interactivos basados en JavaScript mostrados en los paquetes para tablas y gráficos anteriores pertenecen a htmlwidgets.
+
+En el sitio <https://www.htmlwidgets.org/> perteneciente a RStudio / Posit se encuentran publicada la galería de librerías disponibles.
+
+Cada uno de los 132 paquetes citados tienen su propia página con la referencia de sus funciones, modo de uso, ejemplos, etc.
+
+Estos componentes se pueden incluir en dashboards con y sin servidor Shiny asociado y también en documentos HTML de Quarto.
 
