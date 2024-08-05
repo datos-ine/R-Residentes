@@ -1,0 +1,434 @@
+---
+pagetitle: "Tableros de Quarto® - Shiny"
+format: 
+  revealjs:
+    self-contained: true
+    slide-number: true
+    width: 1920
+    height: 1080
+    transition: fade
+    theme:  [simple, custom.scss]
+    logo: INE.gif
+    footer: "Instituto Nacional de Epidemiología"
+editor: source
+---
+
+```{r setup, include=F}
+library(quarto)
+library(fontawesome)
+library(tidyverse)
+```
+
+```{r}
+#| include: false
+library(countdown)
+countdown_timer <- function(
+    minutes = 1, 
+    play_sound = TRUE, 
+    font_size = "2em", 
+    ...
+) {
+  countdown(
+    minutes = minutes,
+    # Fanfare when it's over
+    play_sound = play_sound,
+    # Set timer theme to match solarized colors
+    color_border              = "#404041",
+    color_text                = "white",
+    color_background = "#d78e1c",
+    color_running_background  = "#72994E",
+    color_running_text        = "white",
+    color_finished_background = "#EE6331",
+    color_finished_text       = "white",
+    font_size = font_size,
+    ...
+  )
+}
+```
+
+##  {#tablerosshiny-title .invert data-menu-title="Tableros de Quarto® - Shiny"}
+
+[**Tableros de Quarto® - Shiny**]{.custom-title .centrar}
+
+[***Encuentro 10***]{.custom-subtitle}
+
+
+## Cabecera YAML {.title-top}
+
+<br>
+
+Una cabecera YAML para tableros de Quarto interactivos Shiny se asemeja a lo visto en el encuentro pasado pero incorpora la opción `server`. 
+
+<br>
+
+````{.yaml}
+---
+title: "Mi tablero"
+format: dashboard
+server: shiny
+---
+````
+
+Las otras opciones conocidas para cabeceras de tableros funcionan igual (logos, botones, etc)
+
+## Estructura de un shiny {.title-top}
+
+<br>
+
+La estructura de estos tableros necesitan de dos componentes:
+
+- la interfaz de usuario (**ui**) 
+
+  Que es visible y la integran los dispositivos de entrada
+  
+- el servidor Shiny (**server**)
+
+  Que no es visible y se encarga de traducir los cambios efectuados en la **ui** en reacciones del producto visualizado (gráfico, tabla, etc) 
+
+Además, siempre habrá una área donde se visualizan los elementos interactivos.
+
+## Interfaz de usuario {.title-top}
+
+<br>
+
+La interfaz de usuario puede estar compuesta por una o varias entradas de datos (`inputs`).
+
+<br>
+
+Los `inputs` se pueden disponer de varias formas:
+
+- Barras laterales
+- Barras de herramientas
+- Cabecera de tarjetas
+
+## Barras laterales {.title-top}
+
+<br>
+
+Una barra lateral global se configura con:
+
+````{.yaml}
+---
+title: "Mi tablero"
+format: dashboard
+server: shiny
+---
+    
+## {.sidebar}
+
+```{{r}}
+# input 1
+
+# input 2
+```
+````
+
+Se le llama global porque esta presente siempre aunque tengamos múltiples páginas y pasemos de una a otra.
+
+## Barra lateral global {.title-top}
+
+<br>
+
+![](images/lateral_global.PNG){fig-align="center"}
+
+## Barra lateral en línea {.title-top}
+
+Las barras laterales también se puede ubicar dentro del diseño del tablero, por ejemplo en una misma fila de dos columnas (una barra lateral y otra donde se muestra un gráfico asociado)
+
+````{.yaml}
+---
+title: "Mi tablero"
+format: dashboard
+server: shiny
+---
+
+## Row
+
+### {.sidebar}
+
+```{{r}}
+```
+
+### Column
+
+```{{r}}
+```
+````
+
+## Barra lateral en línea {.title-top}
+
+<br>
+
+![](images/lateral_linea.PNG){fig-align="center"}
+
+
+## Barra lateral a derecha {.title-top}
+
+<br>
+
+Las barras laterales se pueden ubicar en el lado izquierdo o derecho. También puede modificar el tamaño de las barras laterales mediante el atributo `width`. 
+
+````{.yaml}
+---
+title: "Mi tablero"
+format: dashboard
+server: shiny
+---
+
+## Column
+
+```{{r}}
+```
+
+## {.sidebar width="300px"}
+
+```{{r}}
+```
+````
+
+## Barra lateral a derecha {.title-top}
+
+<br>
+
+![](images/lateral_derecha.PNG){fig-align="center"}
+
+
+## Barra de herramientas {.title-top}
+
+<br>
+
+Las barras de herramientas son similares a las barras laterales, pero ofrecen un diseño horizontal. Se crean agregando la clase  `.toolbar` a un encabezado de fila de nivel 2.
+
+````{.yaml}
+---
+title: "Mi tablero"
+format: dashboard
+server: shiny
+---
+
+## {.toolbar}
+    
+```{{r}}
+```
+
+## Row
+
+```{{r}}
+```
+````
+
+## Barra de herramientas {.title-top}
+
+<br>
+
+![](images/barra_herramientas.PNG){fig-align="center"}
+
+
+
+## Barra de herramientas {.title-top}
+
+Al igual que las barras laterales, las barras de herramientas pueden ser globales o en línea, es decir definidas dentro del diseño. Por ejemplo, a nivel columna.
+
+![](images/barra_linea.PNG){fig-align="center"}
+
+También se puede ubicar debajo del gráfico si invertimos el orden de las filas.
+
+
+## Cabecera de tarjetas {.title-top}
+
+<br>
+
+Para agregar una barra de herramientas a una tarjeta, se define inmediatamente encima o debajo de la celda que genera la salida. Se puede hacer agregando el metadato `content: card-toolbar` a un fragmento de código R o creando un *div* con la clase `.card-toolbar`
+
+
+````{.yaml}
+
+```{{r}}
+#| content: card-toolbar
+
+```
+
+::: {.card-toolbar}
+
+```{{r}}
+
+```
+
+:::
+
+````
+
+## Cabecera de tarjetas {.title-top}
+
+<br>
+
+![](images/barra_cabecera.PNG){fig-align="center"}
+
+
+## Barra lateral de tarjetas {.title-top}
+
+
+De la misma forma se puede agregar una barra lateral solo a una tarjeta, aplicando la clase `.card-sidebar`
+
+
+````{.yaml}
+```{{r}}
+#| content: card-sidebar
+
+```
+````
+
+![](images/card-sidebar.PNG){fig-align="center"}
+
+## Inputs {.title-top}
+
+Dentro de las barras, sean estas globales, laterales, de tarjeta, etc vamos a incluir las entradas (inputs) que vienen preseteados con Shiny a modo de funciones.
+
+Hay una variedad de posibilidades, entre las cuales se encuentra:
+
+![](images/basic-widgets.png){fig-align="center"}
+
+
+## Inputs {.title-top}
+
+<br>
+
+Hay funciones de entradas directas como `numericInput()` para datos numéricos, `textInput()` para texto y `dateInput()` para fechas; rangos como `dateRangeInput()`, botones tipo `actionButton()` o `radioButtons()` y barras de desplazamiento como `sliderInput()`.
+
+Los sufijos de estas funciones pueden ser generalmente `Input` para entradas de valores o `Buttons` para pulsar botones.
+
+Todas las funciones de entrada tienen un argumento donde se define la variable que va a tomar el o los valores que el usuario determine, llamada `inputID`.
+
+Esta variable será utilizada luego en la parte del servidor para reaccionar de forma interactiva a sus cambios.
+
+##  Inputs {.title-top}
+
+<br>
+
+Ejemplo de una función de **Input** numérica:
+
+````{.yaml}
+```{{r}}
+#| content: card-sidebar
+
+shiny::numericInput(inputID = numero,
+             label = "Número:", 
+             value = 10, 
+             min = 1, 
+             max = 100)
+
+```
+````
+
+Construye un `input` numérico, bajo la etiqueta *"Número:"* con un valor predeterminado de 10, sobre una escala de 1 a 100 que se almacena en la variable `numero`.
+
+##  Inputs {.title-top}
+
+<br>
+
+Ejemplo de una función **Input** de botones de opción (RadioButtons):
+
+````{.yaml}
+```{{r}}
+#| content: card-sidebar
+
+shiny::radioButtons(inputId = "dist", 
+                    label = "Tipo de distribución:",
+                    choices = c("Normal" = "norm",
+                                "Uniforme" = "unif",
+                                "Log-normal" = "lnorm",
+                                "Exponencial" = "exp"),
+                    selected = "Normal")
+
+```
+````
+
+Construye un `input` de botones de opción, bajo la etiqueta *"Tipo de distribución:"* con una opción seleccionada en "Normal", sobre 4 opciones declaras en choices que se almacena en la variable `dist`.
+
+##  Inputs {.title-top}
+
+<br>
+
+Ejemplo de una función **Input** de desplazamiento (slideInput):
+
+
+````{.yaml}
+```{{r}}
+sliderInput(inputID = "obs", 
+            label = "Número de observaciones:",
+            min = 0, 
+            max = 1000, 
+            value = 500,
+            step = 10
+  )
+```
+````
+
+Construye un `input` de desplazamiento, bajo la etiqueta *"Número de observaciones:"* con un valor predeterminado en 500 de una escala entre 0 y 1000, con saltos de 10 en 10, que se almacena en la variable `obs`.
+
+## Servidor {.title-top}
+
+
+El bloque servidor se declara con el metadato #| context: server. Dentro se utilizan las funciones de Shiny para hacer reactivas a los inputs a determinadas partes de lo que se está construyendo (por ejemplo: un gráfico).
+
+También se utiliza la función `reactive()` en general, para construir expresiones reactivas.  
+
+````{.yaml}
+```{{r}}
+#| context: server
+
+datos <- reactive({
+  datos_leídos |> filter(var1 == input$numero)})
+```
+````
+La expresión va encerrada entre llaves y contiene un filtro asociado a un input numérico (input$numero). El dataframe `datos` va a cambiar cada vez que cambien el ingreso del número, filtrando las observaciones que tengan ese valor en `var1` en los datos proveniente de la lectura (`datos_leídos`).
+
+
+## Servidor {.title-top}
+
+Otra función que se incluye en el bloque servidor, relacionada con gráficos es `renderPlot()`.
+
+````{.yaml}
+```{{r}}
+#| context: server
+
+output$grafico <- renderPlot({
+    datos() |> 
+      ggplot(aes(input$x, input$y)) +
+      geom_point()
+```
+````
+
+La expresión dentro de `renderPlot()` va entre llaves y contiene un gráfico **ggplot**. Las variables declaradas en **x** e **y** provienen de `inputs`.
+
+La salida se almacena en la variable `output$grafico` que se va actualizar cada vez que el gráfico se desarrolle con variables x o y nuevas.
+
+## Salidas reactivas {.title-top}
+
+<br>
+
+Toda entrada de datos interactiva va a comunicarse con el código escrito en el área servidor, como vimos en las diapositivas anteriores, y la o las salidas finales se van a mostrar en bloques de código dentro de tarjetas o dispuestas directamente en filas o columnas.
+
+Shiny trae funciones de salidas que finalizan con la palabra `Output`, como `plotOutput()` para presentar gráficos provenientes de `renderPlot()`  o `textOutput()` para textos de `renderText()`.  
+
+<br>
+
+Por ejemplo, para visualizar el **renderPlot** anterior necesitaremos hacer:
+
+````{.yaml}
+```{{r}}
+plotOutput("grafico")
+```
+````
+
+##  {.title-top}
+
+
+
+## Temas {.title-top}
+
+<br>
+
+
+- Parámetros en documentos
+- Ejemplo para lectura dinámica con GitHub
