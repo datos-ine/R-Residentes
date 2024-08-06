@@ -75,15 +75,15 @@ Las otras opciones conocidas para cabeceras de tableros funcionan igual (logos, 
 
 <br>
 
-La estructura de estos tableros necesitan de dos componentes:
+La estructura de este tipo de tablero consta de dos componentes principales:
 
 - la interfaz de usuario (**ui**) 
 
-  Que es visible y la integran los dispositivos de entrada
+  *Que es visible y la integran los dispositivos de entrada*
   
 - el servidor Shiny (**server**)
 
-  Que no es visible y se encarga de traducir los cambios efectuados en la **ui** en reacciones del producto visualizado (gráfico, tabla, etc) 
+  *Que no es visible y se encarga de traducir los cambios efectuados en la ***ui** *en reacciones del producto visualizado (gráfico, tabla, etc)* 
 
 Además, siempre habrá una área donde se visualizan los elementos interactivos.
 
@@ -297,6 +297,8 @@ Hay funciones de entradas directas como `numericInput()` para datos numéricos, 
 
 Los sufijos de estas funciones pueden ser generalmente `Input` para entradas de valores o `Buttons` para pulsar botones.
 
+<br>
+
 Todas las funciones de entrada tienen un argumento donde se define la variable que va a tomar el o los valores que el usuario determine, llamada `inputID`.
 
 Esta variable será utilizada luego en la parte del servidor para reaccionar de forma interactiva a sus cambios.
@@ -343,7 +345,7 @@ shiny::radioButtons(inputId = "dist",
 ```
 ````
 
-Construye un `input` de botones de opción, bajo la etiqueta *"Tipo de distribución:"* con una opción seleccionada en "Normal", sobre 4 opciones declaras en choices que se almacena en la variable `dist`.
+Construye un `input` de botones de opción, bajo la etiqueta *"Tipo de distribución:"* con una opción seleccionada en "Normal", sobre 4 opciones declaradas en **choices** que se almacena en la variable `dist`.
 
 ##  Inputs {.title-top}
 
@@ -369,7 +371,7 @@ Construye un `input` de desplazamiento, bajo la etiqueta *"Número de observacio
 ## Servidor {.title-top}
 
 
-El bloque servidor se declara con el metadato #| context: server. Dentro se utilizan las funciones de Shiny para hacer reactivas a los inputs a determinadas partes de lo que se está construyendo (por ejemplo: un gráfico).
+El bloque servidor se declara con el metadato `#| context: server`. Dentro se utilizan las funciones de Shiny para hacer reactivas a los inputs a determinadas partes de lo que se está construyendo (por ejemplo: un gráfico).
 
 También se utiliza la función `reactive()` en general, para construir expresiones reactivas.  
 
@@ -421,14 +423,52 @@ plotOutput("grafico")
 ```
 ````
 
-##  {.title-top}
+## Parámetros {.title-top}
 
+Los parámetros son usados para renderizar tableros con diferentes variaciones, por ejemplo modificando un período de tiempo determinado o mostrando variables de ubicación distinta. El esquema de parametrización es:
 
+- Se define en la cabecera YAML los parámetros como metadatos:
 
-## Temas {.title-top}
+````{.yaml}
+---
+params:
+  periodo: 2020
+  provincia: Chubut
+---
+````
+
+- Estos parámetros estarán disponibles dentro del contexto de ejecución del tablero como:
+
+````{.yaml}
+```{{r}}
+params$periodo
+params$provincia
+```
+````
+
+## Parámetros {.title-top}
 
 <br>
 
+Se puede utilizar la opción `-P` dentro de la sintaxis en la **Terminal** de Quarto cuando renderizamos para pasar los valores en los parámetros.
 
-- Parámetros en documentos
-- Ejemplo para lectura dinámica con GitHub
+<br>
+
+````{.yaml}
+quarto render dashboard.qmd -P periodo:2021 -P provincia:Salta
+````
+
+<br>
+
+Alternativamente, se puede crear un archivo YAML con los valores de los parámetros definidos para renderizar y luego utilizar el indicador `--execute-params`.
+
+<br>
+
+````{.yaml}
+quarto render dashboard.qmd --execute-params parametros.yml
+````
+
+## Ejemplo Tablero con lectura dinámica de datos {.title-top}
+
+<br>
+
