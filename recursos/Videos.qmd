@@ -1,0 +1,74 @@
+---
+title: "**Videos**"
+author: ""
+date: ""
+format:
+  html:
+    page-layout: full
+    toc: true
+    toc-title: Contenidos
+    toc-location: left
+    toc_float: true
+    toc_collapsed: false
+    toc_depth: 4
+    include-in-header: 
+      - text: |
+          <link rel="icon" type="image/x-icon" href="favicon.ico">
+number_sections: true
+anchor_sections: true
+theme: 
+  light: [united, custom.scss]
+  dark: darkly
+editor: source
+---
+
+
+```{r, message=FALSE, echo=F}
+knitr::opts_chunk$set(comment=NA, dpi = 300)
+```
+
+
+## Curso Análisis y visualización de datos con R + RStudio - Cohorte 2024
+
+### Objetos parte 1
+
+{{< video https://youtu.be/JK4o_dnhyIQ >}}
+
+### Objetos parte 2
+
+{{< video https://youtu.be/UCOCMdXzbo0 >}}
+
+### Encuentro sincrónico 1 (Repaso)
+
+{{< video https://youtu.be/FEJtSV2Envg >}}
+
+### Encuentro sincrónico 2 (Tipo de datos)
+
+{{< video https://youtu.be/m24_6ahD2Lw >}}
+
+
+### Encuentro sincrónico 4 (Operaciones múltiples e iteración)
+
+{{< video https://youtu.be/CYCPgcThbkQ >}}
+
+### Encuentro sincrónico 5 (Indicadores estadístiscos)
+
+{{< video https://youtu.be/d5A1MC9g8Ds >}}
+
+### Encuentro sincrónico 6 (Visualizaión de datos)
+
+{{< video https://youtu.be/BnzX9VnlaaE >}}
+
+### Encuentro sincrónico 7 y 8 (Documentos Quarto)
+
+{{< video https://youtu.be/GEysji9q0hQ >}}
+
+{{< video https://youtu.be/HQkpoJqxgcE >}}
+
+### Encuentro sincrónico 9 y 10 (Tableros Quarto)
+
+{{< video https://youtu.be/m1JAaEvy6S4 >}}
+
+{{< video https://youtu.be/TQ0ReLG7UXg >}}
+
+{{< video https://youtu.be/dnFfO6C8PU4 >}}
